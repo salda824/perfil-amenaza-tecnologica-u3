@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import matplotlib as mpl
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from IPython.display import display
@@ -46,7 +47,9 @@ def _fmt(dec):
         try:
             if v is None or (isinstance(v, float) and v != v):
                 return "–"
-            if isinstance(v, (bool,)) or not isinstance(v, (int, float)) and not hasattr(v, "dtype"):
+            if isinstance(v, (bool, np.bool_)):
+                return "sí" if v else "no"
+            if not isinstance(v, (int, float)) and not hasattr(v, "dtype"):
                 return str(v)
             v = float(v)
             if v.is_integer() and abs(v) >= 1:

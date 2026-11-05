@@ -253,6 +253,19 @@ class Calibrador:
         return 1 / self.a if self.a else np.inf
 
 
+def calibrar_adelante(particion, p, y, metodo="platt") -> np.ndarray:
+    """
+    Calibración con encadenamiento hacia adelante: las predicciones del pliegue v se calibran con un calibrador
+    ajustado solo con las de los pliegues anteriores. El primer pliegue queda sin calibrar.
+    """
+    particion, p, y = np.asarray(particion).astype(str), np.asarray(p, float), np.asarray(y, float)
+    q = p.copy()
+    for v in sorted(np.unique(particion))[1:]:
+        m, prev = particion == v, particion < v
+        q[m] = Calibrador(metodo).ajustar(p[prev], y[prev]).aplicar(p[m])
+    return q
+
+
 def predecir_ensamble(redes, entradas) -> np.ndarray:
     return np.mean([r.predecir(entradas) for r in redes], axis=0)
 

@@ -12,8 +12,15 @@ comunicación) y la llevamos a esos cuatro roles.
 | **Documentación** | Laura | Lecturas del cuaderno, tarjeta del modelo, informe PDF (12 páginas), README | Juan Diego |
 | **Presentación** | Laura (guion y narrativa) · Juan Diego (demostración del pipeline) | Video MP4 de 8–10 min y sustentación sincrónica | Conjunta |
 
-**Articulación.** Las decisiones de diseño se toman en conjunto y quedan en la bitácora (§14.2). Ambos integrantes
-deben poder reproducir el proceso con las tres órdenes de §11 y defender cada decisión con la evidencia citada.
+Cómo trabajamos en esta unidad. Juan Diego propuso e implementó las intervenciones a partir del diagnóstico de la U2 y
+escribió el paquete; Laura revisó cada resultado contra las salidas del cuaderno, redactó las lecturas y propuso la
+lectura para la decisión (bandas, alerta A/B y énfasis tecnológico). Las decisiones de protocolo las tomamos juntos
+antes de ejecutar: seleccionar solo con origen móvil 2023–2025 y usar 2026 una vez (D11), medir contra la persistencia
+con log-loss (D12), la regla de retención (D13) y mantener la capacidad de la U2 si la rejilla no ofrecía una
+alternativa estable (D16). Dos decisiones salieron de discutir resultados que no esperábamos: no adoptar el embedding de
+departamento (regla 8, §6.7) y no cambiar los logaritmos aunque el control los favoreciera (regla 7, §7). Después de la
+revisión del informe agregamos la persistencia calibrada como rival y la validación espacio-temporal, sin cambiar el
+modelo. Ambos podemos reproducir el proceso con las tres órdenes de §11 y defender cada decisión con la evidencia citada.
 
 ## 14.2 Bitácora de decisiones técnicas (continúa la D1–D10 de la U2)
 
@@ -32,10 +39,7 @@ deben poder reproducir el proceso con las tres órdenes de §11 y defender cada 
 
 ## 14.3 Declaración de uso de inteligencia artificial
 
-Nos apoyamos en herramientas de inteligencia artificial (Claude, de Anthropic) para la **programación**: estructurar
-el código del pipeline en módulos, depurarlo y organizar las celdas de este cuaderno. La propuesta del proyecto, la
-formulación del problema, la búsqueda y selección de las fuentes de datos, el análisis de los datos, las decisiones
-metodológicas, la interpretación de los resultados y las conclusiones son trabajo del equipo. Ambos integrantes
-ejecutamos el cuaderno de principio a fin, verificamos las cifras citadas contra las salidas y estamos en capacidad de
-explicar y defender cada decisión, así como de reproducir el proceso con las órdenes de §11.
+Usamos Claude (Anthropic) como apoyo en la programación del pipeline y del cuaderno y en la revisión de la redacción y
+la organización del informe. La propuesta del proyecto, la búsqueda y selección de datos, el análisis, las decisiones
+metodológicas y las conclusiones son del equipo, que ejecutó, revisó y verificó todos los resultados.
 """

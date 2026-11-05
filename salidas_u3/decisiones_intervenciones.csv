@@ -12,9 +12,9 @@ I9 multitarea λ=0.5 (efecto en P(C)),I2a +d1,0.0013302437858683125,0.0027405977
 I9 multitarea λ=1 (efecto en P(C)),I2a +d1,0.009502747821825818,0.005176571741848724,-0.004228329809725162,no se retiene
 GRU trimestral,I2a +d1,0.009845483522693354,0.00445106845859825,-0.003276955602537046,no se retiene
 CNN 1D trimestral,I2a +d1,0.014332154751154336,0.014157461724286847,-0.0064482029598308625,no se retiene
-Embedding de departamento,I2a +d1,-0.025907980204841342,0.010263484547979042,0.016279069767441867,"cumple la regla, no se adopta: acierta 0.8 de 9 transiciones (referencia 2.0) y no transfiere a territorios nuevos"
+Embedding de departamento,I2a +d1,-0.025907980204841342,0.010263484547979042,0.016279069767441867,"cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding"
 "MLP profundo (16, 8)",I2a +d1,-0.00037115978797926943,0.013481603300977104,0.0026427061310781543,no se retiene
-Logística (mismas variables),I2a +d1,0.0027137370793057225,0.0,0.0005285412262157063,no se retiene
+Logística (mismas variables),I2a +d1,-0.003455928100764394,0.004309543624996365,-0.0025369978858350794,no se retiene
 I6 capacidad / activación / L2 / presupuesto,"('(16,)', 0.001, 'relu', 560)",0.051825554000412,,,no se retiene (la selección no transfiere a 2025)
 I7 ensamble de 10 semillas,1 red,-0.010762958826385893,,0.0043023255813955386,se retiene (estabilidad)
 I8 calibración,sin calibrar,0.004219677384120879,,0.0,no se retiene (no mejora sin mirar el futuro)

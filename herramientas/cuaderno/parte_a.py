@@ -92,12 +92,16 @@ md(r"""
 ---
 # 1. Problema, contexto y trazabilidad U1 → U2 → U3
 
-**Pregunta orientadora (Unidad 1):**
+**Pregunta orientadora (Unidad 1, textual):**
 
 > *¿Cómo orientar la adquisición, transferencia de tecnología y fabricación de sistemas de seguridad y defensa de las
-> Fuerzas de Colombia en función del perfil de amenaza tecnológica predominante de los municipios colombianos, según
+> Fuerzas de Colombia en función del perfil de amenaza tecnológica predominante de los municipios colombianos según
 > las variables de actividad armada histórica, geografía operacional y economías ilícitas, de modo que se optimice la
-> inversión de recursos?*
+> inversión de recursos en búsqueda del bienestar de los colombianos y el desarrollo del país?*
+
+La pregunta habla de municipios, pero el export gratuito de ACLED solo desagrega a departamento (hallazgo de la
+Etapa 1). Por eso la respondemos a escala departamental y dejamos la migración a municipio como primera recomendación
+(R1, §13).
 
 **Formulación operativa (igual a la U2).** Para cada departamento $d$ y año $t$, la etiqueta es
 
@@ -117,7 +121,7 @@ predictoras y etiqueta (§1.1 de la U2).
 |---|---|---|
 | **U1** Formulación | Perfiles A/B/C/D con la regla del 50 %; 7 variables; ACLED agregado a departamento | Ningún departamento es A o B dominante → clasificación **C vs. D**; 33 filas no bastan → panel departamento–año |
 | **U2** Modelo base | MLP 7 → 16 → 1 (145 parámetros); AUC temporal 0,89; equivalente a la logística | **La inercia domina**: la persistencia (AUC 0,965; log-loss 0,380) supera a la red. La memoria del perfil (E1) es la palanca más fuerte |
-| **U3** Integración | Intervenciones I1–I9 derivadas del diagnóstico, controles de datos, pipeline reproducible | El rival a vencer es la **persistencia**, no el MLP base. El valor propio de un modelo está en **anticipar transiciones** |
+| **U3** Integración | Intervenciones I1–I9 derivadas del diagnóstico, controles de datos, pipeline reproducible | La referencia a superar es la persistencia (cruda y, tras la revisión, calibrada). Un modelo aporta sobre ella cuando anticipa transiciones |
 
 ## 1.2 Trazabilidad de variables (actualizada)
 
@@ -278,8 +282,8 @@ cand = V.BASE + nuevas
 rho = pd.Series({f: stats.spearmanr(datos[f], datos["y"]).correlation for f in cand})
 mi = pd.Series(mutual_info_classif(datos[cand], datos["y"], random_state=C.SEED, n_neighbors=5), index=cand)
 
-# En las transiciones, ¿el semestre reciente ya apuntaba hacia el nuevo perfil?
-tr_ = datos[datos.transicion]
+# En las transiciones, ¿el semestre reciente ya apuntaba hacia el nuevo perfil? Solo 2021-2025: 2026 es la prueba
+tr_ = datos[datos.transicion & (datos.anio <= 2025)]
 hacia = np.sign(tr_["d1_sC_H2"] - tr_["m1_sC_t1"]) == np.where(tr_["y"] == 1, 1, -1)
 ANTICIPA_D1 = hacia.mean()
 
@@ -293,7 +297,7 @@ ax = axes[1]
 for clase, color in [(0, COL["D"]), (1, COL["C"])]:
     s = datos[datos.y == clase]
     ax.scatter(s["m1_sC_t1"], s["d1_sC_H2"], s=22, color=color, alpha=.8, edgecolor=FONDO, lw=.6, label=f"real {'C' if clase else 'D'} en t")
-ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t-1 → t")
+ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t-1 → t (2021-2025)")
 ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.axhline(.5, color=TENUE, lw=.8, ls="--"); ax.axvline(.5, color=TENUE, lw=.8, ls="--")
 ax.set_xlabel("$m_1$: s_C de todo t-1"); ax.set_ylabel("$d_1$: s_C del 2.º semestre de t-1")
 ax.set_title("(b) Memoria anual vs. semestre reciente"); ax.legend(fontsize=7.5, loc="upper left")
@@ -307,7 +311,8 @@ for i in range(len(et)):
         ax.text(j, i, f"{corr.values[i, j]:.1f}", ha="center", va="center", fontsize=6, color="white" if abs(corr.values[i, j]) > .6 else TINTA)
 ax.grid(False); ax.set_title("(c) Correlación de Spearman")
 fig.tight_layout(); guardar(fig, "fig02_eda_variables_nuevas"); plt.show()
-print(f"Transiciones (cambio de perfil confiable): {len(tr_)} | en {ANTICIPA_D1:.0%} el 2.º semestre de t-1 ya se movía hacia el perfil de t")
+print(f"Transiciones 2021-2025 (cambio de perfil confiable, sin la prueba 2026): {len(tr_)} | en {ANTICIPA_D1:.0%} el 2.º semestre "
+      f"de t-1 ya se movía hacia el perfil de t")
 tabla(pd.DataFrame({"ρ Spearman con y": rho, "Información mutua": mi}).loc[nuevas].rename(index=V.ETIQ), dec=3)
 """)
 
@@ -317,22 +322,29 @@ md(r"""
 ---
 # 3. Protocolo experimental de la Unidad 3
 
-## 3.1 Reglas fijadas antes de ver resultados
+## 3.1 Reglas del protocolo
+
+Las reglas 1 a 7 se fijaron antes de ejecutar las intervenciones. La regla 8 la agregamos durante las intervenciones,
+al encontrar el caso del embedding de departamento (§6.7), y lo declaramos así. La persistencia calibrada de la regla 3
+se agregó después de la revisión del informe y no cambió el modelo adoptado.
 
 1. **Selección solo con origen móvil 2023–2025.** Para cada año $v \in \{2023, 2024, 2025\}$ se entrena con
    $t < v$ y se predice $v$ (87 predicciones fuera de muestra). El escalador se ajusta en cada pliegue solo con su
    entrenamiento (prueba automática en §11.3).
 2. **2026 es la prueba final y se usa una sola vez**, con el modelo ya elegido. Hay que declararlo: la U2 ya reportó
    métricas sobre 2026, así que no es un conjunto virgen. Ninguna decisión de esta unidad se tomó mirándolo.
-3. **El rival es la persistencia** ($\hat p_{d,t} = s^C_{d,t-1}$; AUC 0,973 y log-loss 0,363 en 2023–2025), no el
-   MLP base. Se reporta además a qué transiciones acierta cada modelo, porque la persistencia acierta 0 por
-   construcción.
+3. **La referencia es la persistencia** ($\hat p_{d,t} = s^C_{d,t-1}$; AUC 0,973 y log-loss 0,363 en 2023–2025).
+   Como usa una proporción como si fuera una probabilidad, tras la revisión agregamos su versión calibrada: una
+   logística de dos parámetros sobre $\mathrm{logit}(m_1)$, entrenada solo con los años anteriores al validado.
+   Se reporta además a qué transiciones acierta cada modelo, porque la persistencia acierta 0 por construcción.
 4. **Métrica de decisión: log-loss** (calidad probabilística completa), con AUC, Brier, MCC y ECE como métricas de
    apoyo. La exactitud con umbral fijo es la métrica menos estable con 29 departamentos por año (U2 §11.2).
 5. **Regla de retención de una intervención.** Cada variante se entrena con las **mismas 5 semillas** que su
    referencia. Se conserva si la mejora media de la log-loss supera **un error estándar** de la diferencia pareada
    entre semillas, $\overline{\Delta LL} + \mathrm{EE}(\Delta LL) < 0$, y no baja el AUC medio más de 0,01. Si no se
-   cumple, se prefiere la variante más simple (espíritu de la regla de 1 EE de la U2, D7).
+   cumple, se prefiere la variante más simple (espíritu de la regla de 1 EE de la U2, D7). El EE mide el ruido del
+   entrenamiento entre semillas, no el del muestreo de departamentos. En I4, cuya hipótesis es espacial, la regla se
+   aplica a la validación espacial y se exige no empeorar la temporal. La regla está en `evaluacion.regla_retencion`.
 6. **Presupuesto de entrenamiento fijo** de 560 pasos de gradiente (D10 de la U2), salvo cuando el presupuesto es
    la variable estudiada (§6.8). Así ninguna partición usa sus propios datos de prueba para detener el
    entrenamiento.
@@ -340,7 +352,7 @@ md(r"""
    U1 y la U2. Si un control favorece quitar una transformación, se reporta y queda como tarea para la siguiente
    iteración, pero no cambia el modelo dentro de esta. Si lo cambiara, se sumarían grados de libertad a la
    selección sobre las mismas 87 predicciones.
-8. **Objetivo del proyecto por encima de la métrica.** Una variante que gana en log-loss solo porque se parece más a
+8. **Objetivo del proyecto por encima de la métrica (agregada durante las intervenciones, §6.7).** Una variante que gana en log-loss solo porque se parece más a
    la persistencia (menos transiciones acertadas) o porque no puede aplicarse a territorios nuevos se documenta como
    alternativa, pero no se adopta. El valor diferencial de un modelo frente a la inercia está en los cambios de
    perfil y en la migración a municipio (M3 de la U2).
@@ -353,6 +365,10 @@ code(r"""
 SEM5 = (1, 2, 3, 4, 5)
 RES = {}          # nombre -> {"oos": predicciones, "por_semilla": métricas, "P": matriz semillas x filas}
 
+def particiones_de(tipo, base):
+    return {"movil": E.particiones_origen_movil, "espacial": E.particiones_espaciales,
+            "espacio-temporal": E.particiones_espacio_temporales}[tipo](base)
+
 def evaluar(spec, semillas=SEM5, particiones="movil", base=None, seq=None, clave=None):
     # Entrena la especificación con cada semilla por separado en cada pliegue y guarda las predicciones OOS.
     base = datos if base is None else base; seq = SEQ if seq is None else seq
@@ -361,7 +377,7 @@ def evaluar(spec, semillas=SEM5, particiones="movil", base=None, seq=None, clave
     Ps, filas = [], []
     for s in semillas:
         sp = replace(spec, semillas=(s,))
-        part = E.particiones_origen_movil(base) if particiones == "movil" else E.particiones_espaciales(base)
+        part = particiones_de(particiones, base)
         oos = E.validar(base, P.ajustar_predecir(base, seq, sp), part)
         Ps.append(oos[spec.nombre].values)
         filas.append({"semilla": s, **E.metricas(oos["y"], oos[spec.nombre], transicion=oos["transicion"])})
@@ -383,26 +399,25 @@ def resumen(claves, ensamble=False):
     return pd.DataFrame(filas).T
 
 def decidir(candidata, referencia, nombre=None):
-    # Regla de retención (§3.1, regla 5) con diferencias pareadas por semilla.
+    # Regla de retención (§3.1, regla 5) con diferencias pareadas por semilla; la regla vive en el paquete.
     a, b = RES[candidata]["por_semilla"], RES[referencia]["por_semilla"]
-    if len(a) != len(b):
-        b = pd.concat([b] * len(a)).iloc[:len(a)].set_index(a.index)
-    d_ll = a["Log-loss"].values - b["Log-loss"].values
-    d_auc = a["ROC-AUC"].values - b["ROC-AUC"].values
-    ee = d_ll.std(ddof=1) / np.sqrt(len(d_ll)) if len(d_ll) > 1 else 0.0
-    retener = (d_ll.mean() + ee < 0) and (d_auc.mean() > -0.01)
-    return {"Intervención": nombre or candidata, "Referencia": referencia, "ΔLog-loss": d_ll.mean(), "EE": ee,
-            "ΔAUC": d_auc.mean(), "Decisión": "se retiene" if retener else "no se retiene"}
+    r = E.regla_retencion(a["Log-loss"].values, b["Log-loss"].values, a["ROC-AUC"].values, b["ROC-AUC"].values)
+    return {"Intervención": nombre or candidata, "Referencia": referencia, "ΔLog-loss": r["ΔLog-loss"], "EE": r["EE"],
+            "ΔAUC": r["ΔAUC"], "Decisión": "se retiene" if r["retiene"] else "no se retiene"}
 
-def persistencia_oos(particiones="movil", base=None):
+def persistencia_oos(particiones="movil", base=None, calibrada=False):
     base = datos if base is None else base
-    part = E.particiones_origen_movil(base) if particiones == "movil" else E.particiones_espaciales(base)
-    return E.validar(base, lambda tr, te: {"p": P.persistencia(base, tr, te)}, part)
+    fn_p = P.persistencia_calibrada if calibrada else P.persistencia
+    return E.validar(base, lambda tr, te: {"p": fn_p(base, tr, te)}, particiones_de(particiones, base))
 
 PERS = persistencia_oos()
 M_PERS = E.metricas(PERS["y"], PERS["p"], transicion=PERS["transicion"])
+PERS_CAL = persistencia_oos(calibrada=True)      # rival agregado tras la revisión (no interviene en la selección)
+M_PERS_CAL = E.metricas(PERS_CAL["y"], PERS_CAL["p"], transicion=PERS_CAL["transicion"])
 print(f"Persistencia, origen móvil 2023-2025 (n = {len(PERS)}): AUC {M_PERS['ROC-AUC']:.3f} | log-loss {M_PERS['Log-loss']:.3f} | "
       f"Brier {M_PERS['Brier']:.3f} | transiciones acertadas {M_PERS['Transiciones acertadas']} de {M_PERS['Transiciones']}")
+print(f"Persistencia calibrada (logística sobre logit(m1), años anteriores): AUC {M_PERS_CAL['ROC-AUC']:.3f} | "
+      f"log-loss {M_PERS_CAL['Log-loss']:.3f} | Brier {M_PERS_CAL['Brier']:.3f} | ECE {M_PERS_CAL['ECE']:.3f}")
 
 fig, ax = plt.subplots(figsize=(13, 2.9))
 for fila, v in enumerate((2023, 2024, 2025, 2026)):

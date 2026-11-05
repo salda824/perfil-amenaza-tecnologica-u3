@@ -126,8 +126,8 @@ cand = V.BASE + nuevas
 rho = pd.Series({f: stats.spearmanr(datos[f], datos["y"]).correlation for f in cand})
 mi = pd.Series(mutual_info_classif(datos[cand], datos["y"], random_state=C.SEED, n_neighbors=5), index=cand)
 
-# En las transiciones, ¿el semestre reciente ya apuntaba hacia el nuevo perfil?
-tr_ = datos[datos.transicion]
+# En las transiciones, ¿el semestre reciente ya apuntaba hacia el nuevo perfil? Solo 2021-2025: 2026 es la prueba
+tr_ = datos[datos.transicion & (datos.anio <= 2025)]
 hacia = np.sign(tr_["d1_sC_H2"] - tr_["m1_sC_t1"]) == np.where(tr_["y"] == 1, 1, -1)
 ANTICIPA_D1 = hacia.mean()
 
@@ -141,7 +141,7 @@ ax = axes[1]
 for clase, color in [(0, COL["D"]), (1, COL["C"])]:
     s = datos[datos.y == clase]
     ax.scatter(s["m1_sC_t1"], s["d1_sC_H2"], s=22, color=color, alpha=.8, edgecolor=FONDO, lw=.6, label=f"real {'C' if clase else 'D'} en t")
-ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t-1 → t")
+ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t-1 → t (2021-2025)")
 ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.axhline(.5, color=TENUE, lw=.8, ls="--"); ax.axvline(.5, color=TENUE, lw=.8, ls="--")
 ax.set_xlabel("$m_1$: s_C de todo t-1"); ax.set_ylabel("$d_1$: s_C del 2.º semestre de t-1")
 ax.set_title("(b) Memoria anual vs. semestre reciente"); ax.legend(fontsize=7.5, loc="upper left")
@@ -155,7 +155,8 @@ for i in range(len(et)):
         ax.text(j, i, f"{corr.values[i, j]:.1f}", ha="center", va="center", fontsize=6, color="white" if abs(corr.values[i, j]) > .6 else TINTA)
 ax.grid(False); ax.set_title("(c) Correlación de Spearman")
 fig.tight_layout(); guardar(fig, "fig02_eda_variables_nuevas"); plt.show()
-print(f"Transiciones (cambio de perfil confiable): {len(tr_)} | en {ANTICIPA_D1:.0%} el 2.º semestre de t-1 ya se movía hacia el perfil de t")
+print(f"Transiciones 2021-2025 (cambio de perfil confiable, sin la prueba 2026): {len(tr_)} | en {ANTICIPA_D1:.0%} el 2.º semestre "
+      f"de t-1 ya se movía hacia el perfil de t")
 tabla(pd.DataFrame({"ρ Spearman con y": rho, "Información mutua": mi}).loc[nuevas].rename(index=V.ETIQ), dec=3)
 
 
@@ -166,6 +167,10 @@ tabla(pd.DataFrame({"ρ Spearman con y": rho, "Información mutua": mi}).loc[nue
 SEM5 = (1, 2, 3, 4, 5)
 RES = {}          # nombre -> {"oos": predicciones, "por_semilla": métricas, "P": matriz semillas x filas}
 
+def particiones_de(tipo, base):
+    return {"movil": E.particiones_origen_movil, "espacial": E.particiones_espaciales,
+            "espacio-temporal": E.particiones_espacio_temporales}[tipo](base)
+
 def evaluar(spec, semillas=SEM5, particiones="movil", base=None, seq=None, clave=None):
     # Entrena la especificación con cada semilla por separado en cada pliegue y guarda las predicciones OOS.
     base = datos if base is None else base; seq = SEQ if seq is None else seq
@@ -174,7 +179,7 @@ def evaluar(spec, semillas=SEM5, particiones="movil", base=None, seq=None, clave
     Ps, filas = [], []
     for s in semillas:
         sp = replace(spec, semillas=(s,))
-        part = E.particiones_origen_movil(base) if particiones == "movil" else E.particiones_espaciales(base)
+        part = particiones_de(particiones, base)
         oos = E.validar(base, P.ajustar_predecir(base, seq, sp), part)
         Ps.append(oos[spec.nombre].values)
         filas.append({"semilla": s, **E.metricas(oos["y"], oos[spec.nombre], transicion=oos["transicion"])})
@@ -196,26 +201,25 @@ def resumen(claves, ensamble=False):
     return pd.DataFrame(filas).T
 
 def decidir(candidata, referencia, nombre=None):
-    # Regla de retención (§3.1, regla 5) con diferencias pareadas por semilla.
+    # Regla de retención (§3.1, regla 5) con diferencias pareadas por semilla; la regla vive en el paquete.
     a, b = RES[candidata]["por_semilla"], RES[referencia]["por_semilla"]
-    if len(a) != len(b):
-        b = pd.concat([b] * len(a)).iloc[:len(a)].set_index(a.index)
-    d_ll = a["Log-loss"].values - b["Log-loss"].values
-    d_auc = a["ROC-AUC"].values - b["ROC-AUC"].values
-    ee = d_ll.std(ddof=1) / np.sqrt(len(d_ll)) if len(d_ll) > 1 else 0.0
-    retener = (d_ll.mean() + ee < 0) and (d_auc.mean() > -0.01)
-    return {"Intervención": nombre or candidata, "Referencia": referencia, "ΔLog-loss": d_ll.mean(), "EE": ee,
-            "ΔAUC": d_auc.mean(), "Decisión": "se retiene" if retener else "no se retiene"}
+    r = E.regla_retencion(a["Log-loss"].values, b["Log-loss"].values, a["ROC-AUC"].values, b["ROC-AUC"].values)
+    return {"Intervención": nombre or candidata, "Referencia": referencia, "ΔLog-loss": r["ΔLog-loss"], "EE": r["EE"],
+            "ΔAUC": r["ΔAUC"], "Decisión": "se retiene" if r["retiene"] else "no se retiene"}
 
-def persistencia_oos(particiones="movil", base=None):
+def persistencia_oos(particiones="movil", base=None, calibrada=False):
     base = datos if base is None else base
-    part = E.particiones_origen_movil(base) if particiones == "movil" else E.particiones_espaciales(base)
-    return E.validar(base, lambda tr, te: {"p": P.persistencia(base, tr, te)}, part)
+    fn_p = P.persistencia_calibrada if calibrada else P.persistencia
+    return E.validar(base, lambda tr, te: {"p": fn_p(base, tr, te)}, particiones_de(particiones, base))
 
 PERS = persistencia_oos()
 M_PERS = E.metricas(PERS["y"], PERS["p"], transicion=PERS["transicion"])
+PERS_CAL = persistencia_oos(calibrada=True)      # rival agregado tras la revisión (no interviene en la selección)
+M_PERS_CAL = E.metricas(PERS_CAL["y"], PERS_CAL["p"], transicion=PERS_CAL["transicion"])
 print(f"Persistencia, origen móvil 2023-2025 (n = {len(PERS)}): AUC {M_PERS['ROC-AUC']:.3f} | log-loss {M_PERS['Log-loss']:.3f} | "
       f"Brier {M_PERS['Brier']:.3f} | transiciones acertadas {M_PERS['Transiciones acertadas']} de {M_PERS['Transiciones']}")
+print(f"Persistencia calibrada (logística sobre logit(m1), años anteriores): AUC {M_PERS_CAL['ROC-AUC']:.3f} | "
+      f"log-loss {M_PERS_CAL['Log-loss']:.3f} | Brier {M_PERS_CAL['Brier']:.3f} | ECE {M_PERS_CAL['ECE']:.3f}")
 
 fig, ax = plt.subplots(figsize=(13, 2.9))
 for fila, v in enumerate((2023, 2024, 2025, 2026)):
@@ -358,12 +362,8 @@ print(f"Especificación de variables fijada ({len(VARS_FINAL)}):", VARS_FINAL)
 # 6.5 I5 objetivo blando (con y sin ponderación por eventos), crudo y calibrado
 # =============================================================================
 def calibrar_adelante(oos, p, metodo="temperatura"):
-    # Calibración con encadenamiento hacia adelante: el pliegue v se calibra con las predicciones de los pliegues < v.
-    q = np.array(p, float).copy()
-    for v in sorted(oos["particion"].unique())[1:]:
-        m, prev = (oos["particion"] == v).values, (oos["particion"] < v).values
-        q[m] = M.Calibrador(metodo).ajustar(p[prev], oos["y"].values[prev]).aplicar(p[m])
-    return q
+    # Calibración con encadenamiento hacia adelante (modelo.calibrar_adelante): el pliegue v se calibra con los pliegues < v.
+    return M.calibrar_adelante(oos["particion"].values, p, oos["y"].values, metodo)
 
 def registrar_calibrado(clave, metodo="temperatura"):
     r = RES[clave]; oos = r["oos"]
@@ -444,8 +444,8 @@ emb = next(x for x in d7 if x["Intervención"] == "Embedding de departamento")
 TR_EMB = RES["Embedding de departamento"]["por_semilla"]["Transiciones acertadas"].mean()
 TR_REF = RES[REF_VARS]["por_semilla"]["Transiciones acertadas"].mean()
 if emb["Decisión"] == "se retiene" and TR_EMB < TR_REF:
-    emb["Decisión"] = (f"cumple la regla, no se adopta: acierta {TR_EMB:.1f} de {int(M_PERS['Transiciones'])} transiciones "
-                       f"(referencia {TR_REF:.1f}) y no transfiere a territorios nuevos")
+    emb["Decisión"] = (f"cumple la regla 5, no se adopta por la regla 8: acierta {TR_EMB:.1f} de {int(M_PERS['Transiciones'])} "
+                       f"transiciones (referencia {TR_REF:.1f}) y en departamentos nuevos se reduce al MLP sin embedding")
 DECISIONES += d7
 evaluar(P.Especificacion("esp: embedding", VARS_FINAL, comparativos["Embedding de departamento"]), particiones="espacial", clave="esp: embedding")
 tab7 = resumen([REF_VARS, *comparativos, "Logística (mismas variables)"])
@@ -849,20 +849,26 @@ tabla(resumen_curvas, dec=3)
 # 9.1 Antes vs. después en el origen móvil 2023-2025, con IC y pruebas pareadas
 # =============================================================================
 evaluar(replace(BASE_U2, nombre="MLP base U2 (semilla 42)"), semillas=(C.SEED,))
+evaluar(replace(BASE_U2, nombre=f"MLP base U2 (ensamble {K_ENS})"), semillas=tuple(range(1, K_ENS + 1)))
 r_fin = RES["I7 20 semillas"]; oosF = r_fin["oos"].copy(); oosF["final"] = P20[:K_ENS].mean(0)
 if CALIBRACION != "ninguna":
     oosF["final"] = calibrar_adelante(oosF, oosF["final"].values, CALIBRACION)
 oosF["antes"] = RES["MLP base U2 (semilla 42)"]["oos"]["p"].values
+oosF["antes10"] = RES[f"MLP base U2 (ensamble {K_ENS})"]["oos"]["p"].values
 oosF["logistica"] = RES["Logística (mismas variables)"]["oos"]["p"].values
 oosF["pers"] = PERS["p"].values
-assert (oosF["y"].values == PERS["y"].values).all()
-MODELOS_9 = {"Persistencia": "pers", "Antes: MLP base U2 (semilla 42)": "antes", "Logística (mismas variables)": "logistica", "Después: MLP U3 (ensamble)": "final"}
+oosF["pers_cal"] = PERS_CAL["p"].values
+assert (oosF["y"].values == PERS["y"].values).all() and (oosF["y"].values == PERS_CAL["y"].values).all()
+MODELOS_9 = {"Persistencia": "pers", "Persistencia calibrada (rival agregado tras la revisión)": "pers_cal",
+             "Antes: MLP base U2 (semilla 42, entregado)": "antes", f"Antes: MLP base U2 (ensamble {K_ENS})": "antes10",
+             "Logística (mismas variables)": "logistica", "Después: MLP U3 (ensamble)": "final"}
 T91 = pd.DataFrame({k: E.metricas(oosF.y, oosF[c], transicion=oosF.transicion) for k, c in MODELOS_9.items()}).T
-tabla(T91[["ROC-AUC", "Log-loss", "Brier", "ECE", "MCC", "Exact. balanceada", "Sensibilidad C", "Especificidad D", "Transiciones acertadas", "Transiciones"]], dec=3)
-ic = {k: {m: "[{:.3f} – {:.3f}]".format(*E.bootstrap_ic(oosF.y, oosF[c], fn)) for m, fn in [("ROC-AUC", roc_auc_score), ("Log-loss", E.bce)]} for k, c in MODELOS_9.items()}
-display(pd.DataFrame(ic).T.rename(columns=lambda c: f"IC95 {c}"))
+tabla(T91[["ROC-AUC", "Log-loss", "Brier", "ECE", "MCC", "Exactitud", "Sensibilidad C", "Especificidad D", "Transiciones acertadas", "Transiciones"]], dec=3)
+ic = {k: {m: "[{:.3f} – {:.3f}]".format(*E.bootstrap_ic(oosF.y, oosF[c], fn, grupos=oosF.depto)) for m, fn in [("ROC-AUC", roc_auc_score), ("Log-loss", E.bce)]} for k, c in MODELOS_9.items()}
+display(pd.DataFrame(ic).T.rename(columns=lambda c: f"IC95 {c} (por departamento)"))
 PAR_91 = pd.DataFrame({f"Después vs. {k}": E.comparar_pareado(oosF.y, oosF.final, oosF[c], grupos=oosF.depto)
-                       for k, c in [("persistencia", "pers"), ("antes (U2)", "antes"), ("logística", "logistica")]}).T
+                       for k, c in [("persistencia", "pers"), ("persistencia calibrada", "pers_cal"), ("antes (U2, semilla 42)", "antes"),
+                                    (f"antes (U2, ensamble {K_ENS})", "antes10"), ("logística", "logistica")]}).T
 display(PAR_91[["n", "ΔLog-loss", "IC95 ΔLog-loss", "P(ΔLog-loss mejora)", "ΔBrier", "IC95 ΔBrier", "ΔAUC", "IC95 ΔAUC", "solo A acierta", "solo B acierta", "p McNemar"]]
         .style.format({"ΔLog-loss": "{:+.3f}", "ΔBrier": "{:+.3f}", "ΔAUC": "{:+.3f}", "P(ΔLog-loss mejora)": "{:.2f}", "p McNemar": "{:.3f}"}))
 
@@ -871,17 +877,42 @@ display(PAR_91[["n", "ΔLog-loss", "IC95 ΔLog-loss", "P(ΔLog-loss mejora)", "�
 # =============================================================================
 # 9.2 Validación espacial (5 pliegues por departamento, años <= 2025)
 # =============================================================================
-evaluar(replace(FINAL, nombre="esp: final U3"), semillas=tuple(range(1, K_ENS + 1)), particiones="espacial", clave="esp: final U3")
-eF = RES["esp: final U3"]["oos"]
+SEM_ENS = tuple(range(1, K_ENS + 1))
+evaluar(replace(FINAL, nombre="esp: final U3"), semillas=SEM_ENS, particiones="espacial", clave="esp: final U3")
+evaluar(replace(BASE_U2, nombre="esp: base U2 ensamble"), semillas=SEM_ENS, particiones="espacial", clave="esp: base U2 ensamble")
+eF, eB = RES["esp: final U3"]["oos"], RES["esp: base U2 ensamble"]["oos"]
 esp_tab = pd.DataFrame({
     "Persistencia": E.metricas(PERS_E.y, PERS_E.p),
-    "Antes: MLP base U2 (media 5 semillas)": {c: RES["esp: MLP base U2"]["por_semilla"][c].mean() for c in E.COLS_PRINCIPALES},
+    "Antes: MLP base U2 (red individual, media)": {c: RES["esp: base U2 ensamble"]["por_semilla"][c].mean() for c in E.COLS_PRINCIPALES},
+    f"Antes: MLP base U2 (ensamble {K_ENS})": E.metricas(eB.y, eB.p),
     "Logística (mismas variables)": E.metricas(RES["esp: logística referencia"]["oos"].y, RES["esp: logística referencia"]["oos"].p),
     "Después: MLP U3 (red individual, media)": {c: RES["esp: final U3"]["por_semilla"][c].mean() for c in E.COLS_PRINCIPALES},
     "Después: MLP U3 (ensamble)": E.metricas(eF.y, eF.p)}).T
+print("Esquema espacial (5 grupos de departamentos, años <= 2025 mezclados):")
 tabla(esp_tab[E.COLS_PRINCIPALES], dec=3)
 pers_e_al = PERS_E.set_index("fila").loc[eF["fila"], "p"].values
-display(pd.DataFrame({"Después vs. persistencia (espacial)": E.comparar_pareado(eF.y, eF.p, pers_e_al, grupos=eF.depto)}).T[["n", "ΔLog-loss", "IC95 ΔLog-loss", "ΔAUC", "IC95 ΔAUC"]])
+display(pd.DataFrame({"Después vs. persistencia (espacial)": E.comparar_pareado(eF.y, eF.p, pers_e_al, grupos=eF.depto),
+                      f"Después vs. antes (ensamble {K_ENS}, espacial)": E.comparar_pareado(eF.y, eF.p, eB.p.values, grupos=eF.depto)}).T[["n", "ΔLog-loss", "IC95 ΔLog-loss", "ΔAUC", "IC95 ΔAUC"]])
+
+# Bloqueo espacial y temporal: otros departamentos, solo años anteriores al predicho
+PERS_ET, PERS_CAL_ET = persistencia_oos("espacio-temporal"), persistencia_oos("espacio-temporal", calibrada=True)
+evaluar(replace(FINAL, nombre="et: final U3"), semillas=SEM_ENS, particiones="espacio-temporal", clave="et: final U3")
+evaluar(replace(BASE_U2, nombre="et: base U2 ensamble"), semillas=SEM_ENS, particiones="espacio-temporal", clave="et: base U2 ensamble")
+evaluar(replace(LOG_F, nombre="et: logística"), particiones="espacio-temporal", clave="et: logística")
+etF, etB, etL = (RES[k]["oos"] for k in ("et: final U3", "et: base U2 ensamble", "et: logística"))
+assert all((x.y.values == PERS_ET.y.values).all() for x in (etF, etB, etL, PERS_CAL_ET))
+ET_TAB = pd.DataFrame({"Persistencia": E.metricas(PERS_ET.y, PERS_ET.p, transicion=PERS_ET.transicion),
+                       "Persistencia calibrada": E.metricas(PERS_CAL_ET.y, PERS_CAL_ET.p, transicion=PERS_CAL_ET.transicion),
+                       f"Antes: MLP base U2 (ensamble {K_ENS})": E.metricas(etB.y, etB.p, transicion=etB.transicion),
+                       "Logística (mismas variables)": E.metricas(etL.y, etL.p, transicion=etL.transicion),
+                       "Después: MLP U3 (ensamble)": E.metricas(etF.y, etF.p, transicion=etF.transicion)}).T
+print(f"Esquema espacio-temporal (5 grupos × 2023-2025, entrenamiento solo con años anteriores; n = {len(etF)}):")
+tabla(ET_TAB[E.COLS_PRINCIPALES + ["Transiciones acertadas"]], dec=3)
+PAR_ET = pd.DataFrame({f"Después vs. {k}": E.comparar_pareado(etF.y, etF.p, c_, grupos=etF.depto)
+                       for k, c_ in [("persistencia", PERS_ET.p.values), ("persistencia calibrada", PERS_CAL_ET.p.values),
+                                     (f"antes (ensamble {K_ENS})", etB.p.values), ("logística", etL.p.values)]}).T
+display(PAR_ET[["n", "ΔLog-loss", "IC95 ΔLog-loss", "P(ΔLog-loss mejora)", "ΔAUC", "IC95 ΔAUC"]]
+        .style.format({"ΔLog-loss": "{:+.3f}", "ΔAUC": "{:+.3f}", "P(ΔLog-loss mejora)": "{:.2f}"}))
 
 
 # ======== Celda de código 27: 9.3 Prueba 2026: entrenamiento con 2021-2025, una sola evaluación ========
@@ -891,7 +922,8 @@ display(pd.DataFrame({"Después vs. persistencia (espacial)": E.comparar_pareado
 tr26, te26 = (datos.anio <= 2025).values, (datos.anio == 2026).values
 T26 = datos.loc[te26, ["depto", "departamento", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos"]].copy()
 T26["pers"] = P.persistencia(datos, tr26, te26)
-for nombre, s in [("antes", replace(BASE_U2, semillas=(C.SEED,))), ("logistica", LOG_F), ("final", FINAL)]:
+T26["pers_cal"] = P.persistencia_calibrada(datos, tr26, te26)
+for nombre, s in [("antes", replace(BASE_U2, semillas=(C.SEED,))), ("antes10", replace(BASE_U2, semillas=SEM_ENS)), ("logistica", LOG_F), ("final", FINAL)]:
     m_, e_ = P.entrenar_especificacion(datos, SEQ, s, tr26)
     T26[nombre] = P.predecir_especificacion(m_, e_, datos, SEQ, s, te26)
     if nombre == "final":
@@ -909,11 +941,13 @@ T93.loc["(referencia) U2 fase 2 documentado", ["ROC-AUC", "Log-loss", "Brier", "
 tabla(T93[["ROC-AUC", "Log-loss", "Brier", "ECE", "MCC", "Exactitud", "Sensibilidad C", "Especificidad D", "Transiciones acertadas", "Transiciones"]], dec=3)
 ic26 = {k: {m: "{:.3f} [{:.3f} – {:.3f}]".format(fn(T26.y, T26[c]), *E.bootstrap_ic(T26.y, T26[c], fn)) for m, fn in [("ROC-AUC", roc_auc_score), ("Log-loss", E.bce)]} for k, c in MODELOS_9.items()}
 display(pd.DataFrame(ic26).T)
-PAR_26 = pd.DataFrame({f"Después vs. {k}": E.comparar_pareado(T26.y, T26.final, T26[c]) for k, c in [("persistencia", "pers"), ("antes (U2)", "antes"), ("logística", "logistica")]}).T
+PAR_26 = pd.DataFrame({f"Después vs. {k}": E.comparar_pareado(T26.y, T26.final, T26[c])
+                       for k, c in [("persistencia", "pers"), ("persistencia calibrada", "pers_cal"), ("antes (U2, semilla 42)", "antes"),
+                                    (f"antes (U2, ensamble {K_ENS})", "antes10"), ("logística", "logistica")]}).T
 display(PAR_26[["n", "ΔLog-loss", "IC95 ΔLog-loss", "ΔAUC", "IC95 ΔAUC", "solo A acierta", "solo B acierta", "p McNemar"]]
         .style.format({"ΔLog-loss": "{:+.3f}", "ΔAUC": "{:+.3f}", "p McNemar": "{:.3f}"}))
 print("Transiciones de 2026:")
-display(T26[T26.transicion][["departamento", "perfil_prev", "perfil", "s_C", "pers", "antes", "final"]].round(2).style.hide(axis="index"))
+display(T26[T26.transicion][["departamento", "perfil_prev", "perfil", "s_C", "pers", "pers_cal", "antes", "antes10", "final"]].round(2).style.hide(axis="index"))
 
 
 # ======== Celda de código 28: 9.4 Matrices de confusión, ROC y desempeño por año (antes vs. después vs. persistencia) ========
@@ -930,12 +964,12 @@ for k, (tit, y_, p_) in enumerate(casos):
             ax.text(j, i, f"{cm[i, j]}\n({cm[i, j] / max(cm[i].sum(), 1):.0%})", ha="center", va="center", fontsize=10, color="white" if cm[i, j] > cm.max() * .65 else TINTA)
     ax.set_xticks([0, 1], ["D", "C"]); ax.set_yticks([0, 1], ["D", "C"]); ax.set_xlabel("Predicho"); ax.set_ylabel("Real"); ax.set_title(tit, fontsize=9.5)
 ax = fig.add_subplot(gs[1, :2])
-for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Logística", "logistica", COL["logit"], "-"), ("Después (U3)", "final", COL["u3"], "-")]:
+for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Persistencia calibrada", "pers_cal", COL["A"], "-."), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Logística", "logistica", COL["logit"], "-"), ("Después (U3)", "final", COL["u3"], "-")]:
     fpr, tpr, _ = roc_curve(oosF.y, oosF[c]); ax.plot(fpr, tpr, color=color, ls=ls, label=f"{nombre}: 2023-25 AUC {roc_auc_score(oosF.y, oosF[c]):.3f} · 2026 AUC {roc_auc_score(T26.y, T26[c]):.3f}")
 ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.set_xlabel("1 − especificidad"); ax.set_ylabel("Sensibilidad C"); ax.set_title("(e) Curvas ROC · origen móvil 2023-2025"); ax.legend(fontsize=7.8, loc="lower right")
 ax = fig.add_subplot(gs[1, 2:])
 anual = pd.concat([oosF.assign(particion=oosF.particion.astype(str)), T26.assign(particion="2026")])
-for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Después (U3)", "final", COL["u3"], "-")]:
+for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Persistencia calibrada", "pers_cal", COL["A"], "-."), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Después (U3)", "final", COL["u3"], "-")]:
     s_ = anual.groupby("particion").apply(lambda g: E.bce(g.y, g[c]))
     ax.plot(s_.index, s_.values, color=color, ls=ls, marker="o", mec=FONDO, mew=1.5, ms=7, label=nombre)
 ax.axvspan(2.6, 3.4, color=COL["test"], alpha=.08, lw=0); ax.text(3, ax.get_ylim()[0] + .005, "prueba única", ha="center", va="bottom", fontsize=8.5)
@@ -947,8 +981,8 @@ guardar(fig, "fig11_antes_despues"); plt.show()
 # =============================================================================
 # 10.1 Análisis de errores: 2023-2025 (origen móvil) + 2026 (prueba)
 # =============================================================================
-fuera = pd.concat([oosF[["departamento", "depto", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos", "pers", "antes", "final"]],
-                   T26[["departamento", "depto", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos", "pers", "antes", "final"]]], ignore_index=True)
+cols_f = ["departamento", "depto", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos", "pers", "pers_cal", "antes", "antes10", "final"]
+fuera = pd.concat([oosF[cols_f], T26[cols_f]], ignore_index=True)
 fuera["acierto antes"] = (fuera.antes >= UMBRAL) == (fuera.y == 1)
 fuera["acierto después"] = (fuera.final >= UMBRAL) == (fuera.y == 1)
 fuera["cerca del umbral"] = (fuera.s_C - .5).abs() < .1
@@ -966,8 +1000,26 @@ cruce = pd.crosstab(fuera["acierto antes"].map({True: "antes acierta", False: "a
                     fuera["acierto después"].map({True: "después acierta", False: "después falla"}))
 display(cruce)
 tr_f = fuera[fuera.transicion]
-print(f"Transiciones 2023-2026: {len(tr_f)} | acertadas por la persistencia: 0 | antes: {int(tr_f['acierto antes'].sum())} | después: {int(tr_f['acierto después'].sum())}")
-seg = fuera[fuera.depto.isin(["arauca", "casanare", "meta", "cesar", "valle del cauca", "bolivar", "choco"])].pivot_table(index="departamento", columns="anio", values="final").round(2)
+tr_ok = lambda c: int(((tr_f[c] >= UMBRAL) == (tr_f.y == 1)).sum())
+print(f"Transiciones 2023-2026: {len(tr_f)} | persistencia: {tr_ok('pers')} | persistencia calibrada: {tr_ok('pers_cal')} | "
+      f"antes (semilla 42): {tr_ok('antes')} | antes (ensamble {K_ENS}): {tr_ok('antes10')} | después: {tr_ok('final')}")
+# Regla de decisión por bandas (P >= 0,7 C consolidado; 0,3-0,7 transición; < 0,3 D consolidado) frente al perfil observado
+def banda(p_):
+    return np.where(np.asarray(p_) >= .7, "C consolidado", np.where(np.asarray(p_) >= .3, "Transición", "D consolidado"))
+filas_b = []
+for conj, df_ in [("2023-2025", fuera[fuera.anio <= 2025]), ("2026", fuera[fuera.anio == 2026])]:
+    for nombre, c in [("Después: MLP U3", "final"), ("Persistencia", "pers"), ("Persistencia calibrada", "pers_cal")]:
+        b_ = banda(df_[c]); cons = b_ != "Transición"
+        ok_ = ((b_ == "C consolidado") & (df_.perfil == "C")) | ((b_ == "D consolidado") & (df_.perfil == "D"))
+        filas_b.append({"Conjunto": conj, "Modelo": nombre, "Filas": len(df_), "En banda consolidada": int(cons.sum()),
+                        "Aciertos en banda consolidada": int(ok_.sum()),
+                        "C consolidado (C real / total)": f"{int(((b_ == 'C consolidado') & (df_.perfil == 'C')).sum())}/{int((b_ == 'C consolidado').sum())}",
+                        "D consolidado (D real / total)": f"{int(((b_ == 'D consolidado') & (df_.perfil == 'D')).sum())}/{int((b_ == 'D consolidado').sum())}",
+                        "En transición": int((~cons).sum())})
+BANDAS = pd.DataFrame(filas_b).set_index(["Conjunto", "Modelo"])
+print("Regla de decisión por bandas frente al perfil observado:")
+display(BANDAS)
+seg = fuera[fuera.depto.isin(["arauca", "casanare", "meta", "cesar", "valle del cauca", "bolivar", "choco", "huila"])].pivot_table(index="departamento", columns="anio", values="final").round(2)
 obs = fuera.pivot_table(index="departamento", columns="anio", values="perfil", aggfunc="first").reindex(seg.index)
 display(pd.concat({"P(C) después": seg, "Perfil observado": obs}, axis=1))
 
@@ -1038,7 +1090,7 @@ print("Interacción mostrada en (b)-(c): memoria m1 ×", V.ETIQ[fy_])
 # =============================================================================
 etapas = [("1 · Datos", "contrato + auditoría\npanel depto-año\netiqueta y control 2026", "dataset_modelado_u3.csv"),
           ("2 · Variables", f"{len(VARS_FINAL)} predictoras en t-1\nescalador solo con train", "configuracion.json"),
-          ("3 · Selección", "origen móvil 2023-2025\nvs. persistencia y U2", "metricas_seleccion.csv"),
+          ("3 · Evaluación", "origen móvil 2023-2025\nvs. persistencia y U2", "metricas_seleccion.csv"),
           ("4 · Calibración", f"método: {CALIBRACION}\numbral {UMBRAL}", "parámetros en el artefacto"),
           ("5 · Prueba", "2026, una sola vez\nmodelo hasta 2025", "metricas_prueba_2026.csv"),
           ("6 · Despliegue", f"ensamble {K_ENS} redes\n2021-2026 → 1 archivo", "perfil_amenaza_u3.keras"),
@@ -1098,7 +1150,8 @@ consist = pd.DataFrame({"Cuaderno (§9)": [T91.loc["Después: MLP U3 (ensamble)"
 consist["Diferencia"] = consist["Pipeline CLI"] - consist["Cuaderno (§9)"]
 tabla(consist, dec=4)
 PSI = pd.read_csv(C.DIR_SALIDA / "deriva_psi_2026.csv", index_col=0)
-print("Deriva de las predictoras de la proyección (información 2026) frente al entrenamiento 2021-2026:")
+print("Deriva de las predictoras de la proyección (información 2026, los 30 departamentos del entrenamiento) frente a las filas "
+      "de entrenamiento; 'p95 sin deriva' es el percentil 95 del PSI de una muestra del mismo tamaño sacada de la referencia:")
 tabla(PSI.rename(index=V.ETIQ), dec=3)
 display(Markdown((C.DIR_SALIDA / "TARJETA_MODELO.md").read_text(encoding="utf-8")))
 
@@ -1116,6 +1169,7 @@ P_m = np.array([np.asarray((lambda o: o[0] if isinstance(o, (list, tuple)) else 
 proy["DE entre redes"] = P_m.std(0)
 u2p = pd.read_csv(RAIZ / "referencias_u2" / "proyeccion_2027.csv")[["depto", "P(C) 2027", "Categoría 2027"]].rename(columns={"P(C) 2027": "P(C) U2", "Categoría 2027": "Categoría U2"})
 proy = proy.merge(u2p, on="depto", how="left")
+# Cercanía a la inercia (no es acierto): ¿la proyección 2027 contradice el perfil observado en 2026?
 proy["¿Coincide con el perfil 2026?"] = np.where(proy["perfil_info"].isna(), "–", np.where((proy["P(C) 2027"] >= .5) == (proy["perfil_info"] == "C"), "sí", "revisar"))
 cols_p = ["departamento", "perfil_info", "s_C_info", "P(C) 2027", "DE entre redes", "Categoría 2027", "Categoría U2", "¿Coincide con el perfil 2026?", "s_AB observada 2025-26", "Énfasis sugerido", "confiable_info"]
 display(proy[cols_p].rename(columns={"perfil_info": "Perfil 2026", "s_C_info": "s_C 2026", "confiable_info": "Datos suficientes"})
@@ -1126,7 +1180,22 @@ print("Categorías 2027 (U3):", CAT.to_dict(), "| U2:", proy["Categoría U2"].va
 display(pd.crosstab(proy["Categoría U2"], proy["Categoría 2027"], rownames=["U2"], colnames=["U3"]))
 REVISAR = proy.loc[proy["¿Coincide con el perfil 2026?"] == "revisar", "departamento"].tolist()
 ALERTA = proy.loc[proy["alerta_AB"].fillna(False), "departamento"].tolist()
-print(f"Discrepancias con el perfil observado en 2026: {len(REVISAR)} ({', '.join(REVISAR)}) | alerta A/B: {', '.join(ALERTA)}")
+print(f"Contradicen el perfil observado en 2026: {len(REVISAR)} ({', '.join(REVISAR)}) | alerta A/B: {', '.join(ALERTA)}")
+POCOS = proy.loc[~proy["confiable_info"].astype(bool), ["departamento", "Categoría 2027"]]
+print("Departamentos con menos de 10 eventos en 2026 (requieren revisión experta):", POCOS.set_index("departamento")["Categoría 2027"].to_dict())
+ab_, nac_ = P.alerta_ab(pext)
+print(f"Alerta A/B: proporción A+B 2025-2026 >= 2 × nacional ({nac_:.1%} → umbral {2 * nac_:.1%}) y >= 5 eventos A+B")
+
+# Con la información parcial de 2026, las "últimas 26 semanas" son las semanas 8-33, no el segundo semestre.
+# ¿Cuánto cambia d1 por medirlo en esa ventana? Se compara en 2020-2025, donde ambos están disponibles.
+b_full = D.bloques_trimestrales(acled); b_part = D.bloques_trimestrales(acled[acled.semana_anio <= N_SEM_2026])
+def d1_de(b):
+    h = b[b.bloque <= 1].groupby(["depto", "anio"])[["C", "eventos"]].sum()
+    return pd.Series(V.contraer(h.C, h.eventos), index=h.index)
+d1c = pd.concat([d1_de(b_full).rename("2.º semestre"), d1_de(b_part).rename(f"semanas {N_SEM_2026 - 25}-{N_SEM_2026}")], axis=1).dropna()
+d1c = d1c[d1c.index.get_level_values("anio") <= 2025]
+D1_CORR, D1_MAE = d1c.corr().iloc[0, 1], (d1c.iloc[:, 0] - d1c.iloc[:, 1]).abs().mean()
+print(f"d1 con la ventana de 2026 frente al 2.º semestre (2020-2025, {len(d1c)} celdas): correlación {D1_CORR:.2f}, error absoluto medio {D1_MAE:.3f}")
 
 
 # ======== Celda de código 35: 12.2 Mapa esquemático de la proyección 2027 (centroides) y transición U2 -> U3 ========
@@ -1169,6 +1238,8 @@ pd.DataFrame({"tiempo total del cuaderno (min)": [round((time.time() - T0_CUADER
 dec_tab = pd.DataFrame(DECISIONES); dec_tab.to_csv(C.DIR_SALIDA / "decisiones_intervenciones.csv", index=False)
 ESC.to_csv(C.DIR_SALIDA / "escalera_mejora.csv"); CTRL.to_csv(C.DIR_SALIDA / "controles_datos.csv"); REJ.to_csv(C.DIR_SALIDA / "rejilla_I6.csv", index=False)
 T91.to_csv(C.DIR_SALIDA / "antes_despues_origen_movil.csv"); T93.to_csv(C.DIR_SALIDA / "antes_despues_prueba_2026.csv"); esp_tab.to_csv(C.DIR_SALIDA / "validacion_espacial.csv")
+ET_TAB.to_csv(C.DIR_SALIDA / "validacion_espacio_temporal.csv"); BANDAS.to_csv(C.DIR_SALIDA / "bandas_decision.csv")
+pd.concat({"origen móvil 2023-2025": PAR_91, "prueba 2026": PAR_26, "espacio-temporal": PAR_ET}).to_csv(C.DIR_SALIDA / "comparaciones_pareadas.csv")
 archivos = sorted(p for p in C.DIR_SALIDA.rglob("*") if p.is_file())
 display(pd.DataFrame({"Archivo": [str(p.relative_to(C.DIR_SALIDA)) for p in archivos], "KB": [round(p.stat().st_size / 1024, 1) for p in archivos]}).style.hide(axis="index"))
 
@@ -1210,3 +1281,4 @@ with mpl.rc_context({"font.size": 7.5, "axes.titlesize": 8, "axes.labelsize": 7.
     ax.set_xlabel("P(C) 2027"); ax.set_title("Proyección 2027: U2 vs. U3"); ax.legend(loc="lower right"); fig.tight_layout(); guardar(fig, "R5_proyeccion", DIR_INF, 300); plt.close(fig)
 print("Figuras del informe:", sorted(p.name for p in DIR_INF.glob("*.png")))
 print(f"Figuras del cuaderno ({len(G.FIGURAS)}):", ", ".join(G.FIGURAS))
+

@@ -11,8 +11,8 @@ code(r"""
 # =============================================================================
 # 10.1 Análisis de errores: 2023-2025 (origen móvil) + 2026 (prueba)
 # =============================================================================
-fuera = pd.concat([oosF[["departamento", "depto", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos", "pers", "antes", "final"]],
-                   T26[["departamento", "depto", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos", "pers", "antes", "final"]]], ignore_index=True)
+cols_f = ["departamento", "depto", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos", "pers", "pers_cal", "antes", "antes10", "final"]
+fuera = pd.concat([oosF[cols_f], T26[cols_f]], ignore_index=True)
 fuera["acierto antes"] = (fuera.antes >= UMBRAL) == (fuera.y == 1)
 fuera["acierto después"] = (fuera.final >= UMBRAL) == (fuera.y == 1)
 fuera["cerca del umbral"] = (fuera.s_C - .5).abs() < .1
@@ -30,8 +30,26 @@ cruce = pd.crosstab(fuera["acierto antes"].map({True: "antes acierta", False: "a
                     fuera["acierto después"].map({True: "después acierta", False: "después falla"}))
 display(cruce)
 tr_f = fuera[fuera.transicion]
-print(f"Transiciones 2023-2026: {len(tr_f)} | acertadas por la persistencia: 0 | antes: {int(tr_f['acierto antes'].sum())} | después: {int(tr_f['acierto después'].sum())}")
-seg = fuera[fuera.depto.isin(["arauca", "casanare", "meta", "cesar", "valle del cauca", "bolivar", "choco"])].pivot_table(index="departamento", columns="anio", values="final").round(2)
+tr_ok = lambda c: int(((tr_f[c] >= UMBRAL) == (tr_f.y == 1)).sum())
+print(f"Transiciones 2023-2026: {len(tr_f)} | persistencia: {tr_ok('pers')} | persistencia calibrada: {tr_ok('pers_cal')} | "
+      f"antes (semilla 42): {tr_ok('antes')} | antes (ensamble {K_ENS}): {tr_ok('antes10')} | después: {tr_ok('final')}")
+# Regla de decisión por bandas (P >= 0,7 C consolidado; 0,3-0,7 transición; < 0,3 D consolidado) frente al perfil observado
+def banda(p_):
+    return np.where(np.asarray(p_) >= .7, "C consolidado", np.where(np.asarray(p_) >= .3, "Transición", "D consolidado"))
+filas_b = []
+for conj, df_ in [("2023-2025", fuera[fuera.anio <= 2025]), ("2026", fuera[fuera.anio == 2026])]:
+    for nombre, c in [("Después: MLP U3", "final"), ("Persistencia", "pers"), ("Persistencia calibrada", "pers_cal")]:
+        b_ = banda(df_[c]); cons = b_ != "Transición"
+        ok_ = ((b_ == "C consolidado") & (df_.perfil == "C")) | ((b_ == "D consolidado") & (df_.perfil == "D"))
+        filas_b.append({"Conjunto": conj, "Modelo": nombre, "Filas": len(df_), "En banda consolidada": int(cons.sum()),
+                        "Aciertos en banda consolidada": int(ok_.sum()),
+                        "C consolidado (C real / total)": f"{int(((b_ == 'C consolidado') & (df_.perfil == 'C')).sum())}/{int((b_ == 'C consolidado').sum())}",
+                        "D consolidado (D real / total)": f"{int(((b_ == 'D consolidado') & (df_.perfil == 'D')).sum())}/{int((b_ == 'D consolidado').sum())}",
+                        "En transición": int((~cons).sum())})
+BANDAS = pd.DataFrame(filas_b).set_index(["Conjunto", "Modelo"])
+print("Regla de decisión por bandas frente al perfil observado:")
+display(BANDAS)
+seg = fuera[fuera.depto.isin(["arauca", "casanare", "meta", "cesar", "valle del cauca", "bolivar", "choco", "huila"])].pivot_table(index="departamento", columns="anio", values="final").round(2)
 obs = fuera.pivot_table(index="departamento", columns="anio", values="perfil", aggfunc="first").reindex(seg.index)
 display(pd.concat({"P(C) después": seg, "Perfil observado": obs}, axis=1))
 
@@ -121,10 +139,12 @@ Proyecto_Unidad_3/
 │   ├── datos.py       contrato y auditoría, panel, bloques trimestrales, fuentes externas, UCDP, control 2026
 │   ├── variables.py   predictoras en t-1 (BASE, MEMORIA, DINAMICA, VECINDAD, ACTORES) y secuencias
 │   ├── modelo.py      redes Keras (MLP, multitarea, GRU, CNN, embedding), bucle GradientTape, calibración, artefacto
-│   ├── evaluacion.py  métricas, ECE, bootstrap por departamento, McNemar, origen móvil, espacial, PSI
+│   ├── evaluacion.py  métricas, ECE, bootstrap por departamento, McNemar, regla de retención, origen móvil, espacial,
+│   │                  espacio-temporal, PSI con piso de ruido
 │   ├── pipeline.py    orquestación de 8 etapas y línea de comandos
 │   └── graficos.py    estilo de figuras
-├── tests/test_pipeline.py        contrato de datos, fuga temporal, escalador, determinismo, reproducción U2
+├── tests/test_pipeline.py        10 pruebas: contrato (y su caso negativo), fuga temporal, escalador, artefacto,
+│                                 persistencia calibrada, partición espacio-temporal, regla de retención, determinismo, réplica U2
 ├── Proyecto_U3_Integrador.ipynb  este cuaderno
 └── salidas_u3/                   métricas, predicciones, figuras, modelos/, TARJETA_MODELO.md
 ```
@@ -136,7 +156,7 @@ code(r"""
 # =============================================================================
 etapas = [("1 · Datos", "contrato + auditoría\npanel depto-año\netiqueta y control 2026", "dataset_modelado_u3.csv"),
           ("2 · Variables", f"{len(VARS_FINAL)} predictoras en t-1\nescalador solo con train", "configuracion.json"),
-          ("3 · Selección", "origen móvil 2023-2025\nvs. persistencia y U2", "metricas_seleccion.csv"),
+          ("3 · Evaluación", "origen móvil 2023-2025\nvs. persistencia y U2", "metricas_seleccion.csv"),
           ("4 · Calibración", f"método: {CALIBRACION}\numbral {UMBRAL}", "parámetros en el artefacto"),
           ("5 · Prueba", "2026, una sola vez\nmodelo hasta 2025", "metricas_prueba_2026.csv"),
           ("6 · Despliegue", f"ensamble {K_ENS} redes\n2021-2026 → 1 archivo", "perfil_amenaza_u3.keras"),
@@ -196,7 +216,8 @@ consist = pd.DataFrame({"Cuaderno (§9)": [T91.loc["Después: MLP U3 (ensamble)"
 consist["Diferencia"] = consist["Pipeline CLI"] - consist["Cuaderno (§9)"]
 tabla(consist, dec=4)
 PSI = pd.read_csv(C.DIR_SALIDA / "deriva_psi_2026.csv", index_col=0)
-print("Deriva de las predictoras de la proyección (información 2026) frente al entrenamiento 2021-2026:")
+print("Deriva de las predictoras de la proyección (información 2026, los 30 departamentos del entrenamiento) frente a las filas "
+      "de entrenamiento; 'p95 sin deriva' es el percentil 95 del PSI de una muestra del mismo tamaño sacada de la referencia:")
 tabla(PSI.rename(index=V.ETIQ), dec=3)
 display(Markdown((C.DIR_SALIDA / "TARJETA_MODELO.md").read_text(encoding="utf-8")))
 """)
@@ -228,6 +249,7 @@ P_m = np.array([np.asarray((lambda o: o[0] if isinstance(o, (list, tuple)) else 
 proy["DE entre redes"] = P_m.std(0)
 u2p = pd.read_csv(RAIZ / "referencias_u2" / "proyeccion_2027.csv")[["depto", "P(C) 2027", "Categoría 2027"]].rename(columns={"P(C) 2027": "P(C) U2", "Categoría 2027": "Categoría U2"})
 proy = proy.merge(u2p, on="depto", how="left")
+# Cercanía a la inercia (no es acierto): ¿la proyección 2027 contradice el perfil observado en 2026?
 proy["¿Coincide con el perfil 2026?"] = np.where(proy["perfil_info"].isna(), "–", np.where((proy["P(C) 2027"] >= .5) == (proy["perfil_info"] == "C"), "sí", "revisar"))
 cols_p = ["departamento", "perfil_info", "s_C_info", "P(C) 2027", "DE entre redes", "Categoría 2027", "Categoría U2", "¿Coincide con el perfil 2026?", "s_AB observada 2025-26", "Énfasis sugerido", "confiable_info"]
 display(proy[cols_p].rename(columns={"perfil_info": "Perfil 2026", "s_C_info": "s_C 2026", "confiable_info": "Datos suficientes"})
@@ -238,7 +260,22 @@ print("Categorías 2027 (U3):", CAT.to_dict(), "| U2:", proy["Categoría U2"].va
 display(pd.crosstab(proy["Categoría U2"], proy["Categoría 2027"], rownames=["U2"], colnames=["U3"]))
 REVISAR = proy.loc[proy["¿Coincide con el perfil 2026?"] == "revisar", "departamento"].tolist()
 ALERTA = proy.loc[proy["alerta_AB"].fillna(False), "departamento"].tolist()
-print(f"Discrepancias con el perfil observado en 2026: {len(REVISAR)} ({', '.join(REVISAR)}) | alerta A/B: {', '.join(ALERTA)}")
+print(f"Contradicen el perfil observado en 2026: {len(REVISAR)} ({', '.join(REVISAR)}) | alerta A/B: {', '.join(ALERTA)}")
+POCOS = proy.loc[~proy["confiable_info"].astype(bool), ["departamento", "Categoría 2027"]]
+print("Departamentos con menos de 10 eventos en 2026 (requieren revisión experta):", POCOS.set_index("departamento")["Categoría 2027"].to_dict())
+ab_, nac_ = P.alerta_ab(pext)
+print(f"Alerta A/B: proporción A+B 2025-2026 >= 2 × nacional ({nac_:.1%} → umbral {2 * nac_:.1%}) y >= 5 eventos A+B")
+
+# Con la información parcial de 2026, las "últimas 26 semanas" son las semanas 8-33, no el segundo semestre.
+# ¿Cuánto cambia d1 por medirlo en esa ventana? Se compara en 2020-2025, donde ambos están disponibles.
+b_full = D.bloques_trimestrales(acled); b_part = D.bloques_trimestrales(acled[acled.semana_anio <= N_SEM_2026])
+def d1_de(b):
+    h = b[b.bloque <= 1].groupby(["depto", "anio"])[["C", "eventos"]].sum()
+    return pd.Series(V.contraer(h.C, h.eventos), index=h.index)
+d1c = pd.concat([d1_de(b_full).rename("2.º semestre"), d1_de(b_part).rename(f"semanas {N_SEM_2026 - 25}-{N_SEM_2026}")], axis=1).dropna()
+d1c = d1c[d1c.index.get_level_values("anio") <= 2025]
+D1_CORR, D1_MAE = d1c.corr().iloc[0, 1], (d1c.iloc[:, 0] - d1c.iloc[:, 1]).abs().mean()
+print(f"d1 con la ventana de 2026 frente al 2.º semestre (2020-2025, {len(d1c)} celdas): correlación {D1_CORR:.2f}, error absoluto medio {D1_MAE:.3f}")
 """)
 
 code(r"""
@@ -309,6 +346,8 @@ pd.DataFrame({"tiempo total del cuaderno (min)": [round((time.time() - T0_CUADER
 dec_tab = pd.DataFrame(DECISIONES); dec_tab.to_csv(C.DIR_SALIDA / "decisiones_intervenciones.csv", index=False)
 ESC.to_csv(C.DIR_SALIDA / "escalera_mejora.csv"); CTRL.to_csv(C.DIR_SALIDA / "controles_datos.csv"); REJ.to_csv(C.DIR_SALIDA / "rejilla_I6.csv", index=False)
 T91.to_csv(C.DIR_SALIDA / "antes_despues_origen_movil.csv"); T93.to_csv(C.DIR_SALIDA / "antes_despues_prueba_2026.csv"); esp_tab.to_csv(C.DIR_SALIDA / "validacion_espacial.csv")
+ET_TAB.to_csv(C.DIR_SALIDA / "validacion_espacio_temporal.csv"); BANDAS.to_csv(C.DIR_SALIDA / "bandas_decision.csv")
+pd.concat({"origen móvil 2023-2025": PAR_91, "prueba 2026": PAR_26, "espacio-temporal": PAR_ET}).to_csv(C.DIR_SALIDA / "comparaciones_pareadas.csv")
 archivos = sorted(p for p in C.DIR_SALIDA.rglob("*") if p.is_file())
 display(pd.DataFrame({"Archivo": [str(p.relative_to(C.DIR_SALIDA)) for p in archivos], "KB": [round(p.stat().st_size / 1024, 1) for p in archivos]}).style.hide(axis="index"))
 """)

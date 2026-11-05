@@ -20,6 +20,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
 from matplotlib.lines import Line2D
+from matplotlib.ticker import ScalarFormatter, FuncFormatter
 from sklearn.metrics import roc_curve, roc_auc_score, confusion_matrix
 
 from perfil_amenaza import config as C, datos as D, variables as V, modelo as M, evaluacion as E, pipeline as P, graficos as G
@@ -33,7 +34,16 @@ mpl.rcParams.update({"font.size": 7.2, "axes.titlesize": 7.6, "axes.labelsize": 
 COL, TINTA, TINTA2, TENUE, GRID, EJE, FONDO = G.COL, G.TINTA, G.TINTA2, G.TENUE, G.GRID, G.EJE, G.FONDO
 
 
+def _coma(v, _pos=None):
+    return f"{v:g}".replace("-", "−").replace(".", ",")
+
+
 def guardar(fig, nombre):
+    # Coma decimal en los ejes numéricos (los ejes con rótulos fijos no se tocan)
+    for ax in fig.axes:
+        for eje in (ax.xaxis, ax.yaxis):
+            if isinstance(eje.get_major_formatter(), ScalarFormatter):
+                eje.set_major_formatter(FuncFormatter(_coma))
     fig.savefig(OUT / f"{nombre}.png", dpi=300, bbox_inches="tight")
     plt.close(fig)
     print("  ", nombre)
@@ -61,8 +71,8 @@ ax = axes[0]
 for clase, color in [(0, COL["D"]), (1, COL["C"])]:
     s = datos[datos.y == clase]
     ax.scatter(s.m1_sC_t1, s.d1_sC_H2, s=9, color=color, edgecolor=FONDO, lw=.3, label=f"perfil {'C' if clase else 'D'} en t")
-tr = datos[datos.transicion]
-ax.scatter(tr.m1_sC_t1, tr.d1_sC_H2, s=34, facecolor="none", edgecolor=TINTA, lw=.7, label="transición t−1 → t")
+tr = datos[datos.transicion & (datos.anio <= 2025)]          # sin la prueba 2026
+ax.scatter(tr.m1_sC_t1, tr.d1_sC_H2, s=34, facecolor="none", edgecolor=TINTA, lw=.7, label="transición t−1 → t (2021–2025)")
 ax.plot([0, 1], [0, 1], color=EJE, lw=.8); ax.axhline(.5, color=TENUE, lw=.6, ls="--"); ax.axvline(.5, color=TENUE, lw=.6, ls="--")
 ax.set_xlabel("$m_1$: proporción C de todo t−1"); ax.set_ylabel("$d_1$: proporción C 2.º semestre t−1")
 ax.set_title("(a) Memoria anual vs. semestre reciente"); ax.legend(loc="upper left", handletextpad=.3)
@@ -114,7 +124,7 @@ for ax, (nombre, spec, color) in zip(axes, [("Modelo base U2", BASE, COL["mlp"])
     ax.axvline(ep560, color=TINTA, lw=.8, ls="--")
     ax.text(ep560 + 2, .64, "560 pasos", fontsize=6)
     ax.set_title(f"({'ab'[spec is FINAL]}) {nombre}: BCE validación = " + f"{val.mean(0)[ep560 - 1]:.3f}".replace(".", ","))
-    ax.set_xlabel("Época"); ax.set_ylim(.05, .7); ax.legend(loc="lower left")
+    ax.set_xlabel("Época (560 pasos = 70 épocas)"); ax.set_ylim(.05, .7); ax.legend(loc="lower left")
 axes[0].set_ylabel("BCE")
 fig.tight_layout(); guardar(fig, "R03_curvas")
 
@@ -135,7 +145,7 @@ for xi, v in zip(x, esc["LL media"]):
 pers = E.bce(oos.y, oos.Persistencia)
 ax.axhline(pers, color=COL["pers"], ls="--", lw=.9); ax.text(len(esc) - .45, pers + .002, "persistencia", ha="right", va="bottom", fontsize=6)
 ax.set_xticks(x, [s.replace("+ ", "+\n") for s in esc.index]); ax.set_ylim(.25, .41); ax.set_ylabel("Log-loss 2023-2025")
-ax.set_title("(a) Escalera de mejora (media ± DE entre 5 semillas)")
+ax.set_title("(a) Escalera de mejora (red individual: media ± DE de 5 semillas)")
 ax = axes[1]; x = np.arange(3)
 vals_in = [m_in.media, u_in.media, r24.loc[DEF]]; vals_25 = [r25.loc[tuple(m_in[K])], r25.loc[tuple(u_in[K])], r25.loc[DEF]]
 ax.bar(x - .18, vals_in, width=.34, color=COL["D"], label="2023-24 (donde se elige)"); ax.bar(x + .18, vals_25, width=.34, color=COL["val"], label="2025 (fuera)")
@@ -160,10 +170,10 @@ fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.4), gridspec_kw={"width_ratios": 
 ax = axes[0]
 for nombre, H, color in [("Referencia", curva_base(datos, FINAL), COL["u3"]), ("Sin estandarización", curva_base(datos, FINAL, False), COL["A"]),
                          ("Sin logaritmos", curva_base(d_nolog, FINAL), COL["logit"])]:
-    ax.plot(H["epoca"], np.clip(H["bce_tr"], 0, 1.2), color=color, label=f"{nombre} (train)")
+    ax.plot(H["epoca"], np.clip(H["bce_tr"], 0, 1.2), color=color, label=nombre)
     ax.plot(H["epoca"], np.clip(H["bce_va"], 0, 1.2), color=color, ls=":", lw=1)
 ax.set_ylim(0, 1.2); ax.set_xlabel("Época"); ax.set_ylabel("BCE (recortada en 1,2)")
-ax.set_title("(a) Convergencia (— train · ··· val. 2025)"); ax.legend(loc="center right")
+ax.set_title("(a) Entrenamiento (—) y validación 2025 (···), semilla 1"); ax.legend(loc="center right")
 ax = axes[1]
 o = ctrl["ΔLog-loss"].sort_values().index
 v = ctrl.loc[o, "ΔLog-loss"].clip(upper=.6)
@@ -179,16 +189,18 @@ fig.tight_layout(); guardar(fig, "R05_controles")
 # ---------------------------------------------------------------- R06 antes vs. después
 fig, axes = plt.subplots(1, 3, figsize=(6.6, 2.3), gridspec_kw={"width_ratios": [1.1, 1.1, .8]})
 ax = axes[0]
-for nombre, c, color, ls in [("Persistencia", "Persistencia", COL["pers"], "--"), ("Antes (U2)", "MLP base U2", COL["mlp"], ":"), ("Después (U3)", "MLP U3", COL["u3"], "-")]:
+for nombre, c, color, ls in [("Persistencia", "Persistencia", COL["pers"], "--"), ("Persist. calibrada", "Persistencia calibrada", COL["A"], "-."),
+                             ("Antes (U2)", "MLP base U2", COL["mlp"], ":"), ("Después (U3)", "MLP U3", COL["u3"], "-")]:
     f, t, _ = roc_curve(oos.y, oos[c]); ax.plot(f, t, color=color, ls=ls, label=f"{nombre} {roc_auc_score(oos.y, oos[c]):.3f}".replace(".", ","))
 ax.plot([0, 1], [0, 1], color=EJE, lw=.7); ax.set_xlabel("1 − especificidad"); ax.set_ylabel("Sensibilidad C")
 ax.set_title("(a) ROC 2023-2025 (AUC)"); ax.legend(loc="lower right")
 ax = axes[1]
 an = pd.concat([oos.assign(p_=oos.particion.astype(str)), t26.assign(p_="2026")])
-for nombre, c, color, ls in [("Persistencia", "Persistencia", COL["pers"], "--"), ("Antes (U2)", "MLP base U2", COL["mlp"], ":"), ("Después (U3)", "MLP U3", COL["u3"], "-")]:
+for nombre, c, color, ls in [("Persistencia", "Persistencia", COL["pers"], "--"), ("Persist. calibrada", "Persistencia calibrada", COL["A"], "-."),
+                             ("Antes (U2)", "MLP base U2", COL["mlp"], ":"), ("Después (U3)", "MLP U3", COL["u3"], "-")]:
     s = an.groupby("p_").apply(lambda g: E.bce(g.y, g[c])); ax.plot(s.index, s.values, color=color, ls=ls, marker="o", ms=3, label=nombre)
 ax.axvspan(2.6, 3.4, color=COL["test"], alpha=.1, lw=0); ax.text(3, .215, "prueba", ha="center", fontsize=6)
-ax.set_ylabel("Log-loss"); ax.set_ylim(.2, .56); ax.set_title("(b) Log-loss por año"); ax.legend(loc="upper left")
+ax.set_ylabel("Log-loss"); ax.set_ylim(.2, .56); ax.set_title("(b) Log-loss por año"); ax.legend(loc="upper left", fontsize=5.6)
 ax = axes[2]
 cm = confusion_matrix(t26.y.astype(int), (t26["MLP U3"] >= .5).astype(int), labels=[0, 1])
 ax.imshow(cm, cmap=G.CMAP_P, vmin=0, vmax=cm.max() * 1.3); ax.grid(False)
@@ -214,9 +226,11 @@ fu = pd.concat([oos, t26.assign(particion="2026")])
 for anio, color in zip(["2023", "2024", "2025", "2026"], [COL["mlp"], COL["logit"], COL["val"], COL["test"]]):
     s = fu[fu.particion.astype(str) == anio]; ax.scatter(s.s_C, s["MLP U3"], s=10, color=color, edgecolor=FONDO, lw=.3, label=anio, zorder=3)
 err = fu[(fu["MLP U3"] >= .5) != (fu.y == 1)]
+CORTO = {"Valle del Cauca": "Valle", "Norte de Santander": "N. Santander"}
 for _, r in err.iterrows():
-    if r.transicion or r.departamento in ("Casanare",):
-        ax.annotate(f"{r.departamento[:10]} {r.anio}", (r.s_C, r["MLP U3"]), xytext=(2, 1.5), textcoords="offset points", fontsize=4.6, color=TINTA2)
+    if r.transicion or r.departamento in ("Casanare", "Huila"):
+        ax.annotate(f"{CORTO.get(r.departamento, r.departamento)} {r.anio}", (r.s_C, r["MLP U3"]), xytext=(2, 1.5),
+                    textcoords="offset points", fontsize=4.6, color=TINTA2)
 ax.axvspan(.4, .6, color=GRID, alpha=.6, lw=0, zorder=0); ax.axvline(.5, color=EJE, lw=.7); ax.axhline(.5, color=EJE, lw=.7)
 ax.set_xlabel("Proporción observada de eventos C en t ($s^C$)"); ax.set_ylabel("P(C) del modelo final")
 ax.set_title("(a) Errores 2023-2026 (banda: ±10 pp del umbral)"); ax.legend(loc="upper left", ncol=2, columnspacing=.6)
@@ -229,14 +243,14 @@ ax.set_title("(b) Dependencia parcial de P(C): memoria × letalidad")
 cb = fig.colorbar(cs, ax=ax, fraction=.05, pad=.02); cb.outline.set_visible(False); cb.ax.tick_params(labelsize=5.5)
 fig.tight_layout(); guardar(fig, "R07_errores_pdp")
 
-# ---------------------------------------------------------------- R08 pipeline
-etapas = [("1 · Datos", "contrato, auditoría,\npanel y etiqueta"), ("2 · Variables", "9 predictoras en t−1\nescalador solo train"),
-          ("3 · Selección", "origen móvil 2023-25\nvs. persistencia"), ("4 · Calibración", "solo si mejora\nsin mirar el futuro"),
+# ---------------------------------------------------------------- R08 pipeline + lazo de entrenamiento
+etapas = [("1 · Datos", "contrato, auditoría,\npanel y etiqueta"), ("2 · Variables", "9 predictoras en t−1,\nescalador por pliegue"),
+          ("3 · Evaluación", "origen móvil 2023-25\nvs. persistencias y U2"), ("4 · Calibración", "solo si mejora\nsin mirar el futuro"),
           ("5 · Prueba", "2026, una sola vez"), ("6 · Despliegue", "10 redes 2021-2026\n→ un archivo .keras"),
           ("7 · Proyección", "P(C) 2027, bandas,\nalerta A/B, PSI"), ("8 · Tarjeta", "uso, límites,\nmétricas, deriva")]
 artef = ["dataset_modelado_u3.csv", "configuracion.json", "metricas_seleccion.csv", "(en el artefacto)", "metricas_prueba_2026.csv",
          "perfil_amenaza_u3.keras", "proyeccion_2027_u3.csv", "TARJETA_MODELO.md"]
-fig, ax = plt.subplots(figsize=(6.6, 2.15)); ax.axis("off"); ax.grid(False)
+fig, ax = plt.subplots(figsize=(6.6, 3.0)); ax.axis("off"); ax.grid(False)
 for i, ((t, d_), a) in enumerate(zip(etapas, artef)):
     fila, col = divmod(i, 4); x, y = col * 1.65, (1 - fila) * 1.15
     verde = i in (2, 4)
@@ -250,9 +264,22 @@ for i, ((t, d_), a) in enumerate(zip(etapas, artef)):
 xr = 3 * 1.65 + 1.49
 ax.plot([3 * 1.65 + 1.45, xr, xr, -.04, -.04], [1.78, 1.78, 1.07, 1.07, .63], color=TINTA, lw=.8)
 ax.annotate("", xy=(0, .63), xytext=(-.04, .63), arrowprops=dict(arrowstyle="->", color=TINTA, lw=.8))
-ax.text(3.3, -.05, "python -m perfil_amenaza.pipeline todo  ·  python -m perfil_amenaza.pipeline predecir  ·  python -m pytest -q tests (5 pruebas)",
+# Lazo de entrenamiento de cada red (etapas 3, 5 y 6): error -> gradiente -> actualización de pesos
+ax.text(3.3, -.12, "Entrenamiento de cada red en las etapas 3, 5 y 6 (bucle tf.GradientTape)", ha="center", fontsize=5.9, fontweight="bold", color=TINTA)
+lazo = ["x(t−1)\nestandarizado", "red 9 → 16 → 1\npropagación", "p̂ = P(C)", "pérdida: BCE\nponderada + L2", "∂L/∂θ por\nretropropagación", "Adam actualiza\npesos y sesgos"]
+yl = -.72
+for j, txt in enumerate(lazo):
+    xj = .05 + j * 1.1
+    ax.add_patch(FancyBboxPatch((xj, yl), .95, .42, boxstyle="round,pad=0.02,rounding_size=0.05", facecolor="#fdf6e6", edgecolor=COL["C"], lw=.8))
+    ax.text(xj + .475, yl + .21, txt, ha="center", va="center", fontsize=4.9, color=TINTA)
+    if j < len(lazo) - 1:
+        ax.annotate("", xy=(xj + 1.09, yl + .21), xytext=(xj + .96, yl + .21), arrowprops=dict(arrowstyle="->", color=TINTA, lw=.7))
+ax.annotate("", xy=(.05 + 1 * 1.1 + .475, yl - .01), xytext=(.05 + 5 * 1.1 + .475, yl - .01),
+            arrowprops=dict(arrowstyle="->", color=COL["C"], lw=.9, connectionstyle="arc3,rad=-0.18"))
+ax.text(.05 + 3 * 1.1, yl - .2, "se repite 560 pasos (lotes de 16 filas)", ha="center", va="center", fontsize=5.1, color=TINTA2)
+ax.text(3.3, -1.42, "python -m perfil_amenaza.pipeline todo  ·  python -m perfil_amenaza.pipeline predecir  ·  python -m pytest -q tests (10 pruebas)",
         ha="center", fontsize=5.2, family="monospace")
-ax.set_xlim(-.1, 6.65); ax.set_ylim(-.15, 2.15)
+ax.set_xlim(-.1, 6.65); ax.set_ylim(-1.55, 2.15)
 guardar(fig, "R08_pipeline")
 
 # ---------------------------------------------------------------- R09 proyección 2027
@@ -261,11 +288,17 @@ tam = 8 + 3.2 * np.sqrt((proy["eventos_info"] / proy["semanas"] * 52).clip(lower
 sc = ax.scatter(proy.lon, proy.lat, s=tam, c=proy["P(C) 2027"], cmap=G.CMAP_P, vmin=0, vmax=1, edgecolor=FONDO, lw=.8, zorder=3)
 al = proy[proy["alerta_AB"].fillna(False)]
 ax.scatter(al.lon, al.lat, s=tam[al.index] + 70, facecolor="none", edgecolor="#d03b3b", lw=1.1, zorder=2)
-izq = {"valle del cauca", "risaralda", "quindio", "sucre", "cordoba", "choco", "caldas", "guainia", "amazonas"}
+izq = {"valle del cauca", "sucre", "cordoba", "choco", "guainia", "amazonas"}
+SIN_ROTULO = {"bogota", "boyaca", "caldas", "cundinamarca", "quindio", "risaralda", "santander"}   # zona andina, P < 0,1
+DESPL = {"valle del cauca": (-5, -5), "arauca": (6, -1.5), "tolima": (5, -2.5)}
 for _, r in proy.iterrows():
+    if r.depto in SIN_ROTULO:
+        continue
     i_ = r.depto in izq
-    ax.annotate(f"{r.departamento} {r['P(C) 2027']:.2f}".replace(".", ","), (r.lon, r.lat), xytext=(-4 if i_ else 4, -1.5), textcoords="offset points",
-                ha="right" if i_ else "left", fontsize=4.3, color=TINTA if r.confiable_info else TENUE)
+    dx, dy = DESPL.get(r.depto, (-4 if i_ else 4, -1.5))
+    ax.annotate(f"{r.departamento} " + f"{r['P(C) 2027']:.2f}".replace(".", ","), (r.lon, r.lat), xytext=(dx, dy), textcoords="offset points",
+                ha="right" if dx < 0 else "left", fontsize=4.3, color=TINTA if r.confiable_info else TENUE)
+ax.text(-75.0, 5.0, "zona andina\nP < 0,1", ha="center", va="center", fontsize=3.9, color=TENUE, style="italic")
 cb = fig.colorbar(sc, ax=ax, fraction=.04, pad=.02); cb.set_label("P(perfil C) 2027", fontsize=6); cb.outline.set_visible(False); cb.ax.tick_params(labelsize=5.5)
 ax.set_xlabel("Longitud"); ax.set_ylabel("Latitud"); ax.set_aspect("equal"); ax.tick_params(labelsize=5.5); ax.set_xlim(-82.5, -66.3)
 ax.legend(handles=[Line2D([], [], marker="o", ls="", mfc="none", mec="#d03b3b", ms=6, label="alerta A/B"),

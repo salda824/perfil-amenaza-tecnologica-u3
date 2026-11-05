@@ -159,12 +159,8 @@ code(r"""
 # 6.5 I5 objetivo blando (con y sin ponderación por eventos), crudo y calibrado
 # =============================================================================
 def calibrar_adelante(oos, p, metodo="temperatura"):
-    # Calibración con encadenamiento hacia adelante: el pliegue v se calibra con las predicciones de los pliegues < v.
-    q = np.array(p, float).copy()
-    for v in sorted(oos["particion"].unique())[1:]:
-        m, prev = (oos["particion"] == v).values, (oos["particion"] < v).values
-        q[m] = M.Calibrador(metodo).ajustar(p[prev], oos["y"].values[prev]).aplicar(p[m])
-    return q
+    # Calibración con encadenamiento hacia adelante (modelo.calibrar_adelante): el pliegue v se calibra con los pliegues < v.
+    return M.calibrar_adelante(oos["particion"].values, p, oos["y"].values, metodo)
 
 def registrar_calibrado(clave, metodo="temperatura"):
     r = RES[clave]; oos = r["oos"]
@@ -278,8 +274,8 @@ emb = next(x for x in d7 if x["Intervención"] == "Embedding de departamento")
 TR_EMB = RES["Embedding de departamento"]["por_semilla"]["Transiciones acertadas"].mean()
 TR_REF = RES[REF_VARS]["por_semilla"]["Transiciones acertadas"].mean()
 if emb["Decisión"] == "se retiene" and TR_EMB < TR_REF:
-    emb["Decisión"] = (f"cumple la regla, no se adopta: acierta {TR_EMB:.1f} de {int(M_PERS['Transiciones'])} transiciones "
-                       f"(referencia {TR_REF:.1f}) y no transfiere a territorios nuevos")
+    emb["Decisión"] = (f"cumple la regla 5, no se adopta por la regla 8: acierta {TR_EMB:.1f} de {int(M_PERS['Transiciones'])} "
+                       f"transiciones (referencia {TR_REF:.1f}) y en departamentos nuevos se reduce al MLP sin embedding")
 DECISIONES += d7
 evaluar(P.Especificacion("esp: embedding", VARS_FINAL, comparativos["Embedding de departamento"]), particiones="espacial", clave="esp: embedding")
 tab7 = resumen([REF_VARS, *comparativos, "Logística (mismas variables)"])

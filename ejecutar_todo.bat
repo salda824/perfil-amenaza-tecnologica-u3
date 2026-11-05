@@ -11,7 +11,8 @@ set TF_CPP_MIN_LOG_LEVEL=3
 
 echo [1/6] Entorno virtual (.venv)
 if not exist ".venv\Scripts\python.exe" (
-    py -3 -m venv .venv 2>nul || python -m venv .venv
+    REM TensorFlow 2.21 requiere Python 3.11 a 3.13: se intenta 3.13, luego 3.12 y 3.11
+    py -3.13 -m venv .venv 2>nul || py -3.12 -m venv .venv 2>nul || py -3.11 -m venv .venv 2>nul || python -m venv .venv
 )
 call ".venv\Scripts\activate.bat" || goto :error
 
@@ -29,14 +30,14 @@ if not "%~1"=="" (
 echo [4/6] Pruebas automaticas
 python -m pytest -q tests || goto :error
 
-echo [5/6] Cuaderno completo (unos 15-20 minutos)
-jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=3600 Proyecto_U3_Integrador.ipynb || goto :error
+echo [5/6] Cuaderno completo (unos 20 minutos). Se guarda en una copia para no sobrescribir el cuaderno entregado
+jupyter nbconvert --to notebook --execute --output Proyecto_U3_Integrador_ejecutado.ipynb --ExecutePreprocessor.timeout=3600 Proyecto_U3_Integrador.ipynb || goto :error
 
 echo [6/6] Proyeccion 2027 con el artefacto guardado
 python -m perfil_amenaza.pipeline predecir --anio 2026 || goto :error
 
 echo.
-echo Listo. Resultados en salidas_u3\ y cuaderno ejecutado en Proyecto_U3_Integrador.ipynb
+echo Listo. Resultados en salidas_u3\ y cuaderno ejecutado en Proyecto_U3_Integrador_ejecutado.ipynb
 exit /b 0
 
 :error

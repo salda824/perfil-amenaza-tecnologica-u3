@@ -17,16 +17,24 @@ al año (Amazonía y Orinoquía con pocos registros) sin revisión experta.
 | Brier | 0.095 | 0.121 |
 | MCC | 0.691 | 0.672 |
 | ECE | 0.124 | 0.074 |
+| Exactitud | 0.839 | 0.828 |
 
-| Rival (persistencia) | Origen móvil 2023-2025 | Prueba 2026 |
+| Rivales | Origen móvil 2023-2025 | Prueba 2026 |
 |---|---|---|
 | Persistencia · ROC-AUC | 0.973 | 0.948 |
 | Persistencia · Log-loss | 0.363 | 0.429 |
 | Persistencia · Brier | 0.106 | 0.131 |
+| Persistencia calibrada · ROC-AUC | 0.966 | 0.948 |
+| Persistencia calibrada · Log-loss | 0.328 | 0.351 |
+| Persistencia calibrada · Brier | 0.099 | 0.105 |
 
-**Limitaciones.** 30 unidades espaciales; etiqueta 2026 con 33 semanas; x3 (actores) solo si hay UCDP; x6 es un
-proxy departamental; la prevalencia de C cambia entre años (32 % a 62 %), por lo que la calibración debe
-re-estimarse cada año.
+La persistencia calibrada (logística sobre logit(m1) entrenada con años anteriores) se agregó como rival tras la
+revisión; no cambió el modelo adoptado. Frente a ella, la ventaja del modelo no está demostrada a escala departamental.
 
-**Deriva.** Variables con PSI > 0,25 en 2026 frente a 2021-2026: x2b_letalidad, m1_sC_t1.
-**Mantenimiento.** Reentrenar cada año con la etiqueta cerrada, recalcular la calibración y revisar el PSI.
+**Limitaciones.** 30 unidades espaciales; etiqueta 2026 con 33 semanas; x3 (actores, UCDP) evaluada y no retenida;
+x6 es un proxy departamental; la prevalencia de C cambia entre años (32 % a 62 %); con la información parcial de
+2026, d1 resume las semanas 8 a 33 y no el segundo semestre.
+
+**Deriva.** PSI de la información 2026 frente al entrenamiento (mismos 30 departamentos): variables con PSI > 0,25: x2b_letalidad; por encima del percentil 95 del ruido de muestreo: x2b_letalidad.
+**Mantenimiento.** Reentrenar cada año con la etiqueta cerrada, revisar el PSI con su piso de ruido y reevaluar la
+calibración con encadenamiento hacia adelante (hoy no se calibra porque no mejora sin mirar el futuro).

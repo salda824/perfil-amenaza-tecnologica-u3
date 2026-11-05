@@ -3,7 +3,8 @@
 > **Para una IA o una persona que llega sin contexto:** este documento resume TODO el proyecto (Unidades 1, 2 y 3):
 > qué problema resuelve, qué datos usa, qué se decidió en cada etapa y por qué, qué resultados hay, dónde está cada
 > archivo y qué falta. Léelo completo antes de tocar código o documentos. El grafo de conocimiento está en
-> `graphify-out/` (abre `graph.html` o lee `GRAPH_REPORT.md`). Última actualización: 5 de noviembre de 2026.
+> `graphify-out/` (abre `graph.html` o lee `GRAPH_REPORT.md`). Última actualización: 5 de noviembre de 2026 (tras la
+> revisión de `revision/REVISION_U3.md`: persistencia calibrada, validación espacio-temporal y antes justo).
 
 ---
 
@@ -21,6 +22,7 @@
 | Lo que se entregó en la U1 y la U2 | `docs/entregas/U1/` y `docs/entregas/U2/` (PDF entregados, cuadernos y su texto) |
 | Las cifras finales en CSV | `salidas_u3/` |
 | Qué falta por hacer | Sección 11 |
+| La revisión estricta del informe y las correcciones aplicadas | `revision/REVISION_U3.md` |
 
 **Idioma.** Todo el proyecto está en español (código, comentarios, documentos). Mantenerlo así. Los números usan coma
 decimal en los documentos ("0,304") y punto en el código.
@@ -139,8 +141,11 @@ máximo 12 páginas con código en repositorio; (2) video MP4 de 8–10 minutos.
    → 87 predicciones fuera de muestra. Escalador ajustado solo con el entrenamiento de cada pliegue.
 2. **2026 = prueba final, una sola vez**, con todo congelado en `configuracion.json`. (Se declara que la U2 ya había mirado 2026.)
 3. **Rival = persistencia** (p̂ = s_C(t−1); AUC 0,973, log-loss 0,363 en 2023–2025; acierta 0 transiciones por construcción).
+   Tras la revisión se agregó la **persistencia calibrada** (logística de 2 parámetros sobre logit(m1), entrenada solo con
+   años anteriores; `pipeline.persistencia_calibrada`). Se agregó después de elegir el modelo y no lo cambió.
 4. **Métrica de decisión: log-loss**; apoyo: AUC, Brier, ECE, MCC, aciertos en transiciones.
-5. **Regla de retención:** misma 5 semillas que la referencia; se retiene si ΔLL medio + 1 EE(ΔLL pareado) < 0 y ΔAUC > −0,01.
+5. **Regla de retención:** mismas 5 semillas que la referencia; se retiene si ΔLL medio + 1 EE(ΔLL pareado) < 0 y ΔAUC > −0,01
+   (`evaluacion.regla_retencion`; el EE es entre semillas). En I4 (hipótesis espacial) se aplica a la validación espacial.
 6. **Presupuesto fijo de 560 pasos** (D10), salvo cuando el presupuesto es lo estudiado.
 7. **Los controles de datos verifican, no seleccionan** (no cambian el modelo dentro de la iteración).
 8. **Objetivo del proyecto sobre la métrica:** una variante que gana solo por parecerse a la persistencia (menos
@@ -220,14 +225,17 @@ Magdalena), 11 D. Alerta A/B: **Guaviare (14,4 %) y Cauca (13,4 %)**. Discrepanc
 ## 7. Cómo ejecutar
 
 ```bash
-pip install -r requirements.txt                                  # Python 3.11–3.13; TF 2.21.0, Keras 3.15.1
-python -m pytest -q tests                                        # 5 pruebas (contrato, fuga, escalador, determinismo, réplica U2)
-PYTHONPATH=src python -m perfil_amenaza.pipeline todo            # 8 etapas, ~30 s; escribe salidas_u3/
+pip install -r requirements.txt                                  # Python 3.11–3.13; versiones fijadas (TF 2.21.0, Keras 3.15.1)
+python -m pytest -q tests                                        # 10 pruebas (contrato y caso negativo, fuga, escalador, artefacto,
+                                                                 #   persistencia calibrada, espacio-temporal, regla de retención, determinismo, réplica U2)
+PYTHONPATH=src python -m perfil_amenaza.pipeline todo            # 8 etapas, < 1 min; escribe salidas_u3/
 PYTHONPATH=src python -m perfil_amenaza.pipeline predecir --anio 2026
-jupyter nbconvert --to notebook --execute --inplace Proyecto_U3_Integrador.ipynb   # ~15 min en CPU
+jupyter nbconvert --to notebook --execute --inplace Proyecto_U3_Integrador.ipynb   # ~20 min en CPU
+python herramientas/cuaderno/exportar_texto.py                                       # docs/u3_texto/ desde el cuaderno ejecutado
 python informe/generar_figuras.py && python informe/construir_informe.py           # informe (requiere LibreOffice para el PDF)
 ```
-Windows: `ejecutar_todo.bat "C:\ruta\a\ged261-csv.zip"` hace todo (entorno, dependencias, UCDP, pruebas, cuaderno, proyección).
+Windows: `ejecutar_todo.bat "C:\ruta\a\ged261-csv.zip"` hace todo (entorno con Python 3.13/3.12/3.11, dependencias, UCDP, pruebas,
+cuaderno en una copia `Proyecto_U3_Integrador_ejecutado.ipynb`, proyección).
 Determinismo: `TF_ENABLE_ONEDNN_OPTS=0` + `enable_op_determinism()` + semillas fijas → dos ejecuciones dan cifras idénticas.
 
 ---
@@ -247,12 +255,15 @@ src/perfil_amenaza/
   datos.py       cargar_acled (contrato), auditar, construir_panel, bloques_trimestrales, fuentes_externas, cargar_ucdp, control_etiqueta_parcial
   variables.py   construir_dataset (predictoras en t−1: BASE, MEMORIA, DINAMICA, VECINDAD, ACTORES; secuencias), contraer, filas_proyeccion
   modelo.py      ConfigRed, construir_red (mlp/multitarea/gru/cnn/embedding), entrenar (bucle GradientTape), Escalador, Calibrador, empaquetar (artefacto único)
-  evaluacion.py  metricas, ece, bootstrap_ic, comparar_pareado (bootstrap por departamento + McNemar), particiones_origen_movil/espaciales, validar, psi
-  pipeline.py    Especificacion, entrenar_especificacion, ejecutar (8 etapas), cargar_artefacto, predecir_con_artefacto, CLI
+  evaluacion.py  metricas, ece, bootstrap_ic (con grupos), regla_retencion, comparar_pareado (bootstrap por departamento + McNemar),
+                 particiones_origen_movil/espaciales/espacio_temporales, validar, psi, psi_ruido, tabla_psi
+  pipeline.py    Especificacion, entrenar_especificacion, persistencia, persistencia_calibrada, ejecutar (8 etapas),
+                 cargar_artefacto, predecir_con_artefacto, CLI
   graficos.py    estilo y tabla()
-tests/test_pipeline.py        5 pruebas automáticas
+tests/test_pipeline.py        10 pruebas automáticas
 herramientas/preparar_ucdp.py reduce UCDP GED (39 MB) a Colombia
-herramientas/cuaderno/        scripts que generan el cuaderno (código en parte_a–d.py; textos en lecturas*.py)
+herramientas/cuaderno/        scripts que generan el cuaderno (código en parte_a–d.py; textos en lecturas*.py) y exportar_texto.py
+revision/                     REVISION_U3.md: revisión estricta del informe (fase 1) y correcciones aplicadas (fase 2)
 informe/                      Informe_U3_Proyecto_Integrador.pdf/.docx, generar_figuras.py, construir_informe.py, figuras/
 datos/                        ACLED + externos (coca, bosque, UCDP)
 salidas_u3/                   métricas, predicciones, decisiones, rejilla, controles, proyección, figuras, modelos/, TARJETA_MODELO.md
@@ -297,7 +308,9 @@ mirar el futuro · D19 paquete + artefacto único `.keras` · D20 x3 con UCDP, e
 - [ ] Sustentación sincrónica: ambos deben poder explicar cada decisión (D11–D20) y reproducir el proceso.
 - [ ] Agregar al profesor como colaborador del repositorio (Settings → Collaborators) o publicar sin el CSV de ACLED.
 - [ ] Revisar y, si hace falta, reescribir con palabras propias las interpretaciones del cuaderno y del informe
-  (la declaración de IA dice que la IA apoyó en programación; los textos interpretativos fueron redactados con apoyo de IA).
+  (la declaración de IA del informe y del cuaderno dice: apoyo en la programación del pipeline y del cuaderno y en la
+  revisión de la redacción y la organización del informe; la propuesta, la búsqueda y selección de datos, el análisis,
+  las decisiones metodológicas y las conclusiones son del equipo).
 - [ ] Fechas de entrega y sustentación: no figuran en la guía; confirmar en la plataforma del curso.
 - Recomendaciones técnicas (informe §9, Tabla 7): R1 municipio con ACLED por evento; R2 x3 municipal (entradas/salidas
   de grupos); R3 señales adelantadas de transición; R4 reentrenar cada año + PSI; R5 revisar logaritmos y MIN_EVENTOS;

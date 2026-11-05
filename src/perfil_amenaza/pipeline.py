@@ -7,8 +7,9 @@ Pipeline integrado de extremo a extremo y línea de comandos.
 Etapas (cada una produce un artefacto en salidas_u3/):
   1. datos       contrato y auditoría del export, panel, etiqueta, fuentes externas  -> dataset_modelado_u3.csv
   2. variables   predictoras en t-1 (grupos de configuracion.json)
-  3. evaluación  origen móvil 2023-2025 frente a la persistencia y al modelo base U2 -> metricas_seleccion.csv
-  4. calibración Platt sobre las predicciones fuera de muestra 2023-2025           -> parámetros en el artefacto
+  3. evaluación  origen móvil 2023-2025 frente a la persistencia (cruda y calibrada) y al modelo base U2
+                 (semilla 42 y ensamble de 10 semillas)                            -> metricas_seleccion.csv
+  4. calibración solo si config lo pide; en la selección, encadenada hacia adelante -> parámetros en el artefacto
   5. prueba      2026, una sola vez, con el modelo entrenado hasta 2025             -> metricas_prueba_2026.csv
   6. despliegue  ensamble reentrenado con 2021-2026 + calibración en un solo .keras -> modelos/perfil_amenaza_u3.keras
   7. proyección  perfil 2027, alerta A/B y deriva (PSI)                              -> proyeccion_2027_u3.csv
@@ -109,6 +110,21 @@ def persistencia(datos, tr, te):
     return np.where(np.isnan(s), datos.loc[tr, "y"].mean(), s)
 
 
+def _logit(p):
+    p = np.clip(np.asarray(p, float), 1e-3, 1 - 1e-3)
+    return np.log(p / (1 - p)).reshape(-1, 1)
+
+
+def persistencia_calibrada(datos, tr, te):
+    """
+    Rival agregado tras la revisión de la U3: la inercia calibrada. Una logística de dos parámetros sobre
+    logit(m1) = logit(s_C contraída de t-1), ajustada solo con las filas de entrenamiento (en el origen móvil, años
+    anteriores al validado). Usa la misma información que la persistencia, pero la convierte en una probabilidad.
+    """
+    lr = LogisticRegression(C=1e6, max_iter=1000).fit(_logit(datos.loc[tr, "m1_sC_t1"]), datos.loc[tr, "y"].values)
+    return lr.predict_proba(_logit(datos.loc[te, "m1_sC_t1"]))[:, 1]
+
+
 def alerta_ab(panel, desde=2025):
     """Alerta A/B de la U2: proporción A+B en desde..2026 >= 2 x promedio nacional y >= 5 eventos A+B."""
     ab = panel[panel["anio"] >= desde].groupby("depto")[["A", "B", "eventos"]].sum()
@@ -137,6 +153,8 @@ def ejecutar(ruta_config=C.RUTA_CONFIG, verbose=True) -> dict:
     cfg = C.cargar_config(ruta_config)
     spec = Especificacion.de_dict(cfg["especificacion_final"])
     base_u2 = Especificacion.de_dict(cfg["especificacion_base_u2"])
+    # "Antes" justo: la misma arquitectura base con las mismas semillas que el ensamble final
+    base_ens = Especificacion(f"MLP base U2 (ensamble {len(spec.semillas)})", base_u2.variables, base_u2.red, spec.semillas)
 
     # 1-2. Datos y variables
     bruto = D.cargar_acled()
@@ -146,32 +164,38 @@ def ejecutar(ruta_config=C.RUTA_CONFIG, verbose=True) -> dict:
     datos.to_csv(C.DIR_SALIDA / "dataset_modelado_u3.csv", index=False)
     log(f"[1-2] datos: {len(datos)} filas, {datos.depto.nunique()} departamentos, {len(spec.variables)} predictoras")
 
-    # 3. Evaluación con origen móvil 2023-2025 (selección)
+    # 3. Evaluación con origen móvil 2023-2025 (la selección se hizo en el cuaderno con la misma partición)
     def fn(tr, te):
-        out = {"Persistencia": persistencia(datos, tr, te)}
-        for s in (base_u2, spec):
+        out = {"Persistencia": persistencia(datos, tr, te), "Persistencia calibrada": persistencia_calibrada(datos, tr, te)}
+        for s in (base_u2, base_ens, spec):
             mods, esc = entrenar_especificacion(datos, SEQ, s, tr)
             out[s.nombre] = predecir_especificacion(mods, esc, datos, SEQ, s, te)
         return out
     oos = E.validar(datos, fn, E.particiones_origen_movil(datos))
     metodo = cfg.get("calibracion", "ninguna")
+    # El calibrador del artefacto se ajusta con todas las predicciones 2023-2025 (todas anteriores a la prueba). Para
+    # medirlo en la selección sin mirar el futuro, cada pliegue se calibra solo con los anteriores.
     cal = M.Calibrador(metodo).ajustar(oos[spec.nombre], oos["y"])
-    modelos_eval = ["Persistencia", base_u2.nombre, spec.nombre]
+    modelos_eval = ["Persistencia", "Persistencia calibrada", base_u2.nombre, base_ens.nombre, spec.nombre]
     if metodo != "ninguna":
-        oos[spec.nombre + " (calibrado)"] = cal.aplicar(oos[spec.nombre]); modelos_eval.append(spec.nombre + " (calibrado)")
+        oos[spec.nombre + " (calibrado)"] = M.calibrar_adelante(oos["particion"], oos[spec.nombre], oos["y"], metodo)
+        modelos_eval.append(spec.nombre + " (calibrado)")
     final = modelos_eval[-1]
     met_sel = E.resumir(oos, modelos_eval)
     met_sel.to_csv(C.DIR_SALIDA / "metricas_seleccion.csv")
     oos.to_csv(C.DIR_SALIDA / "predicciones_origen_movil.csv", index=False)
     log(f"[3-4] origen móvil 2023-2025 (n={len(oos)}): AUC {met_sel.loc[final, 'ROC-AUC']:.3f}, "
         f"log-loss {met_sel.loc[final, 'Log-loss']:.3f} (persistencia {met_sel.loc['Persistencia', 'Log-loss']:.3f}; "
-        f"modelo base U2 {met_sel.loc[base_u2.nombre, 'Log-loss']:.3f}); calibración: {metodo}")
+        f"persistencia calibrada {met_sel.loc['Persistencia calibrada', 'Log-loss']:.3f}; "
+        f"base U2 {met_sel.loc[base_u2.nombre, 'Log-loss']:.3f}; base U2 ensamble {met_sel.loc[base_ens.nombre, 'Log-loss']:.3f}); "
+        f"calibración: {metodo}")
 
     # 5. Prueba 2026 (una sola vez): modelos entrenados con 2021-2025
     tr, te = (datos["anio"] <= 2025).values, (datos["anio"] == C.ANIO_PRUEBA).values
     prueba = datos.loc[te, ["depto", "departamento", "anio", "y", "s_C", "perfil", "perfil_prev", "transicion", "eventos"]].copy()
     prueba["Persistencia"] = persistencia(datos, tr, te)
-    for s in (base_u2, spec):
+    prueba["Persistencia calibrada"] = persistencia_calibrada(datos, tr, te)
+    for s in (base_u2, base_ens, spec):
         mods, esc = entrenar_especificacion(datos, SEQ, s, tr)
         prueba[s.nombre] = predecir_especificacion(mods, esc, datos, SEQ, s, te)
     if metodo != "ninguna":
@@ -180,7 +204,8 @@ def ejecutar(ruta_config=C.RUTA_CONFIG, verbose=True) -> dict:
     met_te.to_csv(C.DIR_SALIDA / "metricas_prueba_2026.csv")
     prueba.to_csv(C.DIR_SALIDA / "predicciones_prueba_2026.csv", index=False)
     log(f"[5] prueba 2026 (n={len(prueba)}): AUC {met_te.loc[final, 'ROC-AUC']:.3f}, log-loss {met_te.loc[final, 'Log-loss']:.3f} "
-        f"(persistencia {met_te.loc['Persistencia', 'Log-loss']:.3f})")
+        f"(persistencia {met_te.loc['Persistencia', 'Log-loss']:.3f}; persistencia calibrada "
+        f"{met_te.loc['Persistencia calibrada', 'Log-loss']:.3f}; base U2 ensamble {met_te.loc[base_ens.nombre, 'Log-loss']:.3f})")
 
     # 6. Despliegue: ensamble con todas las etiquetas (2021-2026) + calibración, en un solo artefacto
     todo = np.ones(len(datos), bool)
@@ -195,11 +220,12 @@ def ejecutar(ruta_config=C.RUTA_CONFIG, verbose=True) -> dict:
 
     # 7. Proyección 2027 con el artefacto (no con los objetos en memoria) y control de deriva
     proy, _ = predecir_con_artefacto(acled, pext, anio_info=C.ANIO_PRUEBA, actores=actores)
-    psi = E.tabla_psi(datos, proy, spec.variables)
+    # Deriva: misma población que el entrenamiento (los 30 departamentos con filas etiquetadas), con su piso de ruido
+    psi = E.tabla_psi(datos, proy[proy["depto"].isin(set(datos["depto"]))], spec.variables)
     psi.to_csv(C.DIR_SALIDA / "deriva_psi_2026.csv")
     proy.to_csv(C.DIR_SALIDA / "proyeccion_2027_u3.csv", index=False)
-    log(f"[7] proyección 2027: {proy['Categoría 2027'].value_counts().to_dict()} | variables en deriva (PSI>0,25): "
-        f"{int((psi.PSI > .25).sum())}")
+    log(f"[7] proyección 2027: {proy['Categoría 2027'].value_counts().to_dict()} | PSI > 0,25: {int((psi.PSI > .25).sum())}; "
+        f"PSI por encima del ruido de muestreo (p95): {int(psi['supera el ruido'].sum())}")
 
     # 8. Tarjeta del modelo
     escribir_tarjeta(spec, met_sel, met_te, cal, psi, proy, len(datos), final, metodo)
@@ -250,14 +276,19 @@ def escribir_tarjeta(spec, met_sel, met_te, cal, psi, proy, n_filas, k, metodo):
          "sin recalibración (la calibración Platt no mejoró la log-loss fuera de muestra; ver §6.10 del cuaderno)."),
         f"**Variables ({len(spec.variables)}).** " + ", ".join(spec.variables), "",
         "| Métrica | Origen móvil 2023-2025 | Prueba 2026 |", "|---|---|---|",
-        *[f"| {c} | {met_sel.loc[k, c]:.3f} | {met_te.loc[k, c]:.3f} |" for c in ["ROC-AUC", "Log-loss", "Brier", "MCC", "ECE"]],
-        "", "| Rival (persistencia) | Origen móvil 2023-2025 | Prueba 2026 |", "|---|---|---|",
-        *[fila("Persistencia", c) for c in ["ROC-AUC", "Log-loss", "Brier"]], "",
-        "**Limitaciones.** 30 unidades espaciales; etiqueta 2026 con 33 semanas; x3 (actores) solo si hay UCDP; x6 es un",
-        "proxy departamental; la prevalencia de C cambia entre años (32 % a 62 %), por lo que la calibración debe",
-        "re-estimarse cada año.", "",
-        f"**Deriva.** Variables con PSI > 0,25 en 2026 frente a 2021-2026: {', '.join(psi.index[psi.PSI > .25]) or 'ninguna'}.",
-        "**Mantenimiento.** Reentrenar cada año con la etiqueta cerrada, recalcular la calibración y revisar el PSI.",
+        *[f"| {c} | {met_sel.loc[k, c]:.3f} | {met_te.loc[k, c]:.3f} |" for c in ["ROC-AUC", "Log-loss", "Brier", "MCC", "ECE", "Exactitud"]],
+        "", "| Rivales | Origen móvil 2023-2025 | Prueba 2026 |", "|---|---|---|",
+        *[fila(m, c) for m in ["Persistencia", "Persistencia calibrada"] for c in ["ROC-AUC", "Log-loss", "Brier"]], "",
+        "La persistencia calibrada (logística sobre logit(m1) entrenada con años anteriores) se agregó como rival tras la",
+        "revisión; no cambió el modelo adoptado. Frente a ella, la ventaja del modelo no está demostrada a escala departamental.", "",
+        "**Limitaciones.** 30 unidades espaciales; etiqueta 2026 con 33 semanas; x3 (actores, UCDP) evaluada y no retenida;",
+        "x6 es un proxy departamental; la prevalencia de C cambia entre años (32 % a 62 %); con la información parcial de",
+        "2026, d1 resume las semanas 8 a 33 y no el segundo semestre.", "",
+        f"**Deriva.** PSI de la información 2026 frente al entrenamiento (mismos 30 departamentos): variables con PSI > 0,25: "
+        f"{', '.join(psi.index[psi.PSI > .25]) or 'ninguna'}; por encima del percentil 95 del ruido de muestreo: "
+        f"{', '.join(psi.index[psi['supera el ruido']]) or 'ninguna'}.",
+        "**Mantenimiento.** Reentrenar cada año con la etiqueta cerrada, revisar el PSI con su piso de ruido y reevaluar la",
+        "calibración con encadenamiento hacia adelante (hoy no se calibra porque no mejora sin mirar el futuro).",
     ]
     (C.DIR_SALIDA / "TARJETA_MODELO.md").write_text("\n".join(txt), encoding="utf-8")
 

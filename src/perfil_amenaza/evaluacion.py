@@ -47,13 +47,45 @@ def metricas(y, p, umbral=0.5, transicion=None):
 COLS_PRINCIPALES = ["ROC-AUC", "Log-loss", "Brier", "MCC", "Exact. balanceada", "ECE"]
 
 
-def bootstrap_ic(y, p, fn, n=2000, semilla=C.SEED):
-    """IC 95 % percentil por bootstrap estratificado por clase."""
+def bootstrap_ic(y, p, fn, n=2000, semilla=C.SEED, grupos=None):
+    """
+    IC 95 % percentil por bootstrap. Con `grupos` (departamento) remuestrea departamentos completos, igual que
+    `comparar_pareado`; sin grupos, remuestrea filas estratificando por clase.
+    """
     rng = np.random.default_rng(semilla); y = np.asarray(y).astype(int); p = np.asarray(p, float)
+    if grupos is not None:
+        g = np.asarray(grupos); unicos = np.unique(g); pos = {u: np.where(g == u)[0] for u in unicos}
+        vals = []
+        for _ in range(n):
+            idx = np.concatenate([pos[u] for u in rng.choice(unicos, len(unicos))])
+            if len(np.unique(y[idx])) == 2:
+                vals.append(fn(y[idx], p[idx]))
+        return np.percentile(vals, [2.5, 97.5])
     i0, i1 = np.where(y == 0)[0], np.where(y == 1)[0]
     vals = [fn(y[idx], p[idx]) for idx in (np.concatenate([rng.choice(i0, len(i0)), rng.choice(i1, len(i1))])
                                            for _ in range(n))]
     return np.percentile(vals, [2.5, 97.5])
+
+
+def regla_retencion(ll_a, ll_b, auc_a, auc_b, tol_auc=0.01) -> dict:
+    """
+    Regla de retención de la U3 (cuaderno §3.1, regla 5). `ll_a`, `auc_a` son las métricas por semilla de la variante
+    y `ll_b`, `auc_b` las de su referencia, en el mismo orden de semillas. Se retiene si
+    mean(ΔLL) + EE(ΔLL) < 0 y mean(ΔAUC) > −tol_auc. El EE es entre semillas: mide el ruido del entrenamiento, no el
+    del muestreo de departamentos. Si una de las dos tiene una sola fila (modelo determinista, como la logística), se
+    compara contra cada semilla de la otra, de modo que la diferencia media usa la media de la referencia.
+    """
+    ll_a, ll_b, auc_a, auc_b = (np.atleast_1d(np.asarray(v, float)) for v in (ll_a, ll_b, auc_a, auc_b))
+    if len(ll_a) == 1 and len(ll_b) > 1:
+        ll_a, auc_a = np.repeat(ll_a, len(ll_b)), np.repeat(auc_a, len(ll_b))
+    elif len(ll_b) == 1 and len(ll_a) > 1:
+        ll_b, auc_b = np.repeat(ll_b, len(ll_a)), np.repeat(auc_b, len(ll_a))
+    if len(ll_a) != len(ll_b):
+        raise ValueError("La variante y la referencia deben tener las mismas semillas (o una sola fila determinista)")
+    d_ll, d_auc = ll_a - ll_b, auc_a - auc_b
+    ee = float(d_ll.std(ddof=1) / np.sqrt(len(d_ll))) if len(d_ll) > 1 else 0.0
+    retiene = bool(d_ll.mean() + ee < 0 and d_auc.mean() > -tol_auc)
+    return {"ΔLog-loss": float(d_ll.mean()), "EE": ee, "ΔAUC": float(d_auc.mean()), "retiene": retiene}
 
 
 def comparar_pareado(y, pa, pb, n_boot=2000, semilla=C.SEED, grupos=None):
@@ -107,6 +139,21 @@ def particiones_espaciales(datos: pd.DataFrame, k=5, anios_max=max(C.ANIOS_SELEC
         yield f"pliegue {j + 1}", tr, te
 
 
+def particiones_espacio_temporales(datos: pd.DataFrame, k=5, anios=C.ANIOS_SELECCION):
+    """
+    Bloqueo espacial y temporal a la vez: para cada grupo de departamentos de `particiones_espaciales` y cada año v,
+    entrena con los otros departamentos y solo con t < v, y predice el grupo en v. Es el escenario real de un
+    territorio nuevo al año siguiente: el modelo no ve etiquetas del año que predice (en `particiones_espaciales`, sí
+    ve las de los otros departamentos en ese mismo año).
+    """
+    for nombre, tr_esp, te_esp in particiones_espaciales(datos, k=k, anios_max=max(anios)):
+        for v in anios:
+            tr = tr_esp & (datos["anio"] < v).values
+            te = te_esp & (datos["anio"] == v).values
+            if te.any():
+                yield f"{nombre} · {v}", tr, te
+
+
 def validar(datos: pd.DataFrame, ajustar_predecir, particiones) -> pd.DataFrame:
     """
     Ejecuta `ajustar_predecir(tr, te) -> dict{nombre: probas}` en cada partición y devuelve las predicciones
@@ -146,9 +193,21 @@ def psi(referencia, actual, n_bins=5):
     return float(np.sum((a - r) * np.log(a / r)))
 
 
-def tabla_psi(datos_ref: pd.DataFrame, datos_act: pd.DataFrame, columnas) -> pd.DataFrame:
+def psi_ruido(referencia, n_actual, n_rep=2000, semilla=C.SEED, cuantil=95):
+    """
+    Percentil del PSI cuando no hay deriva: se sacan `n_actual` filas de la propia referencia y se calcula su PSI.
+    Con muestras pequeñas (33 departamentos) el PSI tiene un piso de ruido alto y los umbrales 0,1/0,25 engañan.
+    """
+    rng = np.random.default_rng(semilla); ref = np.asarray(referencia, float)
+    return float(np.percentile([psi(ref, rng.choice(ref, n_actual, replace=True)) for _ in range(n_rep)], cuantil))
+
+
+def tabla_psi(datos_ref: pd.DataFrame, datos_act: pd.DataFrame, columnas, n_rep=2000) -> pd.DataFrame:
+    """PSI por variable, su estado según los umbrales usuales y el percentil 95 del PSI sin deriva para ese tamaño."""
     filas = []
     for c in columnas:
         v = psi(datos_ref[c], datos_act[c])
-        filas.append({"variable": c, "PSI": v, "estado": "estable" if v < .1 else ("vigilar" if v < .25 else "deriva")})
+        p95 = psi_ruido(datos_ref[c], len(datos_act), n_rep=n_rep)
+        filas.append({"variable": c, "PSI": v, "estado": "estable" if v < .1 else ("vigilar" if v < .25 else "deriva"),
+                      "p95 sin deriva": p95, "supera el ruido": bool(v > p95)})
     return pd.DataFrame(filas).set_index("variable")

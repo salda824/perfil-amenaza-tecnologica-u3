@@ -215,7 +215,7 @@
       "ΔLog-loss": -0.025907980204841342,
       "EE": 0.010263484547979042,
       "ΔAUC": 0.016279069767441867,
-      "Decisión": "cumple la regla, no se adopta: acierta 0.8 de 9 transiciones (referencia 2.0) y no transfiere a territorios nuevos"
+      "Decisión": "cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding"
     },
     {
       "Intervención": "MLP profundo (16, 8)",
@@ -228,9 +228,9 @@
     {
       "Intervención": "Logística (mismas variables)",
       "Referencia": "I2a +d1",
-      "ΔLog-loss": 0.0027137370793057225,
-      "EE": 0.0,
-      "ΔAUC": 0.0005285412262157063,
+      "ΔLog-loss": -0.003455928100764394,
+      "EE": 0.004309543624996365,
+      "ΔAUC": -0.0025369978858350794,
       "Decisión": "no se retiene"
     },
     {

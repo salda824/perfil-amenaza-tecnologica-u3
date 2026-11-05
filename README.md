@@ -19,8 +19,10 @@ configuracion.json        modelo final y protocolo (lo escribe la §8.1 del cuad
 Proyecto_U3_Integrador.ipynb   cuaderno de la entrega: diagnóstico, intervenciones, evaluación e interpretación
 informe/                  informe técnico final (PDF/DOCX) y scripts que lo generan
 src/perfil_amenaza/       paquete: config, datos, variables, modelo, evaluacion, pipeline, graficos
-tests/                    pruebas automáticas (contrato de datos, fuga temporal, escalador, determinismo, réplica U2)
-herramientas/             preparar_ucdp.py (reduce UCDP a Colombia) y cuaderno/ (generador del cuaderno)
+tests/                    10 pruebas automáticas (contrato y su caso negativo, fuga temporal, escalador, artefacto,
+                          persistencia calibrada, partición espacio-temporal, regla de retención, determinismo, réplica U2)
+herramientas/             preparar_ucdp.py (reduce UCDP a Colombia) y cuaderno/ (generador del cuaderno y exportar_texto.py)
+revision/                 revisión estricta del informe y correcciones aplicadas
 datos/                    export semanal de ACLED + datos/externos/ (coca, bosque, UCDP)
 salidas_u3/               métricas, predicciones, figuras, modelos/perfil_amenaza_u3.keras, TARJETA_MODELO.md
 referencias_u2/           resultados guardados de la Unidad 2 (para comparar "antes vs. después")
@@ -34,17 +36,20 @@ graphify-out/             grafo de conocimiento del proyecto (graph.html, GRAPH_
 ejecutar_todo.bat "C:\ruta\a\ged261-csv"
 ```
 
-Crea el entorno virtual, instala las dependencias, reduce UCDP (opcional), corre las pruebas, ejecuta el cuaderno
-completo y muestra la proyección 2027.
+Crea el entorno virtual (Python 3.11 a 3.13), instala las dependencias, reduce UCDP (opcional), corre las pruebas,
+ejecuta el cuaderno completo en una copia (`Proyecto_U3_Integrador_ejecutado.ipynb`, para no sobrescribir el entregado)
+y muestra la proyección 2027. Al ejecutarse, el cuaderno reescribe `configuracion.json` y `salidas_u3/`.
 
 ## Uso
 
 ```bash
 pip install -r requirements.txt
-python -m pytest -q tests                                       # 5 pruebas
+python -m pytest -q tests                                       # 10 pruebas
 PYTHONPATH=src python -m perfil_amenaza.pipeline todo           # datos -> evaluación -> artefacto -> proyección 2027
 PYTHONPATH=src python -m perfil_amenaza.pipeline predecir --anio 2026   # solo con el artefacto guardado
 jupyter nbconvert --to notebook --execute Proyecto_U3_Integrador.ipynb  # cuaderno completo (~20 min en CPU)
+python herramientas/cuaderno/exportar_texto.py                  # versión en texto del cuaderno (docs/u3_texto/)
+python informe/generar_figuras.py && python informe/construir_informe.py   # informe (requiere LibreOffice para el PDF)
 ```
 
 En Windows (PowerShell), use `$env:PYTHONPATH="src"` antes de los comandos de `perfil_amenaza`.
@@ -67,13 +72,19 @@ cambia.
 * Selección con validación de origen móvil 2023–2025: cada año se predice con un modelo entrenado solo con años
   anteriores.
 * La prueba 2026 (33 semanas) se evalúa una sola vez, con todas las decisiones congeladas en `configuracion.json`.
-* El rival a vencer es la persistencia del perfil, no el modelo base.
-* Una intervención se retiene solo si mejora la log-loss más que un error estándar entre semillas pareadas.
+* La referencia es la persistencia del perfil. Tras la revisión se agregó su versión calibrada (logística sobre
+  logit(m1) entrenada con años anteriores), que no cambió el modelo adoptado.
+* Una intervención se retiene solo si mejora la log-loss más que un error estándar entre semillas pareadas
+  (`evaluacion.regla_retencion`).
+* Además del origen móvil, la generalización a departamentos nuevos se mide con bloqueo espacial y temporal
+  (`evaluacion.particiones_espacio_temporales`).
 
 ## Reproducibilidad
 
 Semillas fijas, `TF_ENABLE_ONEDNN_OPTS=0` y `tf.config.experimental.enable_op_determinism()`. Ejecución de referencia:
-Python 3.13, TensorFlow 2.21.0 y Keras 3.15.1 (las mismas versiones de TensorFlow y Keras de la Unidad 2), en CPU.
+Python 3.13, TensorFlow 2.21.0 y Keras 3.15.1 (las mismas de la Unidad 2), NumPy 2.5.3, pandas 3.0.5, SciPy 1.18.1 y
+scikit-learn 1.9.1, en CPU (`requirements.txt` fija estas versiones). En otro hardware las cifras pueden variar en el
+tercer decimal.
 
 ## Datos y licencias
 
