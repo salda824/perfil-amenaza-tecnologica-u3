@@ -1,7 +1,7 @@
 """
 Reduce UCDP GED 26.1 (39 MB) a lo que usa el proyecto. Se ejecuta en el computador donde se descargó el archivo:
 
-    python herramientas/preparar_ucdp.py ruta/a/ged261-csv.zip      (o ruta/a/GEDEvent_v26_1.csv)
+    python herramientas/preparar_ucdp.py ruta/a/ged261-csv.zip      (o el .csv, o la carpeta descomprimida)
 
 Escribe dos archivos en datos/externos/:
   ucdp_colombia.csv                     solo eventos de Colombia y las 7 columnas necesarias (~100-200 KB)
@@ -20,7 +20,17 @@ from perfil_amenaza import datos as D  # noqa: E402
 
 if len(sys.argv) != 2:
     sys.exit(__doc__)
-origen = Path(sys.argv[1])
+origen = Path(sys.argv[1].strip('"'))
+if not origen.exists() and Path(str(origen) + ".zip").exists():      # 'ged261-csv' sin la extensión .zip
+    origen = Path(str(origen) + ".zip")
+if origen.is_dir():                                                    # carpeta descomprimida
+    candidatos = sorted(origen.rglob("GEDEvent*.csv")) or sorted(origen.rglob("*.csv")) or sorted(origen.rglob("*.zip"))
+    if not candidatos:
+        sys.exit(f"No encontré el CSV de UCDP dentro de {origen}")
+    origen = candidatos[0]
+if not origen.exists():
+    sys.exit(f"No existe {origen}")
+print(f"Leyendo {origen} ...")
 g = pd.read_csv(origen, low_memory=False, usecols=lambda c: c in D.COLUMNAS_UCDP)
 col = g[g["country"] == "Colombia"]
 destino = D.C.DIR_EXT

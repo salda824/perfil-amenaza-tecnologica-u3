@@ -20,6 +20,15 @@ Proyecto_U3_Integrador.ipynb   cuaderno de la entrega: diagnóstico, intervencio
 salidas_u3/               métricas, predicciones, figuras, modelos/perfil_amenaza_u3.keras, TARJETA_MODELO.md
 ```
 
+## Uso rápido en Windows (cmd)
+
+```bat
+ejecutar_todo.bat "C:\ruta\a\ged261-csv"
+```
+
+Crea el entorno virtual, instala las dependencias, reduce UCDP (opcional), corre las pruebas, ejecuta el cuaderno
+completo y muestra la proyección 2027.
+
 ## Uso
 
 ```bash
