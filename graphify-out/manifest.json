@@ -1,0 +1,212 @@
+{
+  "configuracion.json": {
+    "mtime": 1793849820.687313,
+    "seen": 1793852890.3945513,
+    "ast_hash": "a12d723fa0c46093510d1c71fa83158d",
+    "semantic_hash": "a12d723fa0c46093510d1c71fa83158d"
+  },
+  "docs/entregas/U1/notebooks_texto/U1_exploracion_codigo.py": {
+    "mtime": 1793851585.5892625,
+    "seen": 1793852890.394558,
+    "ast_hash": "2f9e87f9ccc6cc6bc610a833871582fe",
+    "semantic_hash": "2f9e87f9ccc6cc6bc610a833871582fe"
+  },
+  "docs/entregas/U2/notebooks_texto/U2_modelo_base_codigo.py": {
+    "mtime": 1793851586.44698,
+    "seen": 1793852890.3945613,
+    "ast_hash": "791c6c39679e581c375fab6081d136d9",
+    "semantic_hash": "791c6c39679e581c375fab6081d136d9"
+  },
+  "docs/u3_texto/U3_integrador_codigo.py": {
+    "mtime": 1793851602.6815104,
+    "seen": 1793852890.3945627,
+    "ast_hash": "42f051c6a9b3386f7caa86a8d8b6c1e5",
+    "semantic_hash": "42f051c6a9b3386f7caa86a8d8b6c1e5"
+  },
+  "herramientas/preparar_ucdp.py": {
+    "mtime": 1793846377.4400842,
+    "seen": 1793852890.3945644,
+    "ast_hash": "a7e7f95647a56885dd146d1b444f1106",
+    "semantic_hash": "a7e7f95647a56885dd146d1b444f1106"
+  },
+  "informe/construir_informe.py": {
+    "mtime": 1793851524.2134275,
+    "seen": 1793852890.3945653,
+    "ast_hash": "9edd20d5a8712a6dfdecaae381286e01",
+    "semantic_hash": "9edd20d5a8712a6dfdecaae381286e01"
+  },
+  "informe/generar_figuras.py": {
+    "mtime": 1793851524.2139113,
+    "seen": 1793852890.3945668,
+    "ast_hash": "b194e45378ed7a4b085e5de1cae2761a",
+    "semantic_hash": "b194e45378ed7a4b085e5de1cae2761a"
+  },
+  "src/perfil_amenaza/__init__.py": {
+    "mtime": 1793838966.6844423,
+    "seen": 1793852890.3945677,
+    "ast_hash": "a253a8c3436e30dbd295b36fbcffdfe3",
+    "semantic_hash": "a253a8c3436e30dbd295b36fbcffdfe3"
+  },
+  "src/perfil_amenaza/config.py": {
+    "mtime": 1793838988.8804436,
+    "seen": 1793852890.394569,
+    "ast_hash": "3c2c89800f86abf0d1d2af539663d58c",
+    "semantic_hash": "3c2c89800f86abf0d1d2af539663d58c"
+  },
+  "src/perfil_amenaza/datos.py": {
+    "mtime": 1793845008.9773328,
+    "seen": 1793852890.3945699,
+    "ast_hash": "567d87b1645d2cc6af0485080148910a",
+    "semantic_hash": "567d87b1645d2cc6af0485080148910a"
+  },
+  "src/perfil_amenaza/evaluacion.py": {
+    "mtime": 1793839225.2404578,
+    "seen": 1793852890.394571,
+    "ast_hash": "4f41c5eb8abe3da178cd093b08ead3cf",
+    "semantic_hash": "4f41c5eb8abe3da178cd093b08ead3cf"
+  },
+  "src/perfil_amenaza/graficos.py": {
+    "mtime": 1793842061.1345305,
+    "seen": 1793852890.3945723,
+    "ast_hash": "4b1cb15b02903bb9cffe21c0278218be",
+    "semantic_hash": "4b1cb15b02903bb9cffe21c0278218be"
+  },
+  "src/perfil_amenaza/modelo.py": {
+    "mtime": 1793840290.6089838,
+    "seen": 1793852890.3945732,
+    "ast_hash": "f2b7140f492dfaa7eb9a1ca17a037cb6",
+    "semantic_hash": "f2b7140f492dfaa7eb9a1ca17a037cb6"
+  },
+  "src/perfil_amenaza/pipeline.py": {
+    "mtime": 1793841987.4331234,
+    "seen": 1793852890.3945744,
+    "ast_hash": "4d3e62b7811139f3d6b7dca329ee85d1",
+    "semantic_hash": "4d3e62b7811139f3d6b7dca329ee85d1"
+  },
+  "src/perfil_amenaza/variables.py": {
+    "mtime": 1793840407.3271997,
+    "seen": 1793852890.3945754,
+    "ast_hash": "3aa6ec6fb0458113d936a97ee69a9f7e",
+    "semantic_hash": "3aa6ec6fb0458113d936a97ee69a9f7e"
+  },
+  "tests/test_pipeline.py": {
+    "mtime": 1793840333.7285237,
+    "seen": 1793852890.394576,
+    "ast_hash": "0a0421b5053d03935b325f479e19569d",
+    "semantic_hash": "0a0421b5053d03935b325f479e19569d"
+  },
+  "CLAUDE.md": {
+    "mtime": 1793851748.5309896,
+    "seen": 1793852890.3945773,
+    "ast_hash": "e9d9cd9c792990243c0ad9b870300247",
+    "semantic_hash": "e9d9cd9c792990243c0ad9b870300247"
+  },
+  "CONTEXTO_PROYECTO.md": {
+    "mtime": 1793851731.3269887,
+    "seen": 1793852890.3945782,
+    "ast_hash": "542a7f7579eb86b9947381c50768df3b",
+    "semantic_hash": "542a7f7579eb86b9947381c50768df3b"
+  },
+  "README.md": {
+    "mtime": 1793851748.5502665,
+    "seen": 1793852890.394579,
+    "ast_hash": "6cb669752ec9dd0c20c9817070ea94a8",
+    "semantic_hash": "6cb669752ec9dd0c20c9817070ea94a8"
+  },
+  "docs/entregas/U1/notebooks_texto/U1_exploracion_parte01_parte_1.md": {
+    "mtime": 1793851585.589405,
+    "seen": 1793852890.39458,
+    "ast_hash": "f6c9a1cca8bd3ba0a057cdb4c58ca66e",
+    "semantic_hash": "f6c9a1cca8bd3ba0a057cdb4c58ca66e"
+  },
+  "docs/entregas/U2/Manifiesto_artefactos_U2.md": {
+    "mtime": 1793851586.4546974,
+    "seen": 1793852890.3945808,
+    "ast_hash": "29db87b140a008ed4cda00647e65f30e",
+    "semantic_hash": "29db87b140a008ed4cda00647e65f30e"
+  },
+  "docs/entregas/U2/notebooks_texto/U2_modelo_base_parte01_clasificacion_del_perfil_de_amenaza_tecn.md": {
+    "mtime": 1793851586.4507272,
+    "seen": 1793852890.3945818,
+    "ast_hash": "0e6dd6b5ba397867dc196af2ff8b8766",
+    "semantic_hash": "0e6dd6b5ba397867dc196af2ff8b8766"
+  },
+  "docs/entregas/U2/notebooks_texto/U2_modelo_base_parte02_8_entrenamiento_del_modelo_base.md": {
+    "mtime": 1793851586.4510794,
+    "seen": 1793852890.3945832,
+    "ast_hash": "d8a1be545e62ceb12d5abe8f2d5bc421",
+    "semantic_hash": "d8a1be545e62ceb12d5abe8f2d5bc421"
+  },
+  "docs/entregas/U2/notebooks_texto/U2_modelo_base_parte03_14_trabajo_colaborativo_y_bitacora_de_de.md": {
+    "mtime": 1793851586.451806,
+    "seen": 1793852890.3945844,
+    "ast_hash": "7ce64972874c3b7c70aebbf76fd6686c",
+    "semantic_hash": "7ce64972874c3b7c70aebbf76fd6686c"
+  },
+  "docs/planeacion_u3/Plan_Notebook_U3.md": {
+    "mtime": 1793851601.2294624,
+    "seen": 1793852890.3945854,
+    "ast_hash": "72a72c7e3ff92ab291ee0abdacb1c70a",
+    "semantic_hash": "72a72c7e3ff92ab291ee0abdacb1c70a"
+  },
+  "docs/planeacion_u3/Unidad3_Proyecto_Integrador_Andamiaje.md": {
+    "mtime": 1793851601.2342114,
+    "seen": 1793852890.394586,
+    "ast_hash": "7584baf62d1b39891d4ae1387be259e1",
+    "semantic_hash": "7584baf62d1b39891d4ae1387be259e1"
+  },
+  "docs/u3_texto/U3_integrador_texto.md": {
+    "mtime": 1793851602.6789808,
+    "seen": 1793852890.394587,
+    "ast_hash": "2b7a1371f01f57c356932a69777c4700",
+    "semantic_hash": "2b7a1371f01f57c356932a69777c4700"
+  },
+  "requirements.txt": {
+    "mtime": 1793840407.3334262,
+    "seen": 1793852890.3945882,
+    "ast_hash": "98f9c1c5068ee4e8468cef4d9015d042",
+    "semantic_hash": "98f9c1c5068ee4e8468cef4d9015d042"
+  },
+  "docs/entregas/U1/Proyecto_Aplicacion_U1_LADS_JDSM.pdf": {
+    "mtime": 1793851585.57898,
+    "seen": 1793852890.3945892,
+    "ast_hash": "82134d7f0bc873778cefff17924144e6",
+    "semantic_hash": "82134d7f0bc873778cefff17924144e6"
+  },
+  "docs/entregas/U2/Proyecto_Aplicacion_U2_LADS_JDSM.pdf": {
+    "mtime": 1793851585.77098,
+    "seen": 1793852890.3945901,
+    "ast_hash": "61548c148dbdb714487fac4c3092715c",
+    "semantic_hash": "61548c148dbdb714487fac4c3092715c"
+  },
+  "docs/guias/Guia_Actividades_Unidad3_completa.pdf": {
+    "mtime": 1793851586.4605236,
+    "seen": 1793852890.3945913,
+    "ast_hash": "b8d741efbc5e1e4531d61d397c4117b5",
+    "semantic_hash": "b8d741efbc5e1e4531d61d397c4117b5"
+  },
+  "docs/guias/Guia_Proyecto_U1_Etapa1.pdf": {
+    "mtime": 1793851585.5909798,
+    "seen": 1793852890.3945923,
+    "ast_hash": "03c17e1ef8ed0ad40b682351c9558907",
+    "semantic_hash": "03c17e1ef8ed0ad40b682351c9558907"
+  },
+  "docs/guias/Guia_Proyecto_U2_Avance.pdf": {
+    "mtime": 1793851586.45498,
+    "seen": 1793852890.3945932,
+    "ast_hash": "a8f85145f77769beb881cbe0ec57d06b",
+    "semantic_hash": "a8f85145f77769beb881cbe0ec57d06b"
+  },
+  "docs/guias/Guia_Proyecto_U3_Integrador_pp11-13.pdf": {
+    "mtime": 1793851586.49898,
+    "seen": 1793852890.3945942,
+    "ast_hash": "06b8a87470b62099af7e30c47a24a3ce",
+    "semantic_hash": "06b8a87470b62099af7e30c47a24a3ce"
+  },
+  "informe/Informe_U3_Proyecto_Integrador.pdf": {
+    "mtime": 1793851556.262978,
+    "seen": 1793852890.3945954,
+    "ast_hash": "e6955103fc1f98e7b606bc9631edf728",
+    "semantic_hash": "e6955103fc1f98e7b606bc9631edf728"
+  }
+}
