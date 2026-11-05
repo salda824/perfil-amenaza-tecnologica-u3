@@ -755,5 +755,6 @@ corregida en `decidir`: Δ −0,0035 con EE 0,0043.
   separados del todo.
 * m23: algunos títulos internos de las figuras del cuaderno conservan guion en los rangos (p. ej. "2023-2025"). En el
   texto y en las leyendas del informe se usa raya.
-* `graphify-out/` no se actualizó, por instrucción del coordinador. Conviene regenerarlo después del commit.
+* `graphify-out/` se regeneró después del commit de estas correcciones con `graphify --update` (16 archivos
+  cambiados; 1.150 nodos, 2.463 aristas y 65 comunidades, sin aristas colgantes).
 * El video (Producto 2) y la sustentación siguen pendientes, fuera del alcance de esta revisión.
