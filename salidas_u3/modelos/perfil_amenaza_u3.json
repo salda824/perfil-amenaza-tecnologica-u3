@@ -1,0 +1,69 @@
+{
+  "variables": [
+    "x1_eventos",
+    "x2_fatalidades",
+    "x2b_letalidad",
+    "x4_coca",
+    "x5_bosque",
+    "x6_distancia",
+    "x7_ipm",
+    "m1_sC_t1",
+    "d1_sC_H2"
+  ],
+  "especificacion": {
+    "nombre": "MLP U3",
+    "variables": [
+      "x1_eventos",
+      "x2_fatalidades",
+      "x2b_letalidad",
+      "x4_coca",
+      "x5_bosque",
+      "x6_distancia",
+      "x7_ipm",
+      "m1_sC_t1",
+      "d1_sC_H2"
+    ],
+    "red": {
+      "tipo": "mlp",
+      "capas": [
+        16
+      ],
+      "activacion": "relu",
+      "l2": 0.001,
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 16,
+      "pasos": 560,
+      "pesos_clase": true,
+      "peso_eventos": "ninguno",
+      "objetivo": "duro",
+      "lambda_comp": 0.0,
+      "unidades_seq": 8,
+      "emb_dim": 2,
+      "n_deptos": 33
+    },
+    "semillas": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "C_logistica": 3.0,
+    "escalar": true,
+    "fuga_escalador": false
+  },
+  "calibracion": "ninguna",
+  "platt": {
+    "a": 1.0,
+    "b": 0.0
+  },
+  "entrenado_con": "2021-2026",
+  "filas": 171,
+  "version": "3.0.0"
+}

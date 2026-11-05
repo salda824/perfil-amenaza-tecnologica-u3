@@ -1,0 +1,34 @@
+depto,Departamento,Eventos 2026 (anualizados),Perfil 2026 observado,P(C) 2027,Desv. entre semillas,s_AB,alerta_AB,Datos suficientes,Categoría 2027,¿Coincide con la inercia?,Énfasis sugerido,P(C) 2027 con memoria (E1)
+guaviare,Guaviare,54.0,C,0.99964505,0.00018825436,0.14432989690721648,True,True,C consolidado,sí,"ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI",0.9975001
+vaupes,Vaupés,9.0,C,0.9244353,0.10007585,0.0,False,False,C consolidado,sí,"ISR, detección temprana y movilidad protegida",0.814686
+narino,Nariño,277.0,C,0.89972913,0.024752185,0.0675990675990676,False,True,C consolidado,sí,"ISR, detección temprana y movilidad protegida",0.9271228
+cauca,Cauca,698.0,C,0.87294924,0.030218884,0.13383838383838384,True,True,C consolidado,sí,"ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI",0.919349
+caqueta,Caquetá,76.0,C,0.85648334,0.0106554115,0.09836065573770492,False,True,C consolidado,sí,"ISR, detección temprana y movilidad protegida",0.9207835
+antioquia,Antioquia,627.0,C,0.8444254,0.0403238,0.06779661016949153,False,True,C consolidado,sí,"ISR, detección temprana y movilidad protegida",0.88155377
+norte de santander,Norte de Santander,637.0,C,0.8440894,0.02626666,0.10160427807486631,False,True,C consolidado,sí,"ISR, detección temprana y movilidad protegida",0.86212623
+amazonas,Amazonas,14.0,C,0.76858866,0.106562324,0.0,False,False,C consolidado,sí,"ISR, detección temprana y movilidad protegida",0.8319405
+choco,Chocó,233.0,D,0.7537897,0.11917846,0.07973421926910298,False,True,C consolidado,revisar,"ISR, detección temprana y movilidad protegida",0.6488596
+guainia,Guainía,3.0,C,0.71646166,0.1469789,0.0,False,False,C consolidado,sí,"ISR, detección temprana y movilidad protegida",0.51417243
+vichada,Vichada,17.0,C,0.6869453,0.1086814,0.058823529411764705,False,True,Transición,sí,Portafolio flexible y monitoreo trimestral del perfil,0.76255316
+putumayo,Putumayo,68.0,C,0.59732735,0.046080306,0.037383177570093455,False,True,Transición,sí,Portafolio flexible y monitoreo trimestral del perfil,0.82795364
+valle del cauca,Valle del Cauca,427.0,D,0.5627901,0.10253964,0.07067669172932331,False,True,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.62165993
+sucre,Sucre,33.0,D,0.50776213,0.06001121,0.0,False,True,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.42346263
+bolivar,Bolívar,273.0,D,0.47891364,0.06469143,0.04950495049504951,False,True,Transición,sí,Portafolio flexible y monitoreo trimestral del perfil,0.33037153
+cordoba,Córdoba,57.0,C,0.4669518,0.09385939,0.011976047904191617,False,True,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.4851461
+cesar,Cesar,137.0,C,0.4278203,0.05101811,0.07142857142857142,False,True,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.6057972
+arauca,Arauca,192.0,C,0.42321944,0.03895649,0.0975609756097561,False,True,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.5900909
+casanare,Casanare,30.0,C,0.4229731,0.10966065,0.08695652173913043,False,True,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.49191028
+magdalena,Magdalena,176.0,D,0.36516738,0.06035616,0.00823045267489712,False,True,Transición,sí,Portafolio flexible y monitoreo trimestral del perfil,0.34060368
+san andres,San Andrés,2.0,C,0.33804375,0.2789298,0.0,False,False,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.60786664
+huila,Huila,102.0,C,0.32747692,0.049258478,0.07453416149068323,False,True,Transición,revisar,Portafolio flexible y monitoreo trimestral del perfil,0.5469556
+la guajira,La Guajira,290.0,D,0.31770235,0.12221451,0.029350104821802937,False,True,Transición,sí,Portafolio flexible y monitoreo trimestral del perfil,0.2769731
+meta,Meta,88.0,C,0.29546356,0.06764384,0.014388489208633094,False,True,D consolidado,revisar,Orden público y capacidades mixtas,0.4348294
+atlantico,Atlántico,162.0,D,0.2034243,0.039087165,0.003816793893129771,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.1485537
+tolima,Tolima,150.0,D,0.15198144,0.053250622,0.01818181818181818,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.20408216
+santander,Santander,222.0,D,0.124069646,0.012984637,0.016722408026755852,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.072567284
+risaralda,Risaralda,49.0,D,0.08341375,0.027562166,0.02,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.07017144
+caldas,Caldas,93.0,D,0.0711603,0.041656666,0.008771929824561403,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.07678302
+quindio,Quindío,19.0,D,0.06518498,0.016046155,0.0,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.043607604
+cundinamarca,Cundinamarca,33.0,D,0.03781062,0.015241959,0.0,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.043374978
+boyaca,Boyacá,72.0,D,0.03768858,0.012451996,0.014492753623188406,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.02609254
+bogota,Bogotá D.C.,332.0,D,0.02132292,0.007058049,0.001443001443001443,False,True,D consolidado,sí,Orden público y capacidades mixtas,0.015089435

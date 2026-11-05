@@ -1,0 +1,261 @@
+{
+  "descripcion": "Configuración del modelo final de la U3 (generada por la §8.1 del cuaderno).",
+  "especificacion_final": {
+    "nombre": "MLP U3",
+    "variables": [
+      "x1_eventos",
+      "x2_fatalidades",
+      "x2b_letalidad",
+      "x4_coca",
+      "x5_bosque",
+      "x6_distancia",
+      "x7_ipm",
+      "m1_sC_t1",
+      "d1_sC_H2"
+    ],
+    "red": {
+      "tipo": "mlp",
+      "capas": [
+        16
+      ],
+      "activacion": "relu",
+      "l2": 0.001,
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 16,
+      "pasos": 560,
+      "pesos_clase": true,
+      "peso_eventos": "ninguno",
+      "objetivo": "duro",
+      "lambda_comp": 0.0,
+      "unidades_seq": 8,
+      "emb_dim": 2,
+      "n_deptos": 33
+    },
+    "semillas": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "C_logistica": 3.0,
+    "escalar": true,
+    "fuga_escalador": false
+  },
+  "especificacion_base_u2": {
+    "nombre": "MLP base U2",
+    "variables": [
+      "x1_eventos",
+      "x2_fatalidades",
+      "x2b_letalidad",
+      "x4_coca",
+      "x5_bosque",
+      "x6_distancia",
+      "x7_ipm"
+    ],
+    "red": {
+      "tipo": "mlp",
+      "capas": [
+        16
+      ],
+      "activacion": "relu",
+      "l2": 0.001,
+      "dropout": 0.0,
+      "lr": 0.001,
+      "batch": 16,
+      "pasos": 560,
+      "pesos_clase": true,
+      "peso_eventos": "ninguno",
+      "objetivo": "duro",
+      "lambda_comp": 0.0,
+      "unidades_seq": 8,
+      "emb_dim": 2,
+      "n_deptos": 33
+    },
+    "semillas": [
+      42
+    ],
+    "C_logistica": 3.0,
+    "escalar": true,
+    "fuga_escalador": false
+  },
+  "calibracion": "ninguna",
+  "umbral": 0.5,
+  "protocolo": {
+    "seleccion_origen_movil": [
+      2023,
+      2024,
+      2025
+    ],
+    "prueba": 2026,
+    "min_eventos": 10,
+    "alfa_contraccion": 4.0,
+    "semillas_intervenciones": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "decisiones": [
+    {
+      "Intervención": "I1 memoria m1",
+      "Referencia": "MLP base U2",
+      "ΔLog-loss": -0.035833613488187296,
+      "EE": 0.009438167040996698,
+      "ΔAUC": 0.01744186046511629,
+      "Decisión": "se retiene"
+    },
+    {
+      "Intervención": "I1 trayectoria m2, m3",
+      "Referencia": "I1a +m1",
+      "ΔLog-loss": 0.001563924018473728,
+      "EE": 0.011024775763117153,
+      "ΔAUC": -0.00010570824524311906,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I2 semestre reciente d1",
+      "Referencia": "I1a +m1",
+      "ΔLog-loss": -0.03740611746186069,
+      "EE": 0.006806372901314907,
+      "ΔAUC": 0.012684989429175486,
+      "Decisión": "se retiene"
+    },
+    {
+      "Intervención": "I2 tendencias d2, d3",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": 0.012959273371074909,
+      "EE": 0.00874369559700511,
+      "ΔAUC": -0.005919661733615267,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I3 actores armados x3",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": null,
+      "EE": null,
+      "ΔAUC": null,
+      "Decisión": "pendiente: UCDP GED no disponible en esta ejecución"
+    },
+    {
+      "Intervención": "I4 vecindad (temporal)",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": -0.0039630441422706,
+      "EE": 0.0019286216357578428,
+      "ΔAUC": 0.0020084566596194177,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I4 vecindad (espacial)",
+      "Referencia": "esp: referencia",
+      "ΔLog-loss": 0.009377168863183138,
+      "EE": 0.003682318200842807,
+      "ΔAUC": -0.005405405405405484,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I5 objetivo blando (sin calibrar)",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": 0.11928415910482708,
+      "EE": 0.004367464542484713,
+      "ΔAUC": -0.0044397463002114005,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I5 objetivo blando (ambos calibrados)",
+      "Referencia": "I2a +d1 · cal",
+      "ΔLog-loss": 0.0677593774285272,
+      "EE": 0.007792544810897414,
+      "ΔAUC": -0.015221987315010543,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I9 multitarea λ=0.5 (efecto en P(C))",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": 0.0013302437858683125,
+      "EE": 0.002740597713407279,
+      "ΔAUC": -0.00010570824524314126,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I9 multitarea λ=1 (efecto en P(C))",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": 0.009502747821825818,
+      "EE": 0.005176571741848724,
+      "ΔAUC": -0.004228329809725162,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "GRU trimestral",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": 0.009845483522693354,
+      "EE": 0.00445106845859825,
+      "ΔAUC": -0.003276955602537046,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "CNN 1D trimestral",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": 0.014332154751154336,
+      "EE": 0.014157461724286847,
+      "ΔAUC": -0.0064482029598308625,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "Embedding de departamento",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": -0.025907980204841342,
+      "EE": 0.010263484547979042,
+      "ΔAUC": 0.016279069767441867,
+      "Decisión": "cumple la regla, no se adopta: acierta 0.8 de 9 transiciones (referencia 2.0) y no transfiere a territorios nuevos"
+    },
+    {
+      "Intervención": "MLP profundo (16, 8)",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": -0.00037115978797926943,
+      "EE": 0.013481603300977104,
+      "ΔAUC": 0.0026427061310781543,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "Logística (mismas variables)",
+      "Referencia": "I2a +d1",
+      "ΔLog-loss": 0.0027137370793057225,
+      "EE": 0.0,
+      "ΔAUC": 0.0005285412262157063,
+      "Decisión": "no se retiene"
+    },
+    {
+      "Intervención": "I6 capacidad / activación / L2 / presupuesto",
+      "Referencia": "('(16,)', 0.001, 'relu', 560)",
+      "ΔLog-loss": 0.051825554000412,
+      "EE": null,
+      "ΔAUC": null,
+      "Decisión": "no se retiene (la selección no transfiere a 2025)"
+    },
+    {
+      "Intervención": "I7 ensamble de 10 semillas",
+      "Referencia": "1 red",
+      "ΔLog-loss": -0.010762958826385893,
+      "EE": null,
+      "ΔAUC": 0.0043023255813955386,
+      "Decisión": "se retiene (estabilidad)"
+    },
+    {
+      "Intervención": "I8 calibración",
+      "Referencia": "sin calibrar",
+      "ΔLog-loss": 0.004219677384120879,
+      "EE": null,
+      "ΔAUC": 0.0,
+      "Decisión": "no se retiene (no mejora sin mirar el futuro)"
+    }
+  ]
+}
