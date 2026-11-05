@@ -647,3 +647,113 @@ for nombre, tr_esp, te_esp in E.particiones_espaciales(datos):
 
 **(f) Ventana de d₁ con el año parcial:** d₁ con `acled[acled.semana_anio <= 33]` frente al d₁ con el año completo,
 2020–2025 → correlación 0,88; error absoluto medio 0,084.
+
+---
+
+## 9. Correcciones aplicadas (fase 2)
+
+Hicimos todas las correcciones sobre el `informe/construir_informe.py` que ya se había reescrito, sobre los scripts del
+cuaderno y sobre `src/`. Las cifras nuevas salen de la ejecución completa del cuaderno (20,8 min, sin errores) y del
+pipeline, que coincide con el cuaderno con diferencia 0 en `metricas_seleccion.csv` y `metricas_prueba_2026.csv`. No
+cambió el modelo adoptado y 2026 no se usó para elegir nada: los rivales nuevos se agregaron tras la revisión y así lo
+declaramos.
+
+**Estado final.** Pruebas: 10 de 10 pasan (antes eran 5). PDF: 11 páginas, con el enlace al repositorio clicable y título
+y autores en los metadatos. Las 8 tablas y las 9 figuras se citan en el texto. Ninguna cifra nueva del texto
+quedó sin verificar contra las salidas.
+
+**Cifras nuevas clave** (todas de `salidas_u3/`):
+
+| Comparación | Selección 2023–2025 | Prueba 2026 | Espacio-temporal (n = 87) |
+|---|---|---|---|
+| MLP U3 (ensamble de 10) | 0,304 | 0,380 | 0,361 |
+| Persistencia cruda | 0,363 | 0,429 | 0,363 |
+| Persistencia calibrada (nueva) | 0,328; Δ U3 −0,024 [−0,096; +0,052] | 0,351; Δ U3 +0,029 [−0,055; +0,125] | 0,332; Δ U3 +0,029 [−0,075; +0,154] |
+| Base U2, semilla 42 | 0,407 | 0,524 | – |
+| Base U2, ensamble de 10 (nuevo "antes" justo) | 0,376; Δ U3 −0,072 [−0,114; −0,033] | 0,470; Δ U3 −0,090 [−0,162; −0,024] | 0,476 |
+| Logística (mismas variables) | 0,306 | 0,383 | 0,416; Δ U3 −0,055 [−0,236; +0,067] |
+
+Otras cifras: espacial con 5 grupos, ensamble base 0,445 → 0,351 y red individual 0,476 → 0,373. Bandas de decisión: en
+2023–2025, 66 aciertos de 71 filas en banda consolidada; en 2026, 21 de 24. PSI con los mismos 30 departamentos y su piso
+de ruido: solo la letalidad lo supera (0,45 frente a 0,37); m₁ 0,23 y d₁ 0,17. Ventana de d₁ en 2026: error absoluto medio
+0,084 y correlación 0,88. Transiciones 2023–2026: U3 2, base U2 3 (con ensamble, 4), persistencia calibrada 1. Logística
+corregida en `decidir`: Δ −0,0035 con EE 0,0043.
+
+| Hallazgo | Qué se cambió | Archivos |
+|---|---|---|
+| C1 regla 8 | §4.1 pasa a "Protocolo de evaluación", con reglas 1–8 numeradas; se declara que la regla 8 se agregó al ver el embedding (también en §6.6 y en el cuaderno §3.1 y §6.7) | `informe/construir_informe.py`, `herramientas/cuaderno/parte_a.py`, `lecturas.py` |
+| C2 declaración de IA | Redacción indicada por el coordinador en el PDF, en el cuaderno §14.3 y en CONTEXTO §11 | `construir_informe.py`, `lecturas_fijas.py`, `CONTEXTO_PROYECTO.md` |
+| C3 rival débil | `pipeline.persistencia_calibrada` (logística sobre logit(m₁), solo años anteriores) en el pipeline (etapas 3 y 5, tarjeta) y en el cuaderno (§3.2, §9.1, §9.3, §9.4, §10.1); fila nueva en la Tabla 6; §6.1, conclusiones y resumen reescritos ("la ventaja es de calibración; frente a una inercia calibrada no está demostrada") | `src/perfil_amenaza/pipeline.py`, `parte_a.py`, `parte_c.py`, `parte_d.py`, `lecturas.py`, `construir_informe.py`, `tests/test_pipeline.py` |
+| C4 validación anidada | Texto de I6, Tabla 4 y leyenda de la Figura 5 reconocen que la vigente se eligió con 2025 en la U2; se quitó "que nadie eligió mirando esos datos" | `construir_informe.py`, `lecturas.py` |
+| C5 espacial mezcla años | `evaluacion.particiones_espacio_temporales`; esquema espacio-temporal en el cuaderno §9.2 (`validacion_espacio_temporal.csv`); §6.3, R1 y conclusiones reescritos | `src/perfil_amenaza/evaluacion.py`, `parte_c.py`, `lecturas.py`, `construir_informe.py` |
+| C6 enlace | Hipervínculo real (`w:hyperlink`) y nota "Repositorio privado… se da acceso al profesor como colaborador" | `construir_informe.py` |
+| M1 pregunta | Pregunta textual de la U1, nota sobre la escala municipal/departamental y conclusión 5 que responde la pregunta de inversión | `construir_informe.py`, `parte_a.py`, `lecturas.py` |
+| M2 transiciones | Corregido "ningún modelo acierta" (la U2 acertó Magdalena); se informan 2/3/4/1/0 transiciones | `construir_informe.py`, `lecturas.py`, `parte_d.py` |
+| M3 antes justo | Base U2 con ensamble de 10 en el cuaderno, en el pipeline y en la Tabla 6; párrafo antes/después reescrito | `parte_c.py`, `pipeline.py`, `construir_informe.py` |
+| M4 espacial justo | Ensamble contra ensamble (0,445 → 0,351) e individual contra individual (0,476 → 0,373); se explica por qué 5 grupos y no dejar un departamento fuera | `parte_c.py`, `construir_informe.py` |
+| M5 I4 | Tabla 5 "No retiene (criterio espacial)"; regla 5 con el criterio de I4; conclusión 2 corregida | `construir_informe.py`, `parte_a.py`, `lecturas.py` |
+| M6 EDA con 2026 | La Figura 1a y la estadística usan solo 2021–2025: 74 % de 19 transiciones | `generar_figuras.py`, `parte_a.py`, `construir_informe.py`, `lecturas.py` |
+| M7 matriz de confusión | §6.2 interpreta la Figura 6c; la Tabla 6 suma exactitud y sensibilidad/especificidad; McNemar y balance de clases (82 C / 89 D, 32–62 %) en el texto | `construir_informe.py` |
+| M8 lazo de entrenamiento | Ecuación de la pérdida y lazo forward → BCE+L2 → ∂L/∂θ → Adam en §4.2; mini-diagrama en la Figura 8 | `construir_informe.py`, `generar_figuras.py` |
+| M9 contexto | Recuadro "Notación y siglas" (siglas, mapeo de subtipos, métricas, transición, Ik, Dk); x₄–x₇ operacionalizadas en la Tabla 2 | `construir_informe.py` |
+| M10 decisión | Regla A/B (6,4 % → 12,7 %, ≥ 5 eventos), bandas, "contradice el perfil 2026" como cercanía a la inercia, departamentos con pocos datos, ventana de d₁, evaluación de las bandas (`bandas_decision.csv`) | `construir_informe.py`, `parte_d.py`, `lecturas.py` |
+| M11 PSI | `evaluacion.psi_ruido` y `tabla_psi` con el p95 sin deriva; misma población (30 departamentos); textos del PDF, el cuaderno, la tarjeta y R4 | `evaluacion.py`, `pipeline.py`, `parte_d.py`, `lecturas.py`, `construir_informe.py` |
+| M12 MLP | Justificación con evidencia (espacial y espacio-temporal) y con su IC que incluye el cero; se quitó "por coherencia con la U1" | `construir_informe.py`, `lecturas.py` |
+| M13 equipo | Párrafo sobre cómo trabajamos y qué decidimos juntos; nombres completos en la Tabla 8; mismo texto en el cuaderno §14.1 | `construir_informe.py`, `lecturas_fijas.py` |
+| M14 `decidir` | `evaluacion.regla_retencion` difunde la variante determinista contra cada semilla; el cuaderno la usa; prueba nueva | `evaluacion.py`, `parte_a.py`, `tests/test_pipeline.py` |
+| m1 | "bandas de la Etapa 2" | `construir_informe.py`, `lecturas.py` |
+| m2 | "al menos la mitad de los eventos son C, igual que en la U2" | `construir_informe.py` |
+| m3 | Tabla 3: encabezado y fila MIN_EVENTOS, prevalencia 44 %, "fuga deliberada", "control negativo" para las etiquetas barajadas, "detectarían" | `construir_informe.py`, `lecturas.py` |
+| m4 | Título y leyenda de la Figura 2 | `generar_figuras.py`, `construir_informe.py` |
+| m5 | Tabla 5: ΔAUC homogéneo, EE espacial, I8 en 2024–2025, nota sobre el orden de I9, logística −0,003 | `construir_informe.py` |
+| m6 | Sin negritas en la Tabla 6; persistencia 0,965 explicada; "antes" reentrenado con 560 pasos (la U2 fase 2 reportó 0,547) | `construir_informe.py` |
+| m7 | 0,359 (3 semillas) frente a 0,377 (5 semillas); "560 pasos = 70 épocas" en la Figura 4 | `construir_informe.py`, `generar_figuras.py`, `lecturas.py` |
+| m8 | Frase de Platt aclarada (AUC = 1,0 en 2025 con 6 escaladas mal clasificadas) | `construir_informe.py`, `lecturas.py` |
+| m9 | Se quitó "mejor calibrado que las alternativas"; ECE definido (5 grupos) | `construir_informe.py` |
+| m10 | Embedding: "en departamentos nuevos se reduce al MLP sin embedding (0,369 frente a 0,379)" | `construir_informe.py`, `parte_b.py`, `lecturas.py` |
+| m11 | Advertencia sobre la dependencia parcial con ρ = 0,84 | `construir_informe.py`, `lecturas.py` |
+| m12 | Optimismo de las cifras de selección (cascada) y EE entre semillas | `construir_informe.py`, `lecturas.py` |
+| m13 | "1,25 parámetros por fila (142 filas)…" | `construir_informe.py` |
+| m14 | Huila y Cesar (falso negativo) mencionados; rótulos de Huila en la Figura 7a | `construir_informe.py`, `generar_figuras.py`, `parte_d.py` |
+| m15 | Coma decimal en todos los ejes del informe; rótulos de la Figura 9 sin solapamiento (zona andina listada en la leyenda; se corrigió "Bogotá D,C,"); "Valle" en lugar de "Valle del"; tamaño "según la raíz" | `generar_figuras.py`, `construir_informe.py` |
+| m16 | Se citan en el texto las Tablas 4, 6, 7 y 8 y las Figuras 1a, 6 y 9 | `construir_informe.py` |
+| m17 | Kingma, Platt, Guo y Géron citados; autores completos (Hansen, Mitchell, Roberts); autor del Observatorio unificado; URL de Cawley y Guo; páginas de Lakshminarayanan; referencias de datos de ACLED, UCDP GED 26.1 y WRI; R6 en la Tabla 7 | `construir_informe.py` |
+| m18 | Encabezado con curso, universidad y fecha; "Sector elegido"; "y" en lugar de "&"; metadatos | `construir_informe.py` |
+| m19 | Se quitaron las negritas de subtítulos de §2 y §4 y las viñetas de §6, §7 y §9 (§6 pasa a subsecciones 6.1–6.6) | `construir_informe.py`, `lecturas.py` |
+| m20 | Rezago de publicación de coca y bosque declarado | `construir_informe.py` |
+| m21 | Departamentos excluidos nombrados | `construir_informe.py` |
+| m22 | R1 "cambian `datos.py` y las constantes de `config.py`"; R7 "prueba en 2027" | `construir_informe.py`, `lecturas.py` |
+| m23 | Rangos con raya en texto y leyendas; subíndices homogéneos en la Tabla 2 | `construir_informe.py` |
+| m24 | §10 y la Tabla 8 quedan en la misma página | (resultado de la nueva paginación) |
+| m25 | "validación anidada de un solo pliegue externo" | `construir_informe.py`, `lecturas.py` |
+| k1 | Calibración de la etapa 4 encadenada hacia adelante (`modelo.calibrar_adelante`); el cuaderno la usa | `modelo.py`, `pipeline.py`, `parte_b.py` |
+| k2 | Etapa 3 renombrada "Evaluación" (pipeline, Figura 8, cuaderno §11.1); la regla de retención pasa a `src` | `generar_figuras.py`, `parte_d.py`, `pipeline.py`, `evaluacion.py` |
+| k3 | `bootstrap_ic(..., grupos=)` por departamento; lo usa el cuaderno §9.1 | `evaluacion.py`, `parte_c.py` |
+| k4 | Docstring corregido; pruebas nuevas: caso negativo del contrato, capa Normalization del artefacto, persistencia calibrada, partición espacio-temporal y regla de retención | `tests/test_pipeline.py` |
+| k5 | `ejecutar_todo.bat` usa Python 3.13/3.12/3.11 y escribe el cuaderno en una copia (`--output`, ignorada en `.gitignore`) | `ejecutar_todo.bat`, `.gitignore` |
+| k6 | Tarjeta del modelo: rivales, limitaciones, deriva con piso de ruido y mantenimiento | `pipeline.py` → `salidas_u3/TARJETA_MODELO.md` |
+| k7 | README y CONTEXTO actualizados (pruebas, tiempos, resultados, R6, notas tras la revisión) | `README.md`, `CONTEXTO_PROYECTO.md` |
+| k8 | Versiones fijadas (NumPy 2.5.3, pandas 3.0.5, SciPy 1.18.1, scikit-learn 1.9.1, matplotlib 3.11.2) y python-docx | `requirements.txt` |
+| Extra | `exportar_texto.py` regenera `docs/u3_texto/`; copia el texto de las tablas tal como se muestra, porque un parseo con `thousands='.'` convertía −0,059 en −59 en las tablas con punto decimal | `herramientas/cuaderno/exportar_texto.py`, `docs/u3_texto/*` |
+| Extra | `graficos.tabla` muestra los booleanos como "sí" o "no" | `src/perfil_amenaza/graficos.py` |
+
+**Lo que no se pudo corregir, o se corrigió solo en parte:**
+
+* C6: el acceso del profesor al repositorio depende del usuario (Settings → Collaborators). El informe ya lo anuncia y el
+  enlace es clicable.
+* m12: no agregamos al cuaderno ni al informe los IC por departamento de I1 e I2 (anexo A, script c). Habría requerido
+  una celda de código nueva y otra ejecución completa. Los valores están en el anexo A de este reporte y se pueden
+  incorporar en la próxima ejecución.
+* k2: el bucle de la cascada (`evaluar`) sigue en `herramientas/cuaderno/parte_a.py`. En `src` pasaron la regla de
+  retención, la persistencia calibrada y las particiones.
+* M4: mantuvimos GroupKFold de 5 grupos en lugar de volver a dejar un departamento fuera, como en la U2. El informe explica
+  la razón (desempate estable desde scikit-learn 1.6 y costo) y la comparación espacio-temporal cubre el problema de
+  fondo.
+* M13: el historial de commits sigue mostrando un solo autor. Que Laura haga los commits de documentación depende del
+  equipo.
+* m15: algunos rótulos de la Figura 7a todavía se tocan en la zona densa (escaladas de 2025). Se leen, pero no quedan
+  separados del todo.
+* m23: algunos títulos internos de las figuras del cuaderno conservan guion en los rangos (p. ej. "2023-2025"). En el
+  texto y en las leyendas del informe se usa raya.
+* `graphify-out/` no se actualizó, por instrucción del coordinador. Conviene regenerarlo después del commit.
+* El video (Producto 2) y la sustentación siguen pendientes, fuera del alcance de esta revisión.

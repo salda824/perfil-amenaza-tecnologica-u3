@@ -492,8 +492,8 @@ de 2,0 a 1,4. Tres razones lo explican:
 
 El caso que motivaba $x_3$ ya estaba resuelto: Arauca, mal clasificada todos los años en la U2 (P ≈ 0,36), recibe
 P(C) entre 0,74 y 0,84 sin $x_3$ (entre 0,82 y 0,91 con ella). La memoria del perfil capta de forma indirecta la
-presencia sostenida del ELN. La conclusión no es que los actores no importen, sino que **un conteo anual
-departamental no es la forma útil de medirlos**. A escala municipal, el cambio en los actores presentes (entradas y
+presencia sostenida del ELN. Los actores pueden importar; lo que no funcionó fue medirlos con un conteo anual
+departamental. A escala municipal, el cambio en los actores presentes (entradas y
 salidas de grupos) es la versión que vale la pena probar (R2, §13).
 
 ## 6.4 I4: vecindad espacial

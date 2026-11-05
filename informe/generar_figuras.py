@@ -145,7 +145,7 @@ for xi, v in zip(x, esc["LL media"]):
 pers = E.bce(oos.y, oos.Persistencia)
 ax.axhline(pers, color=COL["pers"], ls="--", lw=.9); ax.text(len(esc) - .45, pers + .002, "persistencia", ha="right", va="bottom", fontsize=6)
 ax.set_xticks(x, [s.replace("+ ", "+\n") for s in esc.index]); ax.set_ylim(.25, .41); ax.set_ylabel("Log-loss 2023-2025")
-ax.set_title("(a) Escalera de mejora (red individual: media ± DE de 5 semillas)")
+ax.set_title("(a) Escalera de mejora (media ± DE, 5 semillas)")
 ax = axes[1]; x = np.arange(3)
 vals_in = [m_in.media, u_in.media, r24.loc[DEF]]; vals_25 = [r25.loc[tuple(m_in[K])], r25.loc[tuple(u_in[K])], r25.loc[DEF]]
 ax.bar(x - .18, vals_in, width=.34, color=COL["D"], label="2023-24 (donde se elige)"); ax.bar(x + .18, vals_25, width=.34, color=COL["val"], label="2025 (fuera)")
@@ -173,7 +173,7 @@ for nombre, H, color in [("Referencia", curva_base(datos, FINAL), COL["u3"]), ("
     ax.plot(H["epoca"], np.clip(H["bce_tr"], 0, 1.2), color=color, label=nombre)
     ax.plot(H["epoca"], np.clip(H["bce_va"], 0, 1.2), color=color, ls=":", lw=1)
 ax.set_ylim(0, 1.2); ax.set_xlabel("Época"); ax.set_ylabel("BCE (recortada en 1,2)")
-ax.set_title("(a) Entrenamiento (—) y validación 2025 (···), semilla 1"); ax.legend(loc="center right")
+ax.set_title("(a) BCE por época (···: validación 2025)"); ax.legend(loc="center right")
 ax = axes[1]
 o = ctrl["ΔLog-loss"].sort_values().index
 v = ctrl.loc[o, "ΔLog-loss"].clip(upper=.6)

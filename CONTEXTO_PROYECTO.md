@@ -163,11 +163,11 @@ máximo 12 páginas con código en repositorio; (2) video MP4 de 8–10 minutos.
 | I1 | Inercia domina | Memoria m1 = s̃_C(t−1) contraída; m2, m3 (t−2 y cambio) | m1: −0,036 (EE 0,009), AUC 0,921 → 0,939; m2/m3: +0,002 | **Retiene m1** |
 | I2 | Solo vista anual | d1 = s̃_C de las últimas 26 semanas de t−1; d2, d3 (tendencias) | d1: −0,037 (EE 0,007), LL 0,310, AUC 0,951; d2/d3: +0,013 | **Retiene d1** |
 | I3 | Arauca, falta x3 | x3 = log(1 + actores no estatales, UCDP) | +0,025 (EE 0,006), AUC −0,014 | No (redundante con fatalidades ρ = 0,77; bandas urbanas; salto de cobertura UCDP 2023) |
-| I4 | Espacial débil | Vecindad v1, v2 (contigüidad IGAC) | temporal −0,004; espacial +0,009 | No |
+| I4 | Espacial débil | Vecindad v1, v2 (contigüidad IGAC) | espacial +0,009 (criterio de la hipótesis); temporal −0,004 | No |
 | I5 | Celdas cerca del umbral | Objetivo blando (s_C) ± peso √eventos | +0,119 crudo; +0,068 calibrado | No |
 | I9 | A/B diluidas | Salida multitarea softmax A/B/C/D (KL) | P(C) +0,001; composición A/B peor que persistencia (MAE 0,035 vs. 0,030) | No |
-| – | Sin estructura temporal | GRU, CNN 1D (4 trimestres), MLP (16,8), embedding de depto., logística | +0,010; +0,014; 0,000; **−0,026**; +0,003 | No (embedding: regla 8) |
-| I6 | Capacidad inestable | Rejilla 48 config. (4–32 neuronas × L2 × ReLU/tanh × 280/560/1120 pasos) + anidada | 31/48 dentro de 1 EE; lo elegido en 2023–24 da 0,411–0,423 en 2025 vs. 0,359 de la vigente | Mantiene config. U2 |
+| – | Sin estructura temporal | GRU, CNN 1D (4 trimestres), MLP (16,8), embedding de depto., logística | +0,010; +0,014; 0,000; **−0,026**; −0,0035 (EE 0,0043; antes se reportaba +0,003 por un error en `decidir`) | No (embedding: regla 8) |
+| I6 | Capacidad inestable | Rejilla 48 config. (4–32 neuronas × L2 × ReLU/tanh × 280/560/1120 pasos) + anidada | 31/48 dentro de 1 EE; lo elegido en 2023–24 da 0,411–0,423 en 2025 vs. 0,359 de la vigente (comparación sesgada a favor de la vigente: se eligió en la U2 con 2025) | Mantiene config. U2 (parsimonia) |
 | I7 | Varianza entre semillas | Ensamble de 10 redes | LL 0,308 → 0,297 (esperado); banda 5–95 % de 0,053 a 0,009 | **Retiene** |
 | I8 | Subestima P(C) | Platt / temperatura (hacia adelante y dejando un año fuera); umbral por año | Platt LL 0,298 → 0,302; umbral óptimo MCC 0,20 / 0,51 / 0,15 | No; umbral 0,5 + bandas |
 
@@ -180,45 +180,69 @@ pasos, BCE ponderada por clase, semillas 1–10, sin calibración, umbral 0,5 (+
 en `configuracion.json`. Artefacto: `salidas_u3/modelos/perfil_amenaza_u3.keras` (152 KB; incluye estandarización,
 10 redes, promedio y capa de calibración identidad).
 
-### 6.3 Antes vs. después
+### 6.3 Antes vs. después (Tabla 6 del informe; `salidas_u3/antes_despues_*.csv`)
 
-| Conjunto | Modelo | AUC | Log-loss | Brier | ECE | MCC | Transiciones |
-|---|---|---|---|---|---|---|---|
-| Origen móvil 2023–2025 (n = 87) | Persistencia | 0,973 | 0,363 | 0,106 | 0,173 | 0,795 | 0/9 |
-| | Antes: MLP base U2 (semilla 42) | 0,913 | 0,407 | 0,132 | 0,084 | 0,659 | 2/9 |
-| | Logística (mismas 9 variables) | 0,949 | 0,306 | 0,097 | 0,068 | 0,737 | 1/9 |
-| | **Después: MLP U3** | **0,956** | **0,304** | **0,095** | 0,124 | 0,691 | 2/9 |
-| Prueba 2026 (n = 29) | Persistencia | 0,948 | 0,429 | 0,131 | 0,207 | 0,755 | 0/4 |
-| | Antes: MLP base U2 | 0,852 | 0,524 | 0,166 | 0,104 | 0,517 | 1/4 |
-| | Logística | 0,929 | 0,383 | 0,129 | 0,114 | 0,531 | 0/4 |
-| | **Después: MLP U3** | 0,900 | **0,380** | **0,121** | **0,074** | 0,672 | 0/4 |
-| | *(alternativa no adoptada) MLP + embedding* | 0,933 | 0,314 | 0,100 | 0,123 | 0,812 | 1/4 |
+| Conjunto | Modelo | AUC | Log-loss | Brier | ECE | MCC | Exactitud | Transiciones |
+|---|---|---|---|---|---|---|---|---|
+| Origen móvil 2023–2025 (n = 87) | Persistencia | 0,973 | 0,363 | 0,106 | 0,173 | 0,795 | 0,897 | 0/9 |
+| | Persistencia calibrada (rival tras la revisión) | 0,966 | 0,328 | 0,099 | 0,116 | 0,778 | 0,885 | 1/9 |
+| | Antes: base U2, semilla 42 (entregado) | 0,913 | 0,407 | 0,132 | 0,084 | 0,659 | 0,816 | 2/9 |
+| | Antes: base U2, ensamble de 10 | 0,933 | 0,376 | 0,120 | 0,094 | 0,644 | 0,816 | 3/9 |
+| | Logística (mismas 9 variables) | 0,949 | 0,306 | 0,097 | 0,068 | 0,737 | 0,862 | 1/9 |
+| | **Después: MLP U3** | 0,956 | **0,304** | **0,095** | 0,124 | 0,691 | 0,839 | 2/9 |
+| Prueba 2026 (n = 29) | Persistencia | 0,948 | 0,429 | 0,131 | 0,207 | 0,755 | 0,862 | 0/4 |
+| | Persistencia calibrada | 0,948 | **0,351** | 0,105 | 0,150 | 0,755 | 0,862 | 0/4 |
+| | Antes: base U2, semilla 42 | 0,852 | 0,524 | 0,166 | 0,104 | 0,517 | 0,759 | 1/4 |
+| | Antes: base U2, ensamble de 10 | 0,862 | 0,470 | 0,157 | 0,109 | 0,517 | 0,759 | 1/4 |
+| | Logística | 0,929 | 0,383 | 0,129 | 0,114 | 0,531 | 0,759 | 0/4 |
+| | **Después: MLP U3** | 0,900 | 0,380 | 0,121 | **0,074** | 0,672 | 0,828 | 0/4 |
+| | *(alternativa no adoptada) MLP + embedding* | 0,933 | 0,314 | 0,100 | 0,123 | 0,812 | 0,897 | 1/4 |
 
-- Después vs. antes: ΔLL −0,103 (IC95 por departamento [−0,185; −0,033]) en selección; −0,144 [−0,270; −0,033] en 2026.
-- Después vs. persistencia: ΔLL −0,059 [−0,142; +0,028] (P(mejora) = 0,92) en selección; −0,049 [−0,162; +0,092] en 2026.
-- **Espacial** (5 pliegues por departamento, años ≤ 2025): log-loss 0,475 (U2) → **0,351** (U3); persistencia 0,418; logística 0,373.
+- Después vs. antes (semilla 42): ΔLL −0,103 [−0,185; −0,033] en selección; −0,144 [−0,270; −0,033] en 2026.
+  Después vs. antes justo (base con ensamble de 10): −0,072 [−0,114; −0,033] en selección; −0,090 [−0,162; −0,024] en 2026.
+- Después vs. persistencia cruda: ΔLL −0,059 [−0,142; +0,028] (P(mejora) = 0,92) en selección; −0,049 [−0,162; +0,092]
+  en 2026. La persistencia ordena y clasifica mejor (exactitud 0,897 vs. 0,839; McNemar 7 contra 2, p = 0,18).
+- Después vs. **persistencia calibrada**: −0,024 [−0,096; +0,052] (P(mejora) = 0,74) en selección; **+0,029**
+  [−0,055; +0,125] en 2026. La ventaja frente a la inercia es de calibración y no está demostrada a escala departamental.
+- **Espacial** (5 grupos de departamentos, años ≤ 2025 mezclados): ensamble base 0,445 → **0,351**; red individual
+  0,476 → 0,373; persistencia 0,418; logística 0,373. **Espacio-temporal** (mismos grupos, solo años anteriores; n = 87):
+  U3 0,361, persistencia 0,363 (Δ −0,002 [−0,114; +0,130]), persistencia calibrada **0,332**, logística 0,416, base
+  ensamble 0,476. En territorios nuevos el modelo empata con la inercia.
+- **Bandas de decisión:** 2023–2025, 71 de 87 filas en banda consolidada con 66 aciertos (31/32 en C, 35/39 en D); 2026,
+  24 de 29 con 21 aciertos (10/13 en C, 11/11 en D). Con la persistencia cruda, 42 de 87 quedan en transición.
 - **Curvas:** BCE de validación 2025 en 560 pasos: 0,448 (base) → 0,377 (final); mínimo 0,360; 3× pasos → 0,441.
 - **Controles (§7 del cuaderno):** sin estandarización LL 6,09 (no converge); etiquetas barajadas LL 0,815 / AUC 0,32;
   sin pesos de clase +0,015; mapeo alternativo +0,007; sin contracción +0,002; fuga del escalador −0,002; **sin
   logaritmos −0,012** (no anticipado, no se cambia: regla 7); MIN_EVENTOS 5/10/20 → 0,300/0,307/0,338.
 - **Etiqueta parcial:** a la semana 33 coincide con la anual en el 94,9 % de 136 celdas (2021–2025).
 - **Errores:** 19 en 2023–2026; 58 % son transiciones, 58 % cerca del umbral. Arauca corregida (P 0,77–0,85). Persisten
-  escaladas D→C 2025, desescaladas C→D 2026 (Bolívar, Chocó, Magdalena, Valle) y Casanare (pocos eventos).
+  escaladas D→C 2025, desescaladas C→D 2026 (Bolívar, Chocó, Magdalena, Valle), Huila 2023–2024 y Casanare (pocos eventos).
+  Transiciones 2023–2026 (13): U3 2, base U2 semilla 42 3, base U2 ensamble 4, persistencia calibrada 1, persistencia 0.
 - **Importancia (permutación OOS):** d1 0,115 ≫ bosque 0,049 ≈ m1 0,048 ≈ fatalidades 0,046 > IPM, letalidad, coca > distancia, eventos.
-- **Deriva (PSI 2026 vs. 2021–2026):** m1 0,29 y letalidad 0,25 (deriva); d1 0,24 y eventos 0,10 (vigilar).
+- **Deriva (PSI de la información 2026 de los 30 departamentos del entrenamiento vs. filas de entrenamiento):** letalidad
+  0,45 (supera el p95 del ruido de muestreo, 0,37); m1 0,23 y d1 0,17 (franja de vigilancia, dentro del ruido). Con n = 30
+  el p95 del PSI sin deriva está entre 0,21 y 0,39. Con la información parcial de 2026, d1 resume las semanas 8–33
+  (en 2020–2025 difiere del semestral en 0,084 en promedio, correlación 0,88).
 
 ### 6.4 Proyección 2027 (`salidas_u3/proyeccion_2027_u3.csv`)
 11 C consolidados (Guaviare 0,99, Nariño, Cauca, Caquetá, Putumayo, Antioquia, Amazonas*, Norte de Santander, Vaupés*,
 Vichada, Cesar), 11 en transición (San Andrés*, Chocó, Valle, Arauca, Córdoba, Guainía*, Casanare, Huila, Meta, Sucre,
-Magdalena), 11 D. Alerta A/B: **Guaviare (14,4 %) y Cauca (13,4 %)**. Discrepancias con el perfil 2026: 3 (U2: 10).
-(*pocos datos)
+Magdalena), 11 D. Alerta A/B (A+B 2025–2026 ≥ 2 × nacional = 12,7 % y ≥ 5 eventos): **Guaviare (14,4 %) y Cauca
+(13,4 %)**. Contradicen el perfil 2026: 3 (Chocó, Valle, Meta; U2: 10); mide cercanía a la inercia, no acierto.
+(*menos de 10 eventos en 2026: requieren revisión experta)
 
 ### 6.5 Conclusiones clave (para el video y la sustentación)
-1. La mejora vino de **representar mejor los datos** (memoria + semestre reciente), no de la arquitectura.
-2. El modelo pasa de perder contra la inercia a superarla en **calidad probabilística** (no en AUC), con IC que tocan el cero.
-3. La **generalización espacial** quedó resuelta → argumento para escalar a municipio.
-4. **Límite:** acierta 2 de 13 transiciones. **Honestidad:** la logística empata; el embedding descartado fue mejor en 2026.
-5. Optimizar hiperparámetros con 58 filas **sobreajusta la selección** (validación anidada).
+1. La mejora vino de representar mejor los datos (memoria + semestre reciente); la arquitectura es la de la U2.
+2. Frente al modelo de la U2 la mejora es clara (ensamble contra ensamble: 0,376 → 0,304 en selección; 0,470 → 0,380 en 2026).
+3. Frente a la inercia cruda la ventaja es de calibración. Frente a una inercia calibrada no está demostrada a escala
+   departamental (gana 0,024 en selección, pierde 0,029 en 2026, pierde en territorios nuevos: 0,361 vs. 0,332).
+4. En departamentos nuevos el modelo transfiere mucho mejor que el de la U2, pero empata con la persistencia cuando se
+   respeta el tiempo (0,361 vs. 0,363). R1 (municipio) se justifica por la varianza de 30 unidades, no por una
+   transferencia ya demostrada.
+5. Límites: acierta 2 de 13 transiciones (la U2, 3); la logística empata en el eje temporal; el embedding descartado fue
+   mejor en 2026. La regla 8 se agregó al ver el embedding y se declara así.
+6. La rejilla de hiperparámetros (58 filas de validación) no ofrece una alternativa estable; la comparación anidada
+   favorece a la vigente porque se eligió en la U2 con 2025.
 
 ---
 
@@ -300,6 +324,11 @@ mirar el futuro · D19 paquete + artefacto único `.keras` · D20 x3 con UCDP, e
 
 ---
 
+Tras la revisión (fase 2 de `revision/REVISION_U3.md`) se agregaron, sin cambiar el modelo ni usar 2026 para elegir:
+la persistencia calibrada como rival, el ensamble de 10 semillas del modelo base como "antes" justo, la validación
+espacio-temporal, la evaluación de las bandas de decisión y el PSI con piso de ruido. También se corrigió `decidir`
+(la logística se comparaba con la semilla 1 de la referencia).
+
 ## 11. Pendientes y próximos pasos
 
 - [ ] **Video MP4 de 8–10 min** (Producto 2): síntesis del problema (§1), decisiones técnicas (escalera, validación
@@ -314,7 +343,7 @@ mirar el futuro · D19 paquete + artefacto único `.keras` · D20 x3 con UCDP, e
 - [ ] Fechas de entrega y sustentación: no figuran en la guía; confirmar en la plataforma del curso.
 - Recomendaciones técnicas (informe §9, Tabla 7): R1 municipio con ACLED por evento; R2 x3 municipal (entradas/salidas
   de grupos); R3 señales adelantadas de transición; R4 reentrenar cada año + PSI; R5 revisar logaritmos y MIN_EVENTOS;
-  R6 persistencia y logística como controles permanentes; R7 reevaluar el embedding con 2026 cerrado.
+  R6 persistencia calibrada y logística como rivales permanentes; R7 reevaluar el embedding con 2026 cerrado.
 
 ---
 
@@ -322,6 +351,10 @@ mirar el futuro · D19 paquete + artefacto único `.keras` · D20 x3 con UCDP, e
 
 - **No usar 2026 para seleccionar nada.** Es la prueba final. Cualquier cambio de modelo debe evaluarse con origen móvil
   2023–2025 (o, cuando cierre 2026, con 2024–2026, y la prueba pasaría a 2027).
+- **Rival correcto:** la persistencia cruda usa una proporción como probabilidad; compárese siempre también con la
+  persistencia calibrada (`pipeline.persistencia_calibrada`) y con la validación espacio-temporal, no solo la espacial.
+- **Texto del cuaderno:** `docs/u3_texto/` se regenera con `python herramientas/cuaderno/exportar_texto.py`, que copia el
+  texto de las tablas tal como se muestra (sin convertir números).
 - **Formato de números en las tablas HTML del cuaderno:** `graficos.tabla` usa coma decimal; si se parsean con
   `pandas.read_html`, pasar `decimal=',', thousands='.'`. (Un parseo sin eso hizo leer 6,09 como 0,609 una vez.)
 - Las **interpretaciones** del cuaderno (`herramientas/cuaderno/lecturas.py`) son texto fijo con cifras: si los

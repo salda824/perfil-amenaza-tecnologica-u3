@@ -431,7 +431,8 @@ tabla("Tabla 5: Del diagnóstico de la U2 a la decisión (Δ log-loss media entr
 p("La rejilla de capacidad (4–32 neuronas), L2, activación (ReLU, tanh) y presupuesto (280–1.120 pasos) es plana (I6): 31 de "
   "48 configuraciones quedan a menos de un EE de la mejor, y la vigente (puesto 18) está en esa banda. Para ver si elegir en "
   "la rejilla ayudaría, seleccionamos con 2023–2024 y medimos en 2025, una validación anidada de un solo pliegue externo. La "
-  "mejor de 2023–2024 obtiene 0,423 y la elegida por la regla de 1 EE obtiene 0,411; la vigente obtiene 0,359 (Figura 5b). "
+  "mejor de 2023–2024 obtiene 0,423 y la elegida por la regla de 1 EE obtiene 0,411; la vigente obtiene 0,359 (Figura 5b; "
+  "media de 3 semillas, frente a 0,377 con las 5 de la Figura 4). "
   "La comparación favorece a la vigente, porque su capacidad y su presupuesto se eligieron en la U2 con una validación que "
   "incluía 2025. Por eso no la leemos como prueba de que la vigente sea mejor: con 58 filas, la rejilla no ofrece una "
   "alternativa que se sostenga al año siguiente (Cawley y Talbot, 2010), y mantenemos la configuración de la U2 por "
@@ -447,7 +448,7 @@ figura("R04_optimizacion", 16.2, "Figura 5: (a) Escalera de mejora: log-loss de 
 def _f(v, d=3):
     return "–" if pd.isna(v) else f"{v:.{d}f}".replace(".", ",")
 FILAS6 = [("Persistencia", "Persistencia"), ("Persistencia calibrada*", "Persistencia calibrada"),
-          ("Antes: base U2, semilla 42 (entregado)", "Antes: MLP base U2 (semilla 42"), ("Antes: base U2, ensamble de 10", "Antes: MLP base U2 (ensamble"),
+          ("Antes: base U2, semilla 42", "Antes: MLP base U2 (semilla 42"), ("Antes: base U2, ensamble de 10", "Antes: MLP base U2 (ensamble"),
           ("Logística (mismas variables)", "Logística"), ("Después: MLP U3 (ensamble de 10)", "Después: MLP U3")]
 filas6 = [["Conjunto", "Modelo", "AUC", "Log-loss", "Brier", "ECE", "MCC", "Exactitud", "Sens. C / Espec. D", "Transiciones"]]
 for conj, arch in [("Origen móvil 2023–2025 (n = 87)", "antes_despues_origen_movil.csv"), ("Prueba 2026 (n = 29), una sola vez", "antes_despues_prueba_2026.csv")]:
@@ -459,7 +460,8 @@ for conj, arch in [("Origen móvil 2023–2025 (n = 87)", "antes_despues_origen_
                        f"{int(m['Transiciones acertadas'])} de {int(m['Transiciones'])}"])
 tabla("Tabla 6: Antes y después frente a los rivales (* rival agregado tras la revisión; no cambió el modelo adoptado)",
       filas6, [2.7, 4.3, 1.1, 1.3, 1.1, 1.1, 1.1, 1.4, 2.0, 1.6], tam=7.6, centrar_desde=2)
-p("Frente al modelo entregado en la U2 (una red, semilla 42), la log-loss baja de 0,407 a 0,304 en selección "
+p("Frente al modelo de la U2 (una red, semilla 42, reentrenada con los 560 pasos fijos de la U3; la fase 2 de la U2 "
+  "reportó 0,547 en 2026), la log-loss baja de 0,407 a 0,304 en selección "
   "(Δ −0,103; IC95 por departamento [−0,185; −0,033]) y de 0,524 a 0,380 en 2026 (Δ −0,144; IC95 [−0,270; −0,033]). La "
   "U2 había documentado que esa semilla quedó en la cola desfavorable, así que la comparamos también con la misma "
   "arquitectura base promediada sobre las mismas 10 semillas del modelo final (Tabla 6). Con ensamble en los dos lados, la "
