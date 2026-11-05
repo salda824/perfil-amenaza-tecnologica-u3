@@ -1,0 +1,23 @@
+### pytest
+..........                                                               [100%]
+10 passed in 7.00s
+### todo
+[1-2] datos: 171 filas, 30 departamentos, 9 predictoras
+[3-4] origen móvil 2023-2025 (n=87): AUC 0.956, log-loss 0.304 (persistencia 0.363; persistencia calibrada 0.328; base U2 0.407; base U2 ensamble 0.376); calibración: ninguna
+[5] prueba 2026 (n=29): AUC 0.900, log-loss 0.380 (persistencia 0.429; persistencia calibrada 0.351; base U2 ensamble 0.470)
+[6] artefacto: perfil_amenaza_u3.keras (152 KB, 10 redes)
+[7] proyección 2027: {'C consolidado': 11, 'Transición': 11, 'D consolidado': 11} | PSI > 0,25: 1; PSI por encima del ruido de muestreo (p95): 1
+[8] tarjeta del modelo escrita. Tiempo total: 63 s
+### predecir
+      departamento  P(C) 2027 Categoría 2027                                                                 Énfasis sugerido
+          Guaviare       0.99  C consolidado ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI
+            Nariño       0.93  C consolidado                                    ISR, detección temprana y movilidad protegida
+             Cauca       0.92  C consolidado ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI
+           Caquetá       0.92  C consolidado                                    ISR, detección temprana y movilidad protegida
+          Putumayo       0.89  C consolidado                                    ISR, detección temprana y movilidad protegida
+         Antioquia       0.88  C consolidado                                    ISR, detección temprana y movilidad protegida
+          Amazonas       0.88  C consolidado                                    ISR, detección temprana y movilidad protegida
+Norte de Santander       0.86  C consolidado                                    ISR, detección temprana y movilidad protegida
+            Vaupés       0.84  C consolidado                                    ISR, detección temprana y movilidad protegida
+           Vichada       0.79  C consolidado                                    ISR, detección temprana y movilidad protegida
+             Cesar       0.71  C consolidado                                    ISR, detección temprana y movilidad protegida

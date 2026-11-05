@@ -1,0 +1,488 @@
+<!-- Plantilla de la PRESENTACIÓN EN CLASE (20–30 min; meta 25 min): todo el proyecto, U1 → U2 → U3.
+     Cada <section> lleva data-titulo, data-orador y data-seg. Las cifras con data-v salen de DATOS. -->
+<div id="escenario" data-marca="Perfil de amenaza tecnológica · Proyecto completo U1–U3">
+
+<!-- 1 · PORTADA -->
+<section class="slide portada" data-titulo="Portada" data-orador="ambos" data-seg="30">
+  <div class="kicker anim"><span class="num">U1 · U2 · U3</span> Redes Neuronales · Proyecto de aplicación</div>
+  <h1 class="anim">Perfil de amenaza tecnológica de los territorios colombianos</h1>
+  <p class="bajada anim">Del perfil de amenaza a la decisión de inversión: un modelo neuronal que anticipa, departamento por departamento, qué tipo de violencia armada predominará el año siguiente.</p>
+  <div class="equipo anim">
+    <div class="persona"><b style="color:var(--laura)">Laura Alejandra Díaz Sastoque</b><span>Interpretación estratégica · documentación</span></div>
+    <div class="persona"><b style="color:var(--juan)">Juan Diego Saldarriaga Muñoz</b><span>Modelado · pipeline</span></div>
+  </div>
+  <p class="fuente anim" style="margin-top:auto">Universidad de La Sabana · Maestría en Ciencia de Datos · Sector: seguridad y defensa · 2026</p>
+  <div class="mapa-fondo anim"><div class="g-mapa" data-modo="2027" data-alto="1000" data-leyenda="0"></div></div>
+</section>
+
+<!-- 2 · RECORRIDO -->
+<section class="slide" data-titulo="Recorrido U1 → U2 → U3" data-orador="laura" data-seg="40">
+  <div class="kicker anim"><span class="num">00</span> Recorrido del proyecto</div>
+  <h2 class="anim">Tres unidades, una misma pregunta</h2>
+  <div class="linea-tiempo grande-lt anim" style="margin-top:70px">
+    <div class="hito" data-ir="3"><div class="nodo">U1</div><h3>Formulación</h3><p>Problema, perfiles A/B/C/D, datos ACLED y 7 variables candidatas</p><span class="chip">diapositivas 3–7</span></div>
+    <div class="hito" data-ir="8"><div class="nodo">U2</div><h3>Modelo base</h3><p>MLP 7 → 16 → 1, diagnóstico honesto: perdía contra la inercia</p><span class="chip">diapositivas 8–12</span></div>
+    <div class="hito" data-ir="13"><div class="nodo" style="border-color:var(--u3)">U3</div><h3>Proyecto integrador</h3><p>9 intervenciones, ensamble de 10 redes, pipeline y proyección 2027</p><span class="chip">diapositivas 13–27</span></div>
+  </div>
+  <div class="tarjeta anim sin-marca" style="margin-top:90px;max-width:1400px;align-self:center;padding:36px 48px">
+    <p class="grande" style="text-align:center;font-size:40px">Hilo conductor: <b class="resalta">¿qué tecnología conviene desplegar en cada territorio?</b> Cada unidad respondió a lo que la anterior dejó abierto.</p>
+  </div>
+</section>
+
+<!-- 3 · CONTEXTO -->
+<section class="slide" data-titulo="Contexto: modernización 2026" data-orador="laura" data-seg="50">
+  <div class="kicker anim"><span class="num">01</span> Contexto <span class="unidad">Unidad 1 · Formulación</span></div>
+  <h2 class="anim">Colombia ejecuta la mayor modernización militar de su historia</h2>
+  <div class="fila crece centro">
+    <div class="col" style="width:620px">
+      <div class="stat acento anim"><span class="valor" style="font-size:150px">3,7<small>billones</small></span><span class="etq">pesos en 2026 · +47 % frente a 2025</span></div>
+      <p class="fuente anim">Ministerio de Defensa (2025)</p>
+    </div>
+    <div class="col crece">
+      <div class="tarjeta anim"><h3>Escudo Nacional Antidrones</h3><p>Responde al perfil <b style="color:var(--B)">B</b>: drones y ataques remotos.</p></div>
+      <div class="tarjeta anim"><h3>Blindados de INDUMIL y drones de la CIAC</h3><p>Movilidad protegida e inteligencia para el perfil <b style="color:var(--Cclaro)">C</b>: combates y emboscadas.</p></div>
+      <div class="tarjeta anim"><h3>Detección de artefactos explosivos</h3><p>Necesaria donde domina el perfil <b style="color:var(--A)">A</b>.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · PREGUNTA -->
+<section class="slide" data-titulo="Pregunta orientadora" data-orador="laura" data-seg="50">
+  <div class="kicker anim"><span class="num">02</span> Pregunta orientadora <span class="unidad">U1</span></div>
+  <div class="cita anim" style="font-size:46px;max-width:1650px;margin-top:40px">¿Cómo orientar la adquisición, transferencia de tecnología y fabricación de sistemas de seguridad y defensa de las Fuerzas de Colombia en función del perfil de amenaza tecnológica predominante de los territorios, según su actividad armada histórica, geografía operacional y economías ilícitas, de modo que se optimice la inversión?</div>
+  <div class="g3 anim tarjetas-grandes" style="margin-top:60px">
+    <div class="tarjeta sin-marca"><h3 class="alerta-txt">Sobreinvertir</h3><p>Antidrones costosos donde el vector son explosivos o combates.</p></div>
+    <div class="tarjeta sin-marca"><h3 class="alerta-txt">Subinvertir</h3><p>Sin detección de explosivos donde ese es el riesgo principal.</p></div>
+    <div class="tarjeta"><h3 class="ok">Nuestra respuesta</h3><p>Anticipar el perfil de cada departamento para el año siguiente y traducirlo en un énfasis tecnológico.</p></div>
+  </div>
+</section>
+
+<!-- 5 · PERFILES -->
+<section class="slide" data-titulo="Perfiles A/B/C/D" data-orador="laura" data-seg="60">
+  <div class="kicker anim"><span class="num">03</span> Cuatro perfiles de amenaza <span class="unidad">U1</span></div>
+  <h2 class="anim">Un territorio tiene el perfil X si más de la mitad de sus eventos son de ese tipo</h2>
+  <div class="g4 crece anim" style="margin-top:10px">
+    <div class="giro"><div class="cara-in">
+      <div class="cara"><svg class="icono" viewBox="0 0 64 64"><path d="M32 6l6 14 15-4-9 13 12 9-15 2 1 15-10-11-10 11 1-15-15-2 12-9-9-13 15 4z" fill="none" stroke="var(--A)" stroke-width="3"/></svg>
+        <span class="letra" style="color:var(--A)">A</span><span class="nombre">Explosivos</span><p class="chico">Artefactos explosivos improvisados, minas, granadas</p><span class="pista-giro">clic para ver datos ↻</span></div>
+      <div class="cara atras"><span class="nombre">A · explosivos</span><p class="chico">Remote explosive / landmine / IED · Grenade · Suicide bomb · Chemical weapon</p>
+        <div class="stat" style="margin-top:auto"><span class="valor" style="font-size:64px" data-cuota="A"></span><span class="etq">de los eventos 2020–2026</span></div></div></div></div>
+    <div class="giro"><div class="cara-in">
+      <div class="cara"><svg class="icono" viewBox="0 0 64 64"><g fill="none" stroke="var(--B)" stroke-width="3"><rect x="24" y="26" width="16" height="12" rx="3"/><path d="M24 28L13 17M40 28l11-11M24 36L13 47M40 36l11 11"/><circle cx="12" cy="16" r="7"/><circle cx="52" cy="16" r="7"/><circle cx="12" cy="48" r="7"/><circle cx="52" cy="48" r="7"/></g></svg>
+        <span class="letra" style="color:var(--B)">B</span><span class="nombre">Drones</span><p class="chico">Ataques aéreos y remotos con aeronaves no tripuladas</p><span class="pista-giro">clic para ver datos ↻</span></div>
+      <div class="cara atras"><span class="nombre">B · drones</span><p class="chico">Air / drone strike</p>
+        <div class="stat" style="margin-top:auto"><span class="valor" style="font-size:64px" data-cuota="B"></span><span class="etq">de los eventos 2020–2026</span></div></div></div></div>
+    <div class="giro"><div class="cara-in">
+      <div class="cara"><svg class="icono" viewBox="0 0 64 64"><g fill="none" stroke="var(--Cclaro)" stroke-width="3"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="6"/><path d="M32 4v14M32 46v14M4 32h14M46 32h14"/></g></svg>
+        <span class="letra" style="color:var(--Cclaro)">C</span><span class="nombre">Convencional</span><p class="chico">Combates, emboscadas, ataques y secuestros</p><span class="pista-giro">clic para ver datos ↻</span></div>
+      <div class="cara atras"><span class="nombre">C · convencional</span><p class="chico">Armed clash · Attack · Shooting · Abduction · Looting / property destruction · Disrupted weapons use</p>
+        <div class="stat" style="margin-top:auto"><span class="valor" style="font-size:64px" data-cuota="C"></span><span class="etq">de los eventos 2020–2026</span></div></div></div></div>
+    <div class="giro"><div class="cara-in">
+      <div class="cara"><svg class="icono" viewBox="0 0 64 64"><g fill="none" stroke="var(--D)" stroke-width="3"><circle cx="20" cy="22" r="9"/><rect x="36" y="13" width="18" height="18" rx="2"/><path d="M20 38l11 18H9z"/><path d="M45 38l9 9-9 9-9-9z"/></g></svg>
+        <span class="letra" style="color:var(--D)">D</span><span class="nombre">Mixto</span><p class="chico">Ningún tipo supera el 50 %: protestas, disturbios y otros</p><span class="pista-giro">clic para ver datos ↻</span></div>
+      <div class="cara atras"><span class="nombre">D · mixto</span><p class="chico">Protestas, disturbios, arrestos y todo subtipo no listado</p>
+        <div class="stat" style="margin-top:auto"><span class="valor" style="font-size:64px" data-cuota="D"></span><span class="etq">de los eventos 2020–2026</span></div></div></div></div>
+  </div>
+</section>
+
+<!-- 6 · DATOS ACLED -->
+<section class="slide" data-titulo="Datos: ACLED" data-orador="juan" data-seg="55">
+  <div class="kicker anim"><span class="num">04</span> Datos <span class="unidad">U1</span></div>
+  <h2 class="anim">ACLED: eventos semanales de violencia política por departamento</h2>
+  <div class="fila crece">
+    <div class="col" style="width:560px;gap:30px">
+      <div class="stat anim"><span class="valor" data-contar-v="acled|filas_export">0</span><span class="etq">filas del export semanal</span></div>
+      <div class="stat acento anim"><span class="valor" data-contar-v="acled|eventos">0</span><span class="etq">eventos 2020–2026</span></div>
+      <div class="stat anim"><span class="valor" data-contar-v="acled|deptos">0</span><span class="etq">departamentos</span></div>
+      <p class="chico anim">El export gratuito llega solo a departamento, sin municipio ni actores: una restricción que marcó todo el proyecto.</p>
+    </div>
+    <div class="col crece anim">
+      <div class="fuente">Los 10 subtipos más frecuentes, coloreados por el perfil al que se asignan</div>
+      <div class="g-subtipos"></div>
+      <p class="fuente">ACLED (Raleigh et al., 2010) · más SIMCI-UNODC (coca), Global Forest Watch (bosque), DANE (pobreza) y UCDP GED (actores)</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · HALLAZGOS U1 -->
+<section class="slide" data-titulo="Hallazgos de la U1" data-orador="juan" data-seg="60">
+  <div class="kicker anim"><span class="num">05</span> Hallazgos de la formulación <span class="unidad">U1</span></div>
+  <h2 class="anim">A y B nunca dominan: el problema operativo es C contra D</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:860px">
+      <div class="g-composicion" data-ancho="860" data-alto="540"></div>
+      <div class="leyenda"><span><i style="background:var(--C)"></i>C</span><span><i style="background:var(--D)"></i>D</span><span><i style="background:var(--A)"></i>A</span><span><i style="background:var(--B)"></i>B</span><span class="fuente">*2026: 33 semanas</span></div>
+    </div>
+    <div class="col crece">
+      <div class="tarjeta anim"><h3>7 variables candidatas</h3><p class="chico">x₁ eventos · x₂ fatalidades · x₃ grupos armados · x₄ coca · x₅ bosque · x₆ distancia a Bogotá · x₇ pobreza multidimensional</p></div>
+      <div class="tarjeta anim"><h3>¿Por qué una red neuronal?</h3><p class="chico">Hipótesis de no linealidad: el bosque pesa distinto según la distancia, y la coca según la pobreza. Un modelo lineal no captura esas interacciones.</p></div>
+      <div class="tarjeta anim sin-marca"><h3>A y B como alerta</h3><p class="chico">Bajo volumen, alto impacto: se vigilan aparte en lugar de ser una clase.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · FORMULACIÓN OPERATIVA -->
+<section class="slide" data-titulo="Formulación operativa" data-orador="juan" data-seg="60">
+  <div class="kicker anim"><span class="num">06</span> Formulación operativa <span class="unidad">Unidad 2 · Modelo base</span></div>
+  <h2 class="anim">Predecir el año siguiente con lo que se sabe hoy</h2>
+  <div class="fila">
+    <div class="formula anim" style="font-size:32px;width:820px">s<sup>C</sup><sub>d,t</sub> = eventos C / eventos totales<br>y<sub>d,t</sub> = 1[ s<sup>C</sup><sub>d,t</sub> ≥ 0,5 ] · 1 = C, 0 = D<br>p̂<sub>d,t</sub> = f<sub>θ</sub>( x<sub>d,t−1</sub> )</div>
+    <p class="anim crece" style="font-size:28px">El rezago t−1 → t evita la circularidad (las fatalidades de un año vienen de los mismos ataques que definen C) y replica la decisión real: el presupuesto se asigna con lo observado al cierre del año anterior.</p>
+  </div>
+  <div class="fila crece" style="margin-top:28px">
+    <figure class="figura anim crece"><img src="{{FIG:u2_disenio}}" alt="Diseño temporal de la U2"><figcaption>U2 · cada año se predice con la información del año anterior; 2027 es la proyección</figcaption></figure>
+    <div class="col anim" style="width:330px;justify-content:center">
+      <div class="stat"><span class="valor" style="font-size:72px" data-v="panel|filas" data-f="0"></span><span class="etq">filas etiquetadas</span></div>
+      <div class="stat"><span class="valor" style="font-size:72px">30</span><span class="etq">departamentos</span></div>
+      <div class="stat"><span class="valor" style="font-size:72px">≥ 10</span><span class="etq">eventos por celda</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · INERCIA -->
+<section class="slide" data-titulo="La inercia del perfil" data-orador="laura" data-seg="60">
+  <div class="kicker anim"><span class="num">07</span> El rasgo que lo condiciona todo <span class="unidad">U2</span></div>
+  <div class="fila crece">
+    <div class="col anim" style="width:900px"><div class="g-heatmap" data-ancho="900" data-alto="850"></div></div>
+    <div class="col crece" style="justify-content:center">
+      <h2 class="anim" style="font-size:56px">Los territorios casi nunca cambian de perfil</h2>
+      <div class="stat acento anim"><span class="valor" data-v="panel|repite" data-f="pct1"></span><span class="etq">de las filas repite el perfil del año anterior</span></div>
+      <p class="anim">Pero la proporción de departamentos C sí se mueve: 32 % en 2021 por el Paro Nacional y 62 % en 2025 por la ruptura de diálogos y el Catatumbo.</p>
+      <p class="chico anim">Pase el cursor por una celda: proporción de eventos C, perfil, eventos y la probabilidad que dio el modelo final.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · MODELO BASE -->
+<section class="slide" data-titulo="Modelo base U2" data-orador="juan" data-seg="70">
+  <div class="kicker anim"><span class="num">08</span> Arquitectura y entrenamiento <span class="unidad">U2</span></div>
+  <h2 class="anim">MLP 7 → 16 → 1 con 145 parámetros, entrenado con un bucle explícito</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:820px">
+      <div class="g-red" data-entradas="7" data-ensamble="1" data-ancho="820" data-alto="540"></div>
+      <div style="display:flex;gap:20px;align-items:center">
+        <div class="botonera botones-red"><button data-r="adelante">▶ propagación</button><button data-r="atras">◀ retropropagación</button></div>
+        <div class="lazo mono chico" style="display:flex;gap:10px;flex-wrap:wrap"><span>x</span>→<span>ReLU</span>→<span>σ</span>→<span>BCE + L2</span>→<span>∂L/∂θ</span>→<span>Adam</span></div>
+      </div>
+    </div>
+    <div class="col crece">
+      <ul class="limpia anim chico">
+        <li>16 configuraciones comparadas con validación cruzada temporal y la regla de un error estándar</li>
+        <li>Adam η = 10⁻³ · L2 = 10⁻³ · lote 16 · BCE ponderada por clase</li>
+        <li>Bucle <span class="mono">tf.GradientTape</span> verificado contra <span class="mono">model.fit</span>: diferencia de 2 × 10⁻⁶</li>
+      </ul>
+      <figure class="figura anim crece"><img src="{{FIG:u2_curvas}}" alt="Curvas de aprendizaje U2"><figcaption>U2 · pérdida, exactitud y AUC durante el entrenamiento</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 11 · RESULTADOS U2 -->
+<section class="slide" data-titulo="Resultados y diagnóstico U2" data-orador="laura" data-seg="60">
+  <div class="kicker anim"><span class="num">09</span> Resultados y diagnóstico <span class="unidad">U2</span></div>
+  <h2 class="anim">Un diagnóstico honesto: el modelo base perdía contra la inercia</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:960px">
+      <div class="fuente">Log-loss en validación temporal 2023–2026 (menor es mejor) · experimento E1 de la U2</div>
+      <div class="g-e1 grandes"></div>
+      <p class="fuente">Violeta: persistencia (copiar el perfil del año anterior) · verde: modelos con la memoria x₈</p>
+    </div>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><h3>Varianza</h3><p>Solo 30 departamentos: la red memorizaba firmas de cada territorio.</p></div>
+      <div class="tarjeta anim"><h3>Transiciones</h3><p>El 57 % de los errores eran cambios de perfil.</p></div>
+      <div class="tarjeta anim"><h3>Arauca</h3><p>C los seis años y el modelo le daba P ≈ 0,36: faltaba información de actores armados.</p></div>
+      <div class="tarjeta anim"><h3 class="ok">La pista</h3><p>Agregar la memoria del perfil (E1) ya superaba a la persistencia.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 · HOJA DE RUTA -->
+<section class="slide" data-titulo="Del diagnóstico a la hoja de ruta" data-orador="laura" data-seg="45">
+  <div class="kicker anim"><span class="num">10</span> Hoja de ruta <span class="unidad">U2 → U3</span></div>
+  <h2 class="anim">Cada debilidad de la U2 se volvió una intervención con hipótesis</h2>
+  <div class="tarjeta sin-marca anim" style="padding:26px 34px">
+    <div style="display:grid;grid-template-columns:300px 1fr 230px 1fr;gap:14px 26px;font-size:24px;align-items:center">
+      <span class="fuente">Mejora U2</span><span class="fuente">Qué se hizo en la U3</span><span class="fuente">Intervención</span><span class="fuente">Resultado</span>
+      <b>M1 memoria</b><span>memoria m₁ y semestre reciente d₁</span><span class="mono">I1 · I2</span><span class="chip si">se retienen</span>
+      <b>M2 ensamble</b><span>10 redes con semillas distintas</span><span class="mono">I7</span><span class="chip si">se retiene</span>
+      <b>M4 actores (x₃)</b><span>actores no estatales de UCDP GED</span><span class="mono">I3</span><span class="chip no">no mejora</span>
+      <b>M5 calibración</b><span>Platt, temperatura y umbral por año</span><span class="mono">I8</span><span class="chip no">bandas 0,3 / 0,7</span>
+      <b>M6 etiqueta</b><span>objetivo blando con s_C</span><span class="mono">I5</span><span class="chip no">no mejora</span>
+      <b>M7 capacidad</b><span>rejilla de 48 configuraciones con validación anidada</span><span class="mono">I6</span><span class="chip">se mantiene la U2</span>
+      <b>M8 mapeo</b><span>mapeo alternativo de subtipos como control</span><span class="mono">§7</span><span class="chip">cambia 1 de 171</span>
+      <b>M3 municipio</b><span>requiere ACLED por evento (acceso académico)</span><span class="mono">R1</span><span class="chip">recomendación</span>
+    </div>
+  </div>
+</section>
+
+<!-- 13 · PROTOCOLO -->
+<section class="slide" data-titulo="Protocolo experimental" data-orador="juan" data-seg="70">
+  <div class="kicker anim"><span class="num">11</span> Protocolo <span class="unidad">Unidad 3 · Proyecto integrador</span></div>
+  <h2 class="anim">Reglas fijadas antes de mirar los resultados</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:820px">
+      <div class="tarjeta sin-marca" style="padding:26px">
+        <div style="display:grid;grid-template-columns:200px repeat(6,1fr);gap:10px;font-family:var(--f-mono);font-size:22px;grid-auto-rows:62px;align-items:center">
+          <span></span><span class="tenue">2021</span><span class="tenue">2022</span><span class="tenue">2023</span><span class="tenue">2024</span><span class="tenue">2025</span><span class="tenue">2026</span>
+          <span>Pliegue 2023</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i><i></i><i></i>
+          <span>Pliegue 2024</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i><i></i>
+          <span>Pliegue 2025</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i>
+          <span class="resalta">Prueba 2026</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--u3);height:100%;border-radius:6px"></i>
+        </div>
+        <div class="leyenda" style="margin-top:20px"><span><i style="background:var(--B)"></i>entrenamiento</span><span><i style="background:var(--naranja)"></i>validación (elige)</span><span><i style="background:var(--u3)"></i>prueba (una vez)</span></div>
+      </div>
+      <p class="chico anim">87 predicciones fuera de muestra deciden todo; el escalador se ajusta solo con el entrenamiento de cada pliegue.</p>
+    </div>
+    <div class="col crece">
+      <ol class="anim chico" style="display:grid;gap:12px;padding-left:34px">
+        <li>Selección solo con origen móvil 2023–2025</li>
+        <li>2026 es la prueba final y se mira una vez</li>
+        <li>Rival: la persistencia (y, tras la revisión, su versión calibrada)</li>
+        <li>Métrica de decisión: log-loss; apoyo: AUC, Brier, ECE, MCC y transiciones</li>
+        <li>Se retiene solo si Δ log-loss + 1 EE &lt; 0 con 5 semillas pareadas y el AUC no cae más de 0,01</li>
+        <li>Presupuesto fijo de 560 pasos de gradiente</li>
+        <li>Los controles de datos verifican, no seleccionan</li>
+        <li>El objetivo del proyecto pesa más que la métrica <span class="tenue">(formalizada al ver el embedding)</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 14 · INTERVENCIONES (BOSQUE) -->
+<section class="slide" data-titulo="Intervenciones: resultado global" data-orador="juan" data-seg="70">
+  <div class="kicker anim"><span class="num">12</span> Intervenciones <span class="unidad">U3</span></div>
+  <h2 class="anim" style="font-size:58px;max-width:1688px">De nueve intervenciones, la memoria y el semestre reciente son las únicas que mejoran</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1120px"><div class="g-bosque" data-ancho="1120" data-alto="690"></div></div>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><span class="chip si">se retiene</span><h3 style="margin-top:12px">I1 · memoria m₁</h3><p>Δ <span data-v="decisiones|I1 memoria m1|dll"></span> · IC <span data-v="decisiones|I1 memoria m1|ic" data-f="ic"></span></p></div>
+      <div class="tarjeta anim"><span class="chip si">se retiene</span><h3 style="margin-top:12px">I2 · semestre d₁</h3><p>Δ <span data-v="decisiones|I2 semestre reciente d1|dll"></span> · IC <span data-v="decisiones|I2 semestre reciente d1|ic" data-f="ic"></span></p></div>
+      <div class="tarjeta anim"><span class="chip si">se retiene</span><h3 style="margin-top:12px">I7 · ensamble de 10</h3><p>Reduce la variación entre semillas; no entra al gráfico porque no tiene referencia pareada.</p></div>
+      <p class="fuente anim">Pase el cursor por cada fila para ver la decisión completa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 15 · DETALLE DE INTERVENCIONES -->
+<section class="slide" data-titulo="Intervenciones: detalle" data-orador="laura" data-seg="55">
+  <div class="kicker anim"><span class="num">13</span> Qué probamos y por qué se descartó <span class="unidad">U3</span></div>
+  <div class="g-pestanas anim" style="margin-top:10px">
+    <div class="pestanas"><button class="si">I1</button><button class="si">I2</button><button>I3</button><button>I4</button><button>I5</button><button>I6</button><button class="si">I7</button><button>I8</button><button>I9</button><button>Arquitecturas</button></div>
+    <div class="panel-pestana g3" style="gap:26px">
+      <div class="tarjeta"><div class="fuente">Diagnóstico U2</div><h3>La inercia domina</h3><p>El perfil del año anterior es el mejor predictor.</p></div>
+      <div class="tarjeta"><div class="fuente">Intervención</div><h3>Memoria m₁ y trayectoria</h3><p>m₁ = proporción C de t−1 con contracción bayesiana (C + 2)/(n + 4); m₂ y m₃ = t−2 y el cambio.</p></div>
+      <div class="tarjeta"><div class="fuente">Resultado</div><h3 class="ok">Se retiene m₁</h3><p>Δ <span data-v="decisiones|I1 memoria m1|dll"></span>; la trayectoria no aporta (Δ <span data-v="decisiones|I1 trayectoria m2, m3|dll" data-f="s3"></span>).</p></div></div>
+    <div class="panel-pestana g3" style="gap:26px">
+      <div class="tarjeta"><div class="fuente">Diagnóstico U2</div><h3>Solo vista anual</h3><p>El promedio del año diluye los giros de la segunda mitad.</p></div>
+      <div class="tarjeta"><div class="fuente">Intervención</div><h3>Semestre reciente d₁</h3><p>Proporción C de las últimas 26 semanas de t−1; d₂ y d₃ como tendencias.</p></div>
+      <div class="tarjeta"><div class="fuente">Resultado</div><h3 class="ok">Se retiene d₁</h3><p>Δ <span data-v="decisiones|I2 semestre reciente d1|dll"></span>, la mayor ganancia individual; las tendencias empeoran (Δ <span data-v="decisiones|I2 tendencias d2, d3|dll" data-f="s3"></span>).</p></div></div>
+    <div class="panel-pestana g3" style="gap:26px">
+      <div class="tarjeta"><div class="fuente">Diagnóstico U2</div><h3>Arauca mal clasificada</h3><p>Faltaba la variable de grupos armados (x₃).</p></div>
+      <div class="tarjeta"><div class="fuente">Intervención</div><h3>Actores armados (UCDP)</h3><p>x₃ = log(1 + actores no estatales activos), de UCDP GED 26.1.</p></div>
+      <div class="tarjeta"><div class="fuente">Resultado</div><h3>No mejora</h3><p>Δ <span data-v="decisiones|I3 actores armados x3|dll" data-f="s3"></span>: redundante con las fatalidades y con un salto de cobertura de UCDP en 2023.</p></div></div>
+    <div class="panel-pestana g3" style="gap:26px">
+      <div class="tarjeta"><div class="fuente">Diagnóstico U2</div><h3>Generaliza mal en el espacio</h3><p>AUC 0,80 en departamentos nuevos.</p></div>
+      <div class="tarjeta"><div class="fuente">Intervención</div><h3>Vecindad v₁, v₂</h3><p>Perfil y eventos de los departamentos contiguos.</p></div>
+      <div class="tarjeta"><div class="fuente">Resultado</div><h3>No mejora</h3><p>En la validación espacial, que era su hipótesis: Δ <span data-v="decisiones|I4 vecindad (espacial)|dll" data-f="s3"></span>.</p></div></div>
+    <div class="panel-pestana g3" style="gap:26px">
+      <div class="tarjeta"><div class="fuente">Diagnóstico U2</div><h3>Celdas cerca del umbral</h3><p>El 20 % de las celdas está a ±10 puntos de 0,5.</p></div>
+      <div class="tarjeta"><div class="fuente">Intervención</div><h3>Objetivo blando</h3><p>Entrenar con s_C en lugar de la etiqueta 0/1, con y sin peso por eventos.</p></div>
+      <div class="tarjeta"><div class="fuente">Resultado</div><h3>No mejora</h3><p>Δ <span data-v="decisiones|I5 objetivo blando (sin calibrar)|dll" data-f="s3"></span> sin calibrar y <span data-v="decisiones|I5 objetivo blando (ambos calibrados)|dll" data-f="s3"></span> calibrado.</p></div></div>
+    <div class="panel-pestana" style="grid-template-columns:1fr 1.25fr;gap:26px">
+      <div class="tarjeta"><div class="fuente">Capacidad (I6)</div><h3>Se mantiene la configuración de la U2</h3><p>Rejilla de 48 configuraciones con validación anidada: 31 quedan dentro de un error estándar y lo que se elige con 2023–2024 empeora en 2025.</p></div>
+      <figure class="figura"><img src="{{FIG:u3_rejilla}}" alt="Rejilla I6"><figcaption>I6 · rejilla y validación anidada</figcaption></figure></div>
+    <div class="panel-pestana" style="grid-template-columns:1fr 1.25fr;gap:26px">
+      <div class="tarjeta"><div class="fuente">Ensamble (I7)</div><h3 class="ok">Se retiene</h3><p>Promediar 10 redes reduce la dispersión entre semillas: la banda de 5–95 % de la log-loss pasa de 0,053 a 0,009.</p></div>
+      <figure class="figura"><img src="{{FIG:u3_ensamble}}" alt="Ensamble I7"><figcaption>I7 · el ensamble estabiliza la predicción</figcaption></figure></div>
+    <div class="panel-pestana" style="grid-template-columns:1fr 1.25fr;gap:26px">
+      <div class="tarjeta"><div class="fuente">Calibración (I8)</div><h3>No se adopta</h3><p>Platt hacia adelante no mejora sin mirar el futuro y el umbral óptimo cambia cada año (0,20 / 0,51 / 0,15). Se usa 0,5 con bandas 0,3 / 0,7.</p></div>
+      <figure class="figura"><img src="{{FIG:u3_calibracion}}" alt="Calibración I8"><figcaption>I8 · confiabilidad y umbral por año</figcaption></figure></div>
+    <div class="panel-pestana g3" style="gap:26px">
+      <div class="tarjeta"><div class="fuente">Diagnóstico U2</div><h3>A y B diluidas</h3><p>La clase binaria pierde la composición A/B.</p></div>
+      <div class="tarjeta"><div class="fuente">Intervención</div><h3>Salida multitarea</h3><p>Una cabeza softmax A/B/C/D entrenada junto con P(C).</p></div>
+      <div class="tarjeta"><div class="fuente">Resultado</div><h3>No mejora</h3><p>P(C) Δ <span data-v="decisiones|I9 multitarea λ=0.5 (efecto en P(C))|dll" data-f="s3"></span>, y la composición A/B queda peor que la persistencia.</p></div></div>
+    <div class="panel-pestana g3" style="gap:26px">
+      <div class="tarjeta"><div class="fuente">Secuencias</div><h3>GRU y CNN 1D</h3><p>Cuatro trimestres en lugar de variables anuales: Δ <span data-v="decisiones|GRU trimestral|dll" data-f="s3"></span> y <span data-v="decisiones|CNN 1D trimestral|dll" data-f="s3"></span>.</p></div>
+      <div class="tarjeta"><div class="fuente">Profundidad y línea base</div><h3>MLP 16-8 y logística</h3><p>Δ <span data-v="decisiones|MLP profundo (16, 8)|dll" data-f="s3"></span> y <span data-v="decisiones|Logística (mismas variables)|dll" data-f="s3"></span>: empatan con el MLP.</p></div>
+      <div class="tarjeta"><div class="fuente">Regla 8</div><h3 style="color:var(--violeta)">Embedding de departamento</h3><p>Δ <span data-v="decisiones|Embedding de departamento|dll"></span>, pero acierta menos cambios y no sirve en territorios nuevos.</p></div></div>
+  </div>
+</section>
+
+<!-- 16 · CONTROLES -->
+<section class="slide" data-titulo="Controles de datos" data-orador="juan" data-seg="50">
+  <div class="kicker anim"><span class="num">14</span> Controles experimentales <span class="unidad">U3</span></div>
+  <h2 class="anim">Siete controles que ponen a prueba la preparación de los datos</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1000px"><figure class="figura crece"><img src="{{FIG:u3_controles}}" alt="Controles de datos"><figcaption>Δ log-loss de cada control frente a la referencia (5 semillas)</figcaption></figure></div>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><h3>Sin estandarizar</h3><p>No converge: log-loss <span data-v="controles|sin estandarización|ll" data-f="2"></span>.</p></div>
+      <div class="tarjeta anim"><h3>Etiquetas barajadas</h3><p>AUC <span data-v="controles|etiquetas barajadas|auc" data-f="2"></span>: la señal es real.</p></div>
+      <div class="tarjeta anim"><h3>Escalador con fuga</h3><p>Δ <span data-v="controles|escalador con fuga|dll"></span>: la fuga no explica el resultado.</p></div>
+      <div class="tarjeta anim"><h3>Sin logaritmos</h3><p>Δ <span data-v="controles|sin logaritmos|dll"></span>: mejora, pero la regla 7 impide cambiarlo ahora.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 · MODELO FINAL -->
+<section class="slide" data-titulo="Modelo final" data-orador="juan" data-seg="65">
+  <div class="kicker anim"><span class="num">15</span> Modelo final <span class="unidad">U3</span></div>
+  <h2 class="anim">La arquitectura de la U2, con mejor información y 10 redes</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:860px">
+      <div class="g-red" data-entradas="9" data-ensamble="10" data-ancho="860" data-alto="560"></div>
+      <div style="display:flex;gap:20px;align-items:center">
+        <div class="botonera botones-red"><button data-r="adelante">▶ propagación</button><button data-r="atras">◀ retropropagación</button></div>
+        <div class="lazo mono chico" style="display:flex;gap:10px;flex-wrap:wrap"><span>x</span>→<span>ReLU</span>→<span>σ</span>→<span>BCE + L2</span>→<span>∂L/∂θ</span>→<span>Adam</span></div>
+      </div>
+    </div>
+    <div class="col crece">
+      <div class="anim"><div class="g-escalera" data-ancho="780" data-alto="500"></div></div>
+      <p class="fuente anim">Log-loss media de una red (5 semillas) al sumar cada intervención; el último paso es el ensamble. *Rival agregado tras la revisión.</p>
+      <p class="chico anim">Verde en la red: las dos variables nuevas de la U3 · 177 parámetros por red · sin calibración · umbral 0,5 con bandas</p>
+    </div>
+  </div>
+</section>
+
+<!-- 18 · ENTRENAMIENTO -->
+<section class="slide" data-titulo="Curvas y estabilidad" data-orador="juan" data-seg="50">
+  <div class="kicker anim"><span class="num">16</span> Entrenamiento <span class="unidad">U2 → U3</span></div>
+  <h2 class="anim">Converge mejor y depende menos de la semilla</h2>
+  <div class="g2 crece">
+    <figure class="figura anim"><img src="{{FIG:u3_curvas}}" alt="Curvas U2 vs U3"><figcaption>BCE de validación 2025 en 560 pasos: base U2 0,448 → modelo final 0,377</figcaption></figure>
+    <figure class="figura anim"><img src="{{FIG:u3_ensamble}}" alt="Ensamble"><figcaption>El ensamble de 10 redes reduce la dispersión entre semillas</figcaption></figure>
+  </div>
+</section>
+
+<!-- 19 · PIPELINE -->
+<section class="slide" data-titulo="Pipeline integrado" data-orador="juan" data-seg="65">
+  <div class="kicker anim"><span class="num">17</span> Integración <span class="unidad">U3</span></div>
+  <h2 class="anim">Un pipeline de 8 etapas que se ejecuta con una orden</h2>
+  <div class="g-pipeline anim"></div>
+  <div class="fila crece" style="margin-top:24px">
+    <div class="col anim" style="width:1100px"><div class="g-terminal" data-lineas="5" style="height:330px"></div></div>
+    <div class="col crece anim compactas">
+      <div class="tarjeta"><h3><span data-contar="10">10</span> pruebas automáticas</h3><p>Contrato de datos, fuga temporal, escalador, artefacto, determinismo y réplica de la U2.</p></div>
+      <div class="tarjeta"><h3>Artefacto único</h3><p><span class="mono">perfil_amenaza_u3.keras</span> · 152 KB · escalador, 10 redes y promedio.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 20 · RESULTADOS -->
+<section class="slide" data-titulo="Resultados antes y después" data-orador="juan" data-seg="70">
+  <div class="kicker anim"><span class="num">18</span> Resultados <span class="unidad">U2 → U3</span></div>
+  <h2 class="anim">Frente a la U2 la mejora es clara; frente a la inercia, depende del rival</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1060px"><div class="g-comparador" data-conjuntos="sel,t26,et,esp" data-metricas="ll,auc,ece,exact" data-grandes="1"></div></div>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><div class="fuente">contra la base U2 (ensamble 10)</div>
+        <div class="stat verde"><span class="valor" style="font-size:60px" data-v="pareadas|conj=prueba 2026&comp=Después vs. antes (U2, ensamble 10)|dll"></span><span class="etq">Δ log-loss 2026 · IC <span data-v="pareadas|conj=prueba 2026&comp=Después vs. antes (U2, ensamble 10)|ic" data-f="ic"></span></span></div></div>
+      <div class="tarjeta anim"><div class="fuente">contra la persistencia cruda</div>
+        <div class="stat"><span class="valor" style="font-size:60px" data-v="pareadas|conj=origen móvil 2023-2025&comp=Después vs. persistencia|dll"></span><span class="etq">Δ selección · P(mejora) <span data-v="pareadas|conj=origen móvil 2023-2025&comp=Después vs. persistencia|pm" data-f="2"></span></span></div></div>
+      <div class="tarjeta anim"><div class="fuente">contra la persistencia calibrada</div>
+        <div class="stat"><span class="valor" style="font-size:60px" data-v="pareadas|conj=prueba 2026&comp=Después vs. persistencia calibrada|dll" data-f="s3"></span><span class="etq">Δ 2026 · IC <span data-v="pareadas|conj=prueba 2026&comp=Después vs. persistencia calibrada|ic" data-f="ic"></span></span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 21 · LECTURA CRÍTICA -->
+<section class="slide" data-titulo="Lectura crítica y errores" data-orador="laura" data-seg="65">
+  <div class="kicker anim"><span class="num">19</span> Lectura crítica <span class="unidad">U3</span></div>
+  <h2 class="anim" style="margin-bottom:20px">La ventaja es de calibración; los cambios de perfil siguen siendo el límite</h2>
+  <div class="tarjeta sin-marca anim" style="padding:20px 28px"><div class="g-trio"></div></div>
+  <div class="fila crece" style="margin-top:22px">
+    <figure class="figura anim" style="width:1080px"><img src="{{FIG:u3_errores_pdp}}" alt="Errores y dependencia parcial"><figcaption>(a) errores 2023–2026 por año · (b) dependencia parcial memoria × letalidad</figcaption></figure>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><h3><span data-v="trans13|MLP U3|0" data-f="0"></span> de <span data-v="trans13|MLP U3|1" data-f="0"></span> transiciones</h3><p>La U2 acertaba <span data-v="trans13|MLP base U2|0" data-f="0"></span>; la inercia, ninguna.</p></div>
+      <div class="tarjeta anim"><h3>Arauca corregida</h3><p>Pasó de P ≈ 0,36 en la U2 a <span data-v="deptos|arauca|hist|5|5" data-f="2"></span> en 2026.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 22 · IMPORTANCIA -->
+<section class="slide" data-titulo="Qué aprendió la red" data-orador="laura" data-seg="50">
+  <div class="kicker anim"><span class="num">20</span> Interpretación <span class="unidad">U3</span></div>
+  <h2 class="anim">El último semestre pesa más del doble que cualquier otra variable</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1000px">
+      <div class="fuente">Aumento de la log-loss al permutar cada variable (fuera de muestra; barra = media, línea = ±1 desv. est.)</div>
+      <div class="g-importancia grandes"></div>
+    </div>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><h3>Lo estructural sigue contando</h3><p>Bosque, fatalidades, pobreza y coca modulan la inercia, como planteaba la U1.</p></div>
+      <div class="tarjeta anim"><h3>Una interacción coherente</h3><p>Con alta letalidad basta una memoria cercana a 0,45 para esperar C; sin letalidad hace falta cerca de 0,7.</p></div>
+      <div class="tarjeta anim sin-marca"><h3>Con cautela</h3><p class="chico">Memoria y letalidad están muy correlacionadas (ρ = 0,84) y la logística empata: la interacción es plausible, no necesaria.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 23 · PROYECCIÓN 2027 -->
+<section class="slide" data-titulo="Proyección 2027" data-orador="laura" data-seg="65">
+  <div class="kicker anim"><span class="num">21</span> Proyección <span class="unidad">2027</span></div>
+  <div class="fila crece">
+    <div class="col" style="width:400px">
+      <h2 class="anim" style="font-size:56px;margin-bottom:6px">Mapa de prioridades 2027</h2>
+      <div class="stat anim"><span class="valor" style="color:var(--Cclaro)" data-v="resumen27|C consolidado" data-f="0"></span><span class="etq">C consolidado</span></div>
+      <div class="stat anim"><span class="valor" style="color:var(--acento2)" data-v="resumen27|Transición" data-f="0"></span><span class="etq">en transición</span></div>
+      <div class="stat anim"><span class="valor" style="color:var(--tinta2)" data-v="resumen27|D consolidado" data-f="0"></span><span class="etq">D consolidado</span></div>
+      <p class="chico anim">Use <b>Histórico</b> para recorrer 2021–2026 y ver las transiciones; clic en un departamento para su detalle.</p>
+    </div>
+    <div class="col crece anim"><div class="g-mapa" data-modo="2027" data-alto="740" data-controles="1" data-detalle="1" data-sel="cauca" data-etiquetas="guaviare,cauca"></div></div>
+  </div>
+</section>
+
+<!-- 24 · DECISIÓN -->
+<section class="slide" data-titulo="De la probabilidad a la decisión" data-orador="laura" data-seg="50">
+  <div class="kicker anim"><span class="num">22</span> De la probabilidad a la decisión <span class="unidad">2027</span></div>
+  <h2 class="anim">Tres bandas y una alerta convierten P(C) en un énfasis tecnológico</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1000px"><div class="g-simulador"></div></div>
+    <div class="col crece">
+      <div class="tarjeta anim"><div class="stat"><span class="valor" style="font-size:60px"><span data-v="bandas|conj=2023-2025&modelo=Después: MLP U3|aciertos" data-f="0"></span><small>de <span data-v="bandas|conj=2023-2025&modelo=Después: MLP U3|banda" data-f="0"></span></small></span>
+        <span class="etq">aciertos en banda consolidada 2023–2025 · la persistencia deja <span data-v="bandas|conj=2023-2025&modelo=Persistencia|trans" data-f="0"></span> de 87 en transición</span></div></div>
+      <div class="anim"><div class="fuente" style="margin-bottom:10px">Deriva de 2026 (PSI) · la marca es el p95 sin deriva</div><div class="g-psi compacta"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 25 · CONCLUSIONES -->
+<section class="slide" data-titulo="Conclusiones" data-orador="ambos" data-seg="55">
+  <div class="kicker anim"><span class="num">23</span> Conclusiones</div>
+  <h2 class="anim">Seis ideas para llevarse</h2>
+  <div class="g3 crece tarjetas-grandes" style="gap:24px">
+    <div class="tarjeta anim paso" data-paso="1"><h3><span class="resalta">01</span> El dato antes que la red</h3><p>La mejora vino de la memoria y del último semestre; la arquitectura es la de la U2.</p></div>
+    <div class="tarjeta anim paso" data-paso="2"><h3><span class="resalta">02</span> Mejora clara sobre la U2</h3><p>Ensamble contra ensamble: <span data-v="comparaciones|t26|Base U2 · ensamble 10|ll"></span> → <span data-v="comparaciones|t26|MLP U3|ll"></span> en 2026.</p></div>
+    <div class="tarjeta anim paso" data-paso="3"><h3><span class="resalta">03</span> Una ventaja de calibración</h3><p>Frente a una inercia calibrada la ventaja no está demostrada a escala departamental.</p></div>
+    <div class="tarjeta anim paso" data-paso="4"><h3><span class="resalta">04</span> Territorios nuevos</h3><p>Transfiere mucho mejor que la U2, pero empata con la persistencia si se respeta el tiempo.</p></div>
+    <div class="tarjeta anim paso" data-paso="5"><h3><span class="resalta">05</span> El límite: los cambios</h3><p>Acierta <span data-v="trans13|MLP U3|0" data-f="0"></span> de <span data-v="trans13|MLP U3|1" data-f="0"></span> transiciones; con 30 unidades no alcanza.</p></div>
+    <div class="tarjeta anim paso" data-paso="6"><h3><span class="resalta">06</span> Transparencia</h3><p>La regla 8 se agregó al ver el embedding, y lo decimos. 2026 nunca se usó para elegir.</p></div>
+  </div>
+</section>
+
+<!-- 26 · RECOMENDACIONES -->
+<section class="slide" data-titulo="Recomendaciones R1–R7" data-orador="juan" data-seg="45">
+  <div class="kicker anim"><span class="num">24</span> Recomendaciones</div>
+  <h2 class="anim">Lo que haríamos en la siguiente iteración</h2>
+  <div class="g2 crece" style="gap:22px 36px;align-content:start">
+    <div class="tarjeta anim sin-marca"><h3><span class="resalta mono">R1</span> Escala municipal</h3><p class="chico">ACLED por evento (acceso académico) para pasar de 30 a cientos de unidades.</p></div>
+    <div class="tarjeta anim sin-marca"><h3><span class="resalta mono">R2</span> Actores a escala municipal</h3><p class="chico">x₃ como entradas y salidas de grupos armados.</p></div>
+    <div class="tarjeta anim sin-marca"><h3><span class="resalta mono">R3</span> Señales adelantadas</h3><p class="chico">Variables que anticipen las transiciones.</p></div>
+    <div class="tarjeta anim sin-marca"><h3><span class="resalta mono">R4</span> Reentrenar cada año</h3><p class="chico">Con monitoreo de deriva (PSI) y su piso de ruido.</p></div>
+    <div class="tarjeta anim sin-marca"><h3><span class="resalta mono">R5</span> Revisar preprocesamiento</h3><p class="chico">Logaritmos y el mínimo de 10 eventos, según los controles.</p></div>
+    <div class="tarjeta anim sin-marca"><h3><span class="resalta mono">R6</span> Rivales permanentes</h3><p class="chico">Persistencia calibrada y logística en cada evaluación.</p></div>
+    <div class="tarjeta anim sin-marca"><h3><span class="resalta mono">R7</span> Reevaluar el embedding</h3><p class="chico">Con 2026 cerrado, usando 2027 como prueba.</p></div>
+    <div class="tarjeta anim"><h3>Uso responsable</h3><p class="chico">Las salidas son un insumo analítico, no una recomendación operativa.</p></div>
+  </div>
+</section>
+
+<!-- 27 · EQUIPO Y CIERRE -->
+<section class="slide centrada" data-titulo="Equipo, IA y preguntas" data-orador="laura" data-seg="35">
+  <div class="kicker anim"><span class="num">25</span> Cierre</div>
+  <h1 class="anim" style="font-size:120px">Gracias. ¿Preguntas?</h1>
+  <div class="g3 anim" style="margin-top:50px;gap:30px">
+    <div class="tarjeta sin-marca"><h3 style="color:var(--laura)">Laura Díaz</h3><p class="chico">Interpretación estratégica, documentación, informe y guion. Evaluación y decisiones metodológicas en conjunto.</p></div>
+    <div class="tarjeta sin-marca"><h3 style="color:var(--juan)">Juan Diego Saldarriaga</h3><p class="chico">Modelado, pipeline y demostración técnica. Evaluación y decisiones metodológicas en conjunto.</p></div>
+    <div class="tarjeta sin-marca"><h3>Uso de IA</h3><p class="chico">Apoyo en la programación y en la revisión de la redacción. La propuesta, los datos, el análisis y las conclusiones son del equipo.</p></div>
+  </div>
+  <p class="fuente anim" style="margin-top:36px">github.com/salda824/perfil-amenaza-tecnologica-u3 (privado por la licencia de ACLED) · informe técnico U3 · cuaderno ejecutado</p>
+</section>
+
+</div>

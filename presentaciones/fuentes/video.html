@@ -1,0 +1,232 @@
+<!-- Plantilla del VIDEO EJECUTIVO (8–10 min). Cada <section> lleva data-titulo, data-orador y data-seg (meta en segundos).
+     Las cifras con data-v se rellenan desde DATOS; {{FIG:...}} lo reemplaza construir_presentaciones.py. -->
+<div id="escenario" data-marca="Perfil de amenaza tecnológica · Video ejecutivo U3">
+
+<!-- 1 · PORTADA -->
+<section class="slide portada" data-titulo="Portada" data-orador="laura" data-seg="20">
+  <div class="kicker anim"><span class="num">U3</span> Redes Neuronales · Proyecto Integrador</div>
+  <h1 class="anim">¿Qué tecnología desplegar en cada territorio?</h1>
+  <p class="bajada anim">Un modelo neuronal que anticipa el perfil de amenaza de los departamentos de Colombia para orientar la inversión en defensa.</p>
+  <div class="equipo anim">
+    <div class="persona"><b style="color:var(--laura)">Laura Alejandra Díaz Sastoque</b><span>Interpretación estratégica · documentación</span></div>
+    <div class="persona"><b style="color:var(--juan)">Juan Diego Saldarriaga Muñoz</b><span>Modelado · pipeline</span></div>
+  </div>
+  <p class="fuente anim" style="margin-top:auto">Universidad de La Sabana · Maestría en Ciencia de Datos · 2026</p>
+  <div class="mapa-fondo anim"><div class="g-mapa" data-modo="2027" data-alto="1000" data-leyenda="0"></div></div>
+</section>
+
+<!-- 2 · EL PROBLEMA -->
+<section class="slide" data-titulo="El problema" data-orador="laura" data-seg="45">
+  <div class="kicker anim"><span class="num">01</span> Síntesis del problema <span class="unidad">U1</span></div>
+  <h2 class="anim">La mayor inversión militar de la historia, sin un mapa de la amenaza</h2>
+  <div class="fila crece">
+    <div class="col" style="width:640px">
+      <div class="tarjeta anim">
+        <div class="stat acento"><span class="valor">3,7<small>billones COP</small></span><span class="etq">modernización militar 2026 · +47 % frente a 2025</span></div>
+        <p class="chico" style="margin-top:18px">Escudo Nacional Antidrones · blindados de INDUMIL · drones de la CIAC</p>
+        <p class="fuente" style="margin-top:10px">Ministerio de Defensa (2025)</p>
+      </div>
+      <div class="cita anim">¿Qué perfil de amenaza tendrá cada departamento el próximo año, y qué tecnología conviene llevar allí?</div>
+    </div>
+    <div class="col crece">
+      <div class="g2 anim" style="gap:26px">
+        <div class="tarjeta sin-marca"><h3 class="alerta-txt">Sobreinvertir</h3><p>Sistemas antidrones costosos donde la amenaza real son explosivos o combates.</p></div>
+        <div class="tarjeta sin-marca"><h3 class="alerta-txt">Subinvertir</h3><p>Sin detección de artefactos explosivos donde ese es el vector principal.</p></div>
+      </div>
+      <div class="g4 anim" style="gap:18px">
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><path d="M32 6l6 14 15-4-9 13 12 9-15 2 1 15-10-11-10 11 1-15-15-2 12-9-9-13 15 4z" fill="none" stroke="var(--A)" stroke-width="3"/></svg><h3 style="margin:8px 0 0">A</h3><p class="chico">explosivos</p></div>
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><g fill="none" stroke="var(--B)" stroke-width="3"><rect x="24" y="26" width="16" height="12" rx="3"/><path d="M24 28L13 17M40 28l11-11M24 36L13 47M40 36l11 11"/><circle cx="12" cy="16" r="7"/><circle cx="52" cy="16" r="7"/><circle cx="12" cy="48" r="7"/><circle cx="52" cy="48" r="7"/></g></svg><h3 style="margin:8px 0 0">B</h3><p class="chico">drones</p></div>
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><g fill="none" stroke="var(--Cclaro)" stroke-width="3"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="6"/><path d="M32 4v14M32 46v14M4 32h14M46 32h14"/></g></svg><h3 style="margin:8px 0 0">C</h3><p class="chico">convencional</p></div>
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><g fill="none" stroke="var(--D)" stroke-width="3"><circle cx="20" cy="22" r="9"/><rect x="36" y="13" width="18" height="18" rx="2"/><path d="M20 38l11 18H9z"/><path d="M45 38l9 9-9 9-9-9z"/></g></svg><h3 style="margin:8px 0 0">D</h3><p class="chico">mixto</p></div>
+      </div>
+      <p class="chico anim">Un territorio tiene el perfil X si más del 50 % de sus eventos son de ese tipo (formulación de la Unidad 1).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · DATOS Y FORMULACIÓN -->
+<section class="slide" data-titulo="Datos y formulación" data-orador="laura" data-seg="50">
+  <div class="kicker anim"><span class="num">02</span> De la pregunta al dato <span class="unidad">U1 → U2</span></div>
+  <h2 class="anim">Ningún departamento es A ni B: el problema se vuelve C contra D</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:930px">
+      <div class="g-composicion" data-ancho="930" data-alto="560"></div>
+      <div class="leyenda"><span><i style="background:var(--C)"></i>C convencional</span><span><i style="background:var(--D)"></i>D mixto</span><span><i style="background:var(--A)"></i>A explosivos</span><span><i style="background:var(--B)"></i>B drones</span></div>
+      <p class="fuente">Eventos ACLED por año y perfil, Colombia 2020–2026 (<span data-v="acled|eventos" data-f="miles"></span> eventos; *2026: 33 semanas)</p>
+    </div>
+    <div class="col crece">
+      <div class="formula anim">y<sub>d,t</sub> = 1[ s<sup>C</sup><sub>d,t</sub> ≥ 0,5 ]<br>p̂ = f<sub>θ</sub>( x<sub>d,t−1</sub> )</div>
+      <p class="anim">Se predice el perfil del año siguiente con lo observado hasta el cierre del año anterior, como se asigna un presupuesto real. A y B quedan como una <b class="alerta-txt">alerta</b> aparte.</p>
+      <div class="g2 anim" style="gap:20px">
+        <div class="stat"><span class="valor" data-contar="171">171</span><span class="etq">filas departamento–año</span></div>
+        <div class="stat"><span class="valor" data-contar="30">30</span><span class="etq">departamentos con ≥ 10 eventos</span></div>
+      </div>
+      <p class="fuente anim">ACLED (Raleigh et al., 2010) · SIMCI-UNODC · Global Forest Watch · DANE</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · LA INERCIA -->
+<section class="slide" data-titulo="El rival: la inercia" data-orador="laura" data-seg="40">
+  <div class="kicker anim"><span class="num">03</span> Punto de partida <span class="unidad">U2</span></div>
+  <div class="fila crece">
+    <div class="col anim" style="width:900px"><div class="g-heatmap" data-ancho="900" data-alto="850"></div></div>
+    <div class="col crece" style="justify-content:center">
+      <h2 class="anim" style="font-size:58px">El rival a vencer es copiar el año anterior</h2>
+      <div class="stat acento anim"><span class="valor" data-v="panel|repite" data-f="pct1"></span><span class="etq">de las filas repite el perfil del año anterior</span></div>
+      <div class="tarjeta anim">
+        <p class="grande">El modelo base de la U2 perdía contra esa inercia:</p>
+        <div class="g2" style="margin-top:16px">
+          <div class="stat"><span class="valor" style="font-size:70px" data-v="comparaciones|sel|Base U2 · semilla 42|ll"></span><span class="etq">log-loss MLP base U2</span></div>
+          <div class="stat"><span class="valor" style="font-size:70px" data-v="comparaciones|sel|Persistencia|ll"></span><span class="etq">log-loss persistencia</span></div>
+        </div>
+        <p class="fuente" style="margin-top:12px">Validación con origen móvil 2023–2025 · menor es mejor</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · PROTOCOLO -->
+<section class="slide" data-titulo="Protocolo experimental" data-orador="juan" data-seg="45">
+  <div class="kicker anim"><span class="num">04</span> Decisión técnica · protocolo <span class="unidad">U3</span></div>
+  <h2 class="anim">Reglas fijadas antes de mirar los resultados</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:860px">
+      <div class="tarjeta sin-marca" style="padding:26px">
+        <div class="rej-prot" style="display:grid;grid-template-columns:200px repeat(6,1fr);gap:10px;font-family:var(--f-mono);font-size:22px;grid-auto-rows:62px;align-items:center">
+          <span></span><span class="tenue">2021</span><span class="tenue">2022</span><span class="tenue">2023</span><span class="tenue">2024</span><span class="tenue">2025</span><span class="tenue">2026</span>
+          <span>Pliegue 2023</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i><i></i><i></i>
+          <span>Pliegue 2024</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i><i></i>
+          <span>Pliegue 2025</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i>
+          <span class="resalta">Prueba 2026</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--u3);height:100%;border-radius:6px"></i>
+        </div>
+        <div class="leyenda" style="margin-top:20px"><span><i style="background:var(--B)"></i>entrenamiento</span><span><i style="background:var(--naranja)"></i>validación (elige)</span><span><i style="background:var(--u3)"></i>prueba (una vez)</span></div>
+      </div>
+      <p class="anim">87 predicciones fuera de muestra deciden todo. 2026 se mira una sola vez, al final, con la configuración congelada.</p>
+    </div>
+    <div class="col crece">
+      <div class="tarjeta anim paso" data-paso="1"><h3>Métrica: log-loss</h3><p>Castiga la confianza equivocada, que es lo que importa al decidir con probabilidades.</p></div>
+      <div class="tarjeta anim paso" data-paso="2"><h3>Regla de retención</h3><p>Una mejora se queda solo si supera un error estándar entre 5 semillas pareadas.</p></div>
+      <div class="tarjeta anim paso" data-paso="3"><h3>Rivales exigentes</h3><p>La persistencia, su versión calibrada y el modelo de la U2.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · INTERVENCIONES -->
+<section class="slide" data-titulo="Intervenciones I1–I9" data-orador="juan" data-seg="60">
+  <div class="kicker anim"><span class="num">05</span> Decisión técnica · intervenciones <span class="unidad">U3</span></div>
+  <h2 class="anim" style="font-size:58px;max-width:1688px">Nueve hipótesis del diagnóstico; solo dos variables nuevas pasaron la regla</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1100px"><div class="g-bosque" data-ancho="1100" data-alto="690"></div></div>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><span class="chip si">se retiene</span><h3 style="margin-top:12px">m₁ · memoria del perfil</h3><p>Proporción C de t−1 con contracción bayesiana · Δ <span data-v="decisiones|I1 memoria m1|dll" data-f="3"></span></p></div>
+      <div class="tarjeta anim"><span class="chip si">se retiene</span><h3 style="margin-top:12px">d₁ · último semestre</h3><p>Lo que pasó en las 26 semanas finales · Δ <span data-v="decisiones|I2 semestre reciente d1|dll" data-f="3"></span></p></div>
+      <div class="tarjeta anim sin-marca"><span class="chip r8">regla 8</span><p style="margin-top:10px" class="chico">El embedding de departamento mejora la métrica, pero acierta menos cambios y no sirve en territorios nuevos.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · MODELO FINAL -->
+<section class="slide" data-titulo="Modelo final" data-orador="juan" data-seg="50">
+  <div class="kicker anim"><span class="num">06</span> Modelo final <span class="unidad">U3</span></div>
+  <h2 class="anim">La arquitectura de la U2, con mejor información y 10 redes</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:860px">
+      <div class="g-red" data-entradas="9" data-ensamble="10" data-ancho="860" data-alto="560"></div>
+      <div style="display:flex;gap:20px;align-items:center">
+        <div class="botonera botones-red"><button data-r="adelante">▶ propagación</button><button data-r="atras">◀ retropropagación</button></div>
+        <div class="lazo mono chico" style="display:flex;gap:12px;flex-wrap:wrap"><span>x</span>→<span>ReLU</span>→<span>σ</span>→<span>BCE + L2</span>→<span>∂L/∂θ</span>→<span>Adam</span></div>
+      </div>
+    </div>
+    <div class="col crece">
+      <div class="anim"><div class="g-escalera" data-ancho="780" data-alto="500"></div></div>
+      <p class="fuente anim">Log-loss media de una red (5 semillas) al sumar cada intervención; el último paso es el ensamble de 10. *Rival agregado tras la revisión.</p>
+      <p class="chico anim">Adam η = 10⁻³ · L2 = 10⁻³ · lote 16 · 560 pasos · BCE ponderada por clase · bucle explícito <span class="mono">tf.GradientTape</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · PIPELINE -->
+<section class="slide" data-titulo="Pipeline integrado" data-orador="juan" data-seg="45">
+  <div class="kicker anim"><span class="num">07</span> Integración <span class="unidad">U3</span></div>
+  <h2 class="anim">Un pipeline de 8 etapas que se ejecuta con una orden</h2>
+  <div class="g-pipeline anim"></div>
+  <div class="fila crece" style="margin-top:24px">
+    <div class="col anim" style="width:1100px"><div class="g-terminal" data-lineas="5" style="height:330px"></div></div>
+    <div class="col crece anim" style="justify-content:center;gap:26px">
+      <div class="stat verde"><span class="valor" data-contar="10">10</span><span class="etq">pruebas automáticas (pytest)</span></div>
+      <div class="stat"><span class="valor" style="font-size:54px">152 KB</span><span class="etq">artefacto .keras con escalador y 10 redes</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · RESULTADOS -->
+<section class="slide" data-titulo="Resultados antes y después" data-orador="juan" data-seg="55">
+  <div class="kicker anim"><span class="num">08</span> Resultados <span class="unidad">U2 → U3</span></div>
+  <h2 class="anim">Frente al modelo de la U2, la mejora es clara y se sostiene en 2026</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1060px"><div class="g-comparador" data-conjuntos="sel,t26,et" data-metricas="ll,auc,ece" data-grandes="1"></div></div>
+    <div class="col crece" style="gap:26px">
+      <div class="tarjeta anim">
+        <div class="fuente">Δ log-loss contra la base de la U2 (ensamble contra ensamble)</div>
+        <div class="g2" style="margin-top:14px">
+          <div class="stat verde"><span class="valor" style="font-size:64px" data-v="pareadas|conj=origen móvil 2023-2025&comp=Después vs. antes (U2, ensamble 10)|dll"></span><span class="etq">selección</span></div>
+          <div class="stat verde"><span class="valor" style="font-size:64px" data-v="pareadas|conj=prueba 2026&comp=Después vs. antes (U2, ensamble 10)|dll"></span><span class="etq">prueba 2026</span></div>
+        </div>
+        <p class="fuente" style="margin-top:10px">IC 95 % por departamento: <span data-v="pareadas|conj=prueba 2026&comp=Después vs. antes (U2, ensamble 10)|ic" data-f="ic"></span> en 2026</p>
+      </div>
+      <div class="tarjeta anim sin-marca">
+        <div class="stat"><span class="valor" style="font-size:64px"><span data-v="bandas|conj=2023-2025&modelo=Después: MLP U3|aciertos" data-f="0"></span><small>de <span data-v="bandas|conj=2023-2025&modelo=Después: MLP U3|banda" data-f="0"></span></small></span>
+        <span class="etq">aciertos en banda consolidada (P ≥ 0,7 o P &lt; 0,3)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · LECTURA CRÍTICA -->
+<section class="slide" data-titulo="Lectura crítica" data-orador="laura" data-seg="45">
+  <div class="kicker anim"><span class="num">09</span> Lectura crítica <span class="unidad">U3</span></div>
+  <h2 class="anim">Frente a la inercia, lo que gana el modelo es calibración</h2>
+  <div class="g3" style="align-items:stretch">
+    <div class="tarjeta anim paso" data-paso="1"><span class="chip si">gana</span><h3 style="margin-top:14px">Persistencia cruda</h3>
+      <div class="stat"><span class="valor" style="font-size:66px"><span data-v="comparaciones|sel|MLP U3|ll"></span><small>vs <span data-v="comparaciones|sel|Persistencia|ll"></span></small></span><span class="etq">log-loss 2023–2025</span></div>
+      <p class="chico" style="margin-top:14px">Usar una proporción como probabilidad es demasiado confiado.</p></div>
+    <div class="tarjeta anim paso" data-paso="2"><span class="chip no">no demostrado</span><h3 style="margin-top:14px">Persistencia calibrada</h3>
+      <div class="stat"><span class="valor" style="font-size:66px"><span data-v="comparaciones|t26|MLP U3|ll"></span><small>vs <span data-v="comparaciones|t26|Persistencia calibrada|ll"></span></small></span><span class="etq">log-loss prueba 2026</span></div>
+      <p class="chico" style="margin-top:14px">Una inercia bien calibrada empata o gana a escala departamental.</p></div>
+    <div class="tarjeta anim paso" data-paso="3"><span class="chip no">límite</span><h3 style="margin-top:14px">Cambios de perfil</h3>
+      <div class="stat"><span class="valor" style="font-size:66px"><span data-v="trans13|MLP U3|0" data-f="0"></span><small>de <span data-v="trans13|MLP U3|1" data-f="0"></span></small></span><span class="etq">transiciones acertadas 2023–2026</span></div>
+      <p class="chico" style="margin-top:14px">Con 30 departamentos, anticipar los cambios sigue siendo el reto.</p></div>
+  </div>
+  <div class="tarjeta sin-marca anim" style="margin-top:28px;padding:24px 30px"><div class="g-trio"></div></div>
+</section>
+
+<!-- 11 · PROYECCIÓN 2027 -->
+<section class="slide" data-titulo="Proyección 2027" data-orador="laura" data-seg="55">
+  <div class="kicker anim"><span class="num">10</span> Conclusión estratégica <span class="unidad">2027</span></div>
+  <div class="fila crece">
+    <div class="col" style="width:400px">
+      <h2 class="anim" style="font-size:56px;margin-bottom:6px">Mapa de prioridades 2027</h2>
+      <div class="stat anim"><span class="valor" style="color:var(--Cclaro)" data-v="resumen27|C consolidado" data-f="0"></span><span class="etq">C consolidado · ISR y movilidad protegida</span></div>
+      <div class="stat anim"><span class="valor" style="color:var(--acento2)" data-v="resumen27|Transición" data-f="0"></span><span class="etq">en transición · portafolio flexible</span></div>
+      <div class="stat anim"><span class="valor" style="color:var(--tinta2)" data-v="resumen27|D consolidado" data-f="0"></span><span class="etq">D consolidado · capacidades mixtas</span></div>
+      <p class="chico anim"><b class="alerta-txt">Alerta A/B:</b> Guaviare (<span data-v="deptos|guaviare|sab" data-f="pct1"></span>) y Cauca (<span data-v="deptos|cauca|sab" data-f="pct1"></span> de eventos A+B) superan el doble de la proporción nacional.</p>
+    </div>
+    <div class="col crece anim"><div class="g-mapa" data-modo="2027" data-alto="740" data-controles="1" data-detalle="1" data-sel="guaviare" data-etiquetas="guaviare,cauca"></div></div>
+  </div>
+</section>
+
+<!-- 12 · CONCLUSIONES -->
+<section class="slide" data-titulo="Conclusiones" data-orador="ambos" data-seg="45">
+  <div class="kicker anim"><span class="num">11</span> Conclusiones estratégicas</div>
+  <h2 class="anim">Lo que este modelo permite decidir hoy</h2>
+  <div class="g2 crece tarjetas-grandes" style="gap:28px">
+    <div class="tarjeta anim paso" data-paso="1"><h3><span class="resalta">01</span> Representar mejor el dato</h3><p>La mejora vino de la memoria del perfil y del último semestre, no de una red más grande.</p></div>
+    <div class="tarjeta anim paso" data-paso="2"><h3><span class="resalta">02</span> Bandas en vez de un umbral</h3><p>Probabilidades calibradas que separan territorios consolidados de los que están en transición.</p></div>
+    <div class="tarjeta anim paso" data-paso="3"><h3><span class="resalta">03</span> Alerta A/B focalizada</h3><p>Guaviare y Cauca suman C-UAS y detección de explosivos al énfasis convencional.</p></div>
+    <div class="tarjeta anim paso" data-paso="4"><h3><span class="resalta">04</span> Siguiente paso: municipios</h3><p>Con 30 unidades el modelo no supera a una inercia calibrada; la escala municipal es la mejora prioritaria.</p></div>
+  </div>
+  <p class="fuente anim" style="margin-top:20px">Insumo analítico, no recomendación operativa · Código: github.com/salda824/perfil-amenaza-tecnologica-u3 · Uso de IA declarado en el informe</p>
+</section>
+
+</div>

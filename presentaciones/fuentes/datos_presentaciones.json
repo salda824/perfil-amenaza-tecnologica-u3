@@ -1,0 +1,3068 @@
+{
+ "deptos": {
+  "guaviare": {
+   "n": "Guaviare",
+   "p27": 0.9881,
+   "cat": "C consolidado",
+   "alerta": true,
+   "sab": 0.1443,
+   "perf26": "C",
+   "sc26": 0.7647,
+   "ev26": 34,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI",
+   "hist": [
+    [
+     2021,
+     0.68,
+     "C",
+     false,
+     25,
+     null
+    ],
+    [
+     2022,
+     0.6765,
+     "C",
+     false,
+     34,
+     null
+    ],
+    [
+     2023,
+     0.7436,
+     "C",
+     false,
+     39,
+     0.8133
+    ],
+    [
+     2024,
+     0.6,
+     "C",
+     false,
+     20,
+     0.7529
+    ],
+    [
+     2025,
+     0.6984,
+     "C",
+     false,
+     63,
+     0.7994
+    ],
+    [
+     2026,
+     0.7647,
+     "C",
+     false,
+     34,
+     0.9682
+    ]
+   ]
+  },
+  "narino": {
+   "n": "Nariño",
+   "p27": 0.9342,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0676,
+   "perf26": "C",
+   "sc26": 0.6989,
+   "ev26": 176,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2021,
+     0.6105,
+     "C",
+     false,
+     285,
+     null
+    ],
+    [
+     2022,
+     0.6043,
+     "C",
+     false,
+     187,
+     null
+    ],
+    [
+     2023,
+     0.5735,
+     "C",
+     false,
+     340,
+     0.8659
+    ],
+    [
+     2024,
+     0.5611,
+     "C",
+     false,
+     221,
+     0.8652
+    ],
+    [
+     2025,
+     0.6482,
+     "C",
+     false,
+     253,
+     0.8317
+    ],
+    [
+     2026,
+     0.6989,
+     "C",
+     false,
+     176,
+     0.8964
+    ]
+   ]
+  },
+  "cauca": {
+   "n": "Cauca",
+   "p27": 0.9246,
+   "cat": "C consolidado",
+   "alerta": true,
+   "sab": 0.1338,
+   "perf26": "C",
+   "sc26": 0.6998,
+   "ev26": 443,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI",
+   "hist": [
+    [
+     2021,
+     0.7237,
+     "C",
+     false,
+     579,
+     null
+    ],
+    [
+     2022,
+     0.8311,
+     "C",
+     false,
+     598,
+     null
+    ],
+    [
+     2023,
+     0.7793,
+     "C",
+     false,
+     666,
+     0.9737
+    ],
+    [
+     2024,
+     0.7722,
+     "C",
+     false,
+     654,
+     0.952
+    ],
+    [
+     2025,
+     0.7087,
+     "C",
+     false,
+     745,
+     0.9532
+    ],
+    [
+     2026,
+     0.6998,
+     "C",
+     false,
+     443,
+     0.9467
+    ]
+   ]
+  },
+  "caqueta": {
+   "n": "Caquetá",
+   "p27": 0.9208,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0984,
+   "perf26": "C",
+   "sc26": 0.8125,
+   "ev26": 48,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2021,
+     0.9273,
+     "C",
+     false,
+     55,
+     null
+    ],
+    [
+     2022,
+     0.7419,
+     "C",
+     false,
+     62,
+     null
+    ],
+    [
+     2023,
+     0.7534,
+     "C",
+     false,
+     73,
+     0.9019
+    ],
+    [
+     2024,
+     0.6897,
+     "C",
+     false,
+     58,
+     0.879
+    ],
+    [
+     2025,
+     0.6351,
+     "C",
+     false,
+     74,
+     0.9097
+    ],
+    [
+     2026,
+     0.8125,
+     "C",
+     false,
+     48,
+     0.8528
+    ]
+   ]
+  },
+  "putumayo": {
+   "n": "Putumayo",
+   "p27": 0.8876,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0374,
+   "perf26": "C",
+   "sc26": 0.814,
+   "ev26": 43,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2021,
+     0.7841,
+     "C",
+     false,
+     88,
+     null
+    ],
+    [
+     2022,
+     0.8876,
+     "C",
+     false,
+     89,
+     null
+    ],
+    [
+     2023,
+     0.8395,
+     "C",
+     false,
+     81,
+     0.9694
+    ],
+    [
+     2024,
+     0.9027,
+     "C",
+     false,
+     113,
+     0.9694
+    ],
+    [
+     2025,
+     0.7812,
+     "C",
+     false,
+     64,
+     0.9741
+    ],
+    [
+     2026,
+     0.814,
+     "C",
+     false,
+     43,
+     0.8837
+    ]
+   ]
+  },
+  "antioquia": {
+   "n": "Antioquia",
+   "p27": 0.8833,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0678,
+   "perf26": "C",
+   "sc26": 0.6533,
+   "ev26": 398,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2021,
+     0.6071,
+     "C",
+     false,
+     560,
+     null
+    ],
+    [
+     2022,
+     0.6264,
+     "C",
+     false,
+     530,
+     null
+    ],
+    [
+     2023,
+     0.5285,
+     "C",
+     false,
+     596,
+     0.9389
+    ],
+    [
+     2024,
+     0.6248,
+     "C",
+     false,
+     573,
+     0.8476
+    ],
+    [
+     2025,
+     0.6627,
+     "C",
+     false,
+     664,
+     0.884
+    ],
+    [
+     2026,
+     0.6533,
+     "C",
+     false,
+     398,
+     0.938
+    ]
+   ]
+  },
+  "amazonas": {
+   "n": "Amazonas",
+   "p27": 0.8752,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0,
+   "perf26": "C",
+   "sc26": 0.7778,
+   "ev26": 9,
+   "conf26": false,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2022,
+     1.0,
+     "C",
+     false,
+     11,
+     null
+    ],
+    [
+     2023,
+     0.625,
+     "C",
+     false,
+     16,
+     0.8428
+    ],
+    [
+     2024,
+     0.8,
+     "C",
+     false,
+     10,
+     0.7746
+    ],
+    [
+     2025,
+     0.9167,
+     "C",
+     false,
+     24,
+     0.7982
+    ]
+   ]
+  },
+  "norte de santander": {
+   "n": "Norte de Santander",
+   "p27": 0.865,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.1016,
+   "perf26": "C",
+   "sc26": 0.604,
+   "ev26": 404,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2021,
+     0.6379,
+     "C",
+     false,
+     475,
+     null
+    ],
+    [
+     2022,
+     0.6869,
+     "C",
+     false,
+     495,
+     null
+    ],
+    [
+     2023,
+     0.5864,
+     "C",
+     false,
+     457,
+     0.9196
+    ],
+    [
+     2024,
+     0.6415,
+     "C",
+     false,
+     357,
+     0.8391
+    ],
+    [
+     2025,
+     0.6798,
+     "C",
+     false,
+     531,
+     0.8364
+    ],
+    [
+     2026,
+     0.604,
+     "C",
+     false,
+     404,
+     0.9471
+    ]
+   ]
+  },
+  "vaupes": {
+   "n": "Vaupés",
+   "p27": 0.8386,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0,
+   "perf26": "C",
+   "sc26": 0.5,
+   "ev26": 6,
+   "conf26": false,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": []
+  },
+  "vichada": {
+   "n": "Vichada",
+   "p27": 0.7888,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0588,
+   "perf26": "C",
+   "sc26": 0.7273,
+   "ev26": 11,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2026,
+     0.7273,
+     "C",
+     false,
+     11,
+     0.6558
+    ]
+   ]
+  },
+  "cesar": {
+   "n": "Cesar",
+   "p27": 0.7131,
+   "cat": "C consolidado",
+   "alerta": false,
+   "sab": 0.0714,
+   "perf26": "C",
+   "sc26": 0.6667,
+   "ev26": 87,
+   "conf26": true,
+   "enf": "ISR, detección temprana y movilidad protegida",
+   "hist": [
+    [
+     2021,
+     0.4756,
+     "D",
+     false,
+     82,
+     null
+    ],
+    [
+     2022,
+     0.5119,
+     "C",
+     true,
+     84,
+     null
+    ],
+    [
+     2023,
+     0.5242,
+     "C",
+     false,
+     124,
+     0.3781
+    ],
+    [
+     2024,
+     0.4173,
+     "D",
+     true,
+     127,
+     0.4621
+    ],
+    [
+     2025,
+     0.5328,
+     "C",
+     true,
+     137,
+     0.2459
+    ],
+    [
+     2026,
+     0.6667,
+     "C",
+     false,
+     87,
+     0.4517
+    ]
+   ]
+  },
+  "san andres": {
+   "n": "San Andrés",
+   "p27": 0.6692,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0,
+   "perf26": "C",
+   "sc26": 1.0,
+   "ev26": 1,
+   "conf26": false,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": []
+  },
+  "choco": {
+   "n": "Chocó",
+   "p27": 0.6183,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0797,
+   "perf26": "D",
+   "sc26": 0.4459,
+   "ev26": 148,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.4793,
+     "D",
+     true,
+     169,
+     null
+    ],
+    [
+     2022,
+     0.6453,
+     "C",
+     true,
+     172,
+     null
+    ],
+    [
+     2023,
+     0.6136,
+     "C",
+     false,
+     176,
+     0.8474
+    ],
+    [
+     2024,
+     0.7377,
+     "C",
+     false,
+     183,
+     0.8508
+    ],
+    [
+     2025,
+     0.7059,
+     "C",
+     false,
+     153,
+     0.9163
+    ],
+    [
+     2026,
+     0.4459,
+     "D",
+     true,
+     148,
+     0.8772
+    ]
+   ]
+  },
+  "valle del cauca": {
+   "n": "Valle del Cauca",
+   "p27": 0.6099,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0707,
+   "perf26": "D",
+   "sc26": 0.4982,
+   "ev26": 271,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.302,
+     "D",
+     true,
+     553,
+     null
+    ],
+    [
+     2022,
+     0.6141,
+     "C",
+     true,
+     368,
+     null
+    ],
+    [
+     2023,
+     0.4386,
+     "D",
+     true,
+     285,
+     0.8382
+    ],
+    [
+     2024,
+     0.4375,
+     "D",
+     false,
+     288,
+     0.5062
+    ],
+    [
+     2025,
+     0.5228,
+     "C",
+     true,
+     394,
+     0.4832
+    ],
+    [
+     2026,
+     0.4982,
+     "D",
+     true,
+     271,
+     0.7573
+    ]
+   ]
+  },
+  "arauca": {
+   "n": "Arauca",
+   "p27": 0.6098,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0976,
+   "perf26": "C",
+   "sc26": 0.6475,
+   "ev26": 122,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.7231,
+     "C",
+     false,
+     195,
+     null
+    ],
+    [
+     2022,
+     0.8431,
+     "C",
+     false,
+     255,
+     null
+    ],
+    [
+     2023,
+     0.7516,
+     "C",
+     false,
+     322,
+     0.843
+    ],
+    [
+     2024,
+     0.869,
+     "C",
+     false,
+     252,
+     0.7683
+    ],
+    [
+     2025,
+     0.7206,
+     "C",
+     false,
+     247,
+     0.8524
+    ],
+    [
+     2026,
+     0.6475,
+     "C",
+     false,
+     122,
+     0.7922
+    ]
+   ]
+  },
+  "cordoba": {
+   "n": "Córdoba",
+   "p27": 0.5662,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.012,
+   "perf26": "C",
+   "sc26": 0.5278,
+   "ev26": 36,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.4196,
+     "D",
+     true,
+     112,
+     null
+    ],
+    [
+     2022,
+     0.4912,
+     "D",
+     false,
+     114,
+     null
+    ],
+    [
+     2023,
+     0.3355,
+     "D",
+     false,
+     152,
+     0.4117
+    ],
+    [
+     2024,
+     0.4783,
+     "D",
+     false,
+     92,
+     0.2049
+    ],
+    [
+     2025,
+     0.5496,
+     "C",
+     true,
+     131,
+     0.2055
+    ],
+    [
+     2026,
+     0.5278,
+     "C",
+     false,
+     36,
+     0.6839
+    ]
+   ]
+  },
+  "guainia": {
+   "n": "Guainía",
+   "p27": 0.5485,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0,
+   "perf26": "C",
+   "sc26": 0.5,
+   "ev26": 2,
+   "conf26": false,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": []
+  },
+  "casanare": {
+   "n": "Casanare",
+   "p27": 0.5209,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.087,
+   "perf26": "C",
+   "sc26": 0.5789,
+   "ev26": 19,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.1765,
+     "D",
+     true,
+     17,
+     null
+    ],
+    [
+     2022,
+     0.9333,
+     "C",
+     true,
+     15,
+     null
+    ],
+    [
+     2023,
+     0.6923,
+     "C",
+     false,
+     13,
+     0.3218
+    ],
+    [
+     2024,
+     0.8065,
+     "C",
+     false,
+     31,
+     0.4124
+    ],
+    [
+     2025,
+     0.6667,
+     "C",
+     false,
+     27,
+     0.6401
+    ],
+    [
+     2026,
+     0.5789,
+     "C",
+     false,
+     19,
+     0.5045
+    ]
+   ]
+  },
+  "huila": {
+   "n": "Huila",
+   "p27": 0.506,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0745,
+   "perf26": "C",
+   "sc26": 0.6154,
+   "ev26": 65,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.34,
+     "D",
+     true,
+     50,
+     null
+    ],
+    [
+     2022,
+     0.7273,
+     "C",
+     true,
+     11,
+     null
+    ],
+    [
+     2023,
+     0.6024,
+     "C",
+     false,
+     83,
+     0.3606
+    ],
+    [
+     2024,
+     0.6447,
+     "C",
+     false,
+     76,
+     0.4724
+    ],
+    [
+     2025,
+     0.7292,
+     "C",
+     false,
+     96,
+     0.6272
+    ],
+    [
+     2026,
+     0.6154,
+     "C",
+     false,
+     65,
+     0.7708
+    ]
+   ]
+  },
+  "meta": {
+   "n": "Meta",
+   "p27": 0.4988,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0144,
+   "perf26": "C",
+   "sc26": 0.5536,
+   "ev26": 56,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.7808,
+     "C",
+     false,
+     146,
+     null
+    ],
+    [
+     2022,
+     0.7159,
+     "C",
+     false,
+     88,
+     null
+    ],
+    [
+     2023,
+     0.5694,
+     "C",
+     false,
+     72,
+     0.7792
+    ],
+    [
+     2024,
+     0.4167,
+     "D",
+     true,
+     72,
+     0.4125
+    ],
+    [
+     2025,
+     0.6747,
+     "C",
+     true,
+     83,
+     0.2541
+    ],
+    [
+     2026,
+     0.5536,
+     "C",
+     false,
+     56,
+     0.761
+    ]
+   ]
+  },
+  "sucre": {
+   "n": "Sucre",
+   "p27": 0.433,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0,
+   "perf26": "D",
+   "sc26": 0.4762,
+   "ev26": 21,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.2326,
+     "D",
+     false,
+     86,
+     null
+    ],
+    [
+     2022,
+     0.3652,
+     "D",
+     false,
+     178,
+     null
+    ],
+    [
+     2023,
+     0.3556,
+     "D",
+     false,
+     90,
+     0.1426
+    ],
+    [
+     2024,
+     0.2889,
+     "D",
+     false,
+     45,
+     0.1298
+    ],
+    [
+     2025,
+     0.3889,
+     "D",
+     false,
+     54,
+     0.0966
+    ],
+    [
+     2026,
+     0.4762,
+     "D",
+     false,
+     21,
+     0.2405
+    ]
+   ]
+  },
+  "magdalena": {
+   "n": "Magdalena",
+   "p27": 0.3406,
+   "cat": "Transición",
+   "alerta": false,
+   "sab": 0.0082,
+   "perf26": "D",
+   "sc26": 0.4732,
+   "ev26": 112,
+   "conf26": true,
+   "enf": "Portafolio flexible y monitoreo trimestral del perfil",
+   "hist": [
+    [
+     2021,
+     0.3049,
+     "D",
+     false,
+     82,
+     null
+    ],
+    [
+     2022,
+     0.4943,
+     "D",
+     false,
+     87,
+     null
+    ],
+    [
+     2023,
+     0.331,
+     "D",
+     false,
+     145,
+     0.3732
+    ],
+    [
+     2024,
+     0.4019,
+     "D",
+     false,
+     107,
+     0.1959
+    ],
+    [
+     2025,
+     0.5649,
+     "C",
+     true,
+     131,
+     0.2096
+    ],
+    [
+     2026,
+     0.4732,
+     "D",
+     true,
+     112,
+     0.5541
+    ]
+   ]
+  },
+  "la guajira": {
+   "n": "La Guajira",
+   "p27": 0.2829,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0294,
+   "perf26": "D",
+   "sc26": 0.4511,
+   "ev26": 184,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.2366,
+     "D",
+     false,
+     93,
+     null
+    ],
+    [
+     2022,
+     0.3158,
+     "D",
+     false,
+     133,
+     null
+    ],
+    [
+     2023,
+     0.1712,
+     "D",
+     false,
+     368,
+     0.1058
+    ],
+    [
+     2024,
+     0.1577,
+     "D",
+     false,
+     336,
+     0.0399
+    ],
+    [
+     2025,
+     0.4164,
+     "D",
+     false,
+     293,
+     0.0282
+    ],
+    [
+     2026,
+     0.4511,
+     "D",
+     false,
+     184,
+     0.2986
+    ]
+   ]
+  },
+  "bolivar": {
+   "n": "Bolívar",
+   "p27": 0.2292,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0495,
+   "perf26": "D",
+   "sc26": 0.3064,
+   "ev26": 173,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.1883,
+     "D",
+     false,
+     324,
+     null
+    ],
+    [
+     2022,
+     0.3923,
+     "D",
+     false,
+     390,
+     null
+    ],
+    [
+     2023,
+     0.3472,
+     "D",
+     false,
+     409,
+     0.534
+    ],
+    [
+     2024,
+     0.3619,
+     "D",
+     false,
+     268,
+     0.3497
+    ],
+    [
+     2025,
+     0.5271,
+     "C",
+     true,
+     332,
+     0.3062
+    ],
+    [
+     2026,
+     0.3064,
+     "D",
+     true,
+     173,
+     0.8095
+    ]
+   ]
+  },
+  "tolima": {
+   "n": "Tolima",
+   "p27": 0.1939,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0182,
+   "perf26": "D",
+   "sc26": 0.4316,
+   "ev26": 95,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.0597,
+     "D",
+     false,
+     201,
+     null
+    ],
+    [
+     2022,
+     0.1119,
+     "D",
+     false,
+     143,
+     null
+    ],
+    [
+     2023,
+     0.1832,
+     "D",
+     false,
+     131,
+     0.0459
+    ],
+    [
+     2024,
+     0.3284,
+     "D",
+     false,
+     67,
+     0.0522
+    ],
+    [
+     2025,
+     0.2714,
+     "D",
+     false,
+     70,
+     0.1175
+    ],
+    [
+     2026,
+     0.4316,
+     "D",
+     false,
+     95,
+     0.0857
+    ]
+   ]
+  },
+  "atlantico": {
+   "n": "Atlántico",
+   "p27": 0.0957,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0038,
+   "perf26": "D",
+   "sc26": 0.2427,
+   "ev26": 103,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.121,
+     "D",
+     false,
+     124,
+     null
+    ],
+    [
+     2022,
+     0.1117,
+     "D",
+     false,
+     188,
+     null
+    ],
+    [
+     2023,
+     0.1582,
+     "D",
+     false,
+     196,
+     0.0732
+    ],
+    [
+     2024,
+     0.1648,
+     "D",
+     false,
+     176,
+     0.0597
+    ],
+    [
+     2025,
+     0.283,
+     "D",
+     false,
+     159,
+     0.0424
+    ],
+    [
+     2026,
+     0.2427,
+     "D",
+     false,
+     103,
+     0.1738
+    ]
+   ]
+  },
+  "risaralda": {
+   "n": "Risaralda",
+   "p27": 0.066,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.02,
+   "perf26": "D",
+   "sc26": 0.2903,
+   "ev26": 31,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.1429,
+     "D",
+     false,
+     84,
+     null
+    ],
+    [
+     2022,
+     0.1667,
+     "D",
+     false,
+     36,
+     null
+    ],
+    [
+     2023,
+     0.0635,
+     "D",
+     false,
+     63,
+     0.0356
+    ],
+    [
+     2024,
+     0.2083,
+     "D",
+     false,
+     48,
+     0.0133
+    ],
+    [
+     2025,
+     0.3768,
+     "D",
+     false,
+     69,
+     0.0363
+    ],
+    [
+     2026,
+     0.2903,
+     "D",
+     false,
+     31,
+     0.1634
+    ]
+   ]
+  },
+  "caldas": {
+   "n": "Caldas",
+   "p27": 0.0653,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0088,
+   "perf26": "D",
+   "sc26": 0.322,
+   "ev26": 59,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.0603,
+     "D",
+     false,
+     116,
+     null
+    ],
+    [
+     2022,
+     0.075,
+     "D",
+     false,
+     40,
+     null
+    ],
+    [
+     2023,
+     0.1509,
+     "D",
+     false,
+     53,
+     0.0267
+    ],
+    [
+     2024,
+     0.0351,
+     "D",
+     false,
+     57,
+     0.0338
+    ],
+    [
+     2025,
+     0.1636,
+     "D",
+     false,
+     55,
+     0.0117
+    ],
+    [
+     2026,
+     0.322,
+     "D",
+     false,
+     59,
+     0.0246
+    ]
+   ]
+  },
+  "quindio": {
+   "n": "Quindío",
+   "p27": 0.0582,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0,
+   "perf26": "D",
+   "sc26": 0.25,
+   "ev26": 12,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.1379,
+     "D",
+     false,
+     29,
+     null
+    ],
+    [
+     2023,
+     0.1538,
+     "D",
+     false,
+     13,
+     0.1965
+    ],
+    [
+     2024,
+     0.3077,
+     "D",
+     false,
+     13,
+     0.0633
+    ],
+    [
+     2025,
+     0.4,
+     "D",
+     false,
+     15,
+     0.1423
+    ],
+    [
+     2026,
+     0.25,
+     "D",
+     false,
+     12,
+     0.0976
+    ]
+   ]
+  },
+  "santander": {
+   "n": "Santander",
+   "p27": 0.0423,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0167,
+   "perf26": "D",
+   "sc26": 0.1631,
+   "ev26": 141,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.0401,
+     "D",
+     false,
+     274,
+     null
+    ],
+    [
+     2022,
+     0.2137,
+     "D",
+     false,
+     131,
+     null
+    ],
+    [
+     2023,
+     0.1324,
+     "D",
+     false,
+     219,
+     0.1004
+    ],
+    [
+     2024,
+     0.1323,
+     "D",
+     false,
+     189,
+     0.0338
+    ],
+    [
+     2025,
+     0.1519,
+     "D",
+     false,
+     158,
+     0.0378
+    ],
+    [
+     2026,
+     0.1631,
+     "D",
+     false,
+     141,
+     0.0337
+    ]
+   ]
+  },
+  "cundinamarca": {
+   "n": "Cundinamarca",
+   "p27": 0.0375,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0,
+   "perf26": "D",
+   "sc26": 0.2857,
+   "ev26": 21,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.0258,
+     "D",
+     false,
+     194,
+     null
+    ],
+    [
+     2022,
+     0.3043,
+     "D",
+     false,
+     23,
+     null
+    ],
+    [
+     2023,
+     0.06,
+     "D",
+     false,
+     50,
+     0.0715
+    ],
+    [
+     2024,
+     0.0758,
+     "D",
+     false,
+     66,
+     0.014
+    ],
+    [
+     2025,
+     0.2286,
+     "D",
+     false,
+     35,
+     0.0135
+    ],
+    [
+     2026,
+     0.2857,
+     "D",
+     false,
+     21,
+     0.056
+    ]
+   ]
+  },
+  "boyaca": {
+   "n": "Boyacá",
+   "p27": 0.0239,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0145,
+   "perf26": "D",
+   "sc26": 0.1522,
+   "ev26": 46,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.125,
+     "D",
+     false,
+     32,
+     null
+    ],
+    [
+     2023,
+     0.14,
+     "D",
+     false,
+     50,
+     0.167
+    ],
+    [
+     2024,
+     0.25,
+     "D",
+     false,
+     20,
+     0.0416
+    ],
+    [
+     2025,
+     0.2609,
+     "D",
+     false,
+     23,
+     0.0874
+    ],
+    [
+     2026,
+     0.1522,
+     "D",
+     false,
+     46,
+     0.0776
+    ]
+   ]
+  },
+  "bogota": {
+   "n": "Bogotá D.C.",
+   "p27": 0.0071,
+   "cat": "D consolidado",
+   "alerta": false,
+   "sab": 0.0014,
+   "perf26": "D",
+   "sc26": 0.0474,
+   "ev26": 211,
+   "conf26": true,
+   "enf": "Orden público y capacidades mixtas",
+   "hist": [
+    [
+     2021,
+     0.0324,
+     "D",
+     false,
+     555,
+     null
+    ],
+    [
+     2022,
+     0.08,
+     "D",
+     false,
+     300,
+     null
+    ],
+    [
+     2023,
+     0.0361,
+     "D",
+     false,
+     416,
+     0.0269
+    ],
+    [
+     2024,
+     0.0428,
+     "D",
+     false,
+     397,
+     0.0108
+    ],
+    [
+     2025,
+     0.029,
+     "D",
+     false,
+     482,
+     0.0087
+    ],
+    [
+     2026,
+     0.0474,
+     "D",
+     false,
+     211,
+     0.0061
+    ]
+   ]
+  }
+ },
+ "acled": {
+  "filas_export": 17573,
+  "eventos": 33275,
+  "fatalidades": 13591,
+  "deptos": 33,
+  "anios": [
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025,
+   2026
+  ],
+  "por_anio": {
+   "A": [
+    210,
+    145,
+    217,
+    177,
+    185,
+    236,
+    115
+   ],
+   "B": [
+    6,
+    2,
+    1,
+    3,
+    19,
+    107,
+    126
+   ],
+   "C": [
+    1860,
+    2205,
+    2596,
+    2560,
+    2390,
+    2999,
+    1838
+   ],
+   "D": [
+    1010,
+    3249,
+    1974,
+    2969,
+    2332,
+    2235,
+    1509
+   ]
+  },
+  "subtipos": [
+   [
+    "Peaceful protest",
+    10836,
+    "D"
+   ],
+   [
+    "Attack",
+    7802,
+    "C"
+   ],
+   [
+    "Armed clash",
+    4785,
+    "C"
+   ],
+   [
+    "Looting/property destruction",
+    1566,
+    "C"
+   ],
+   [
+    "Violent demonstration",
+    1276,
+    "D"
+   ],
+   [
+    "Mob violence",
+    1257,
+    "D"
+   ],
+   [
+    "Abduction/forced disappearance",
+    1223,
+    "C"
+   ],
+   [
+    "Other",
+    1145,
+    "D"
+   ],
+   [
+    "Disrupted weapons use",
+    1072,
+    "C"
+   ],
+   [
+    "Remote explosive/landmine/IED",
+    931,
+    "A"
+   ]
+  ]
+ },
+ "escalera": [
+  {
+   "paso": "Modelo base U2",
+   "ll": 0.3828,
+   "de": 0.0213,
+   "auc": 0.9211,
+   "trans": 2.4
+  },
+  {
+   "paso": "+ I1 memoria m₁",
+   "ll": 0.347,
+   "de": 0.01,
+   "auc": 0.9386,
+   "trans": 2.4
+  },
+  {
+   "paso": "+ I2 semestre d₁",
+   "ll": 0.3096,
+   "de": 0.0096,
+   "auc": 0.9513,
+   "trans": 2.0
+  },
+  {
+   "paso": "+ I7 ensamble (10)",
+   "ll": 0.3043,
+   "de": 0.0,
+   "auc": 0.9561,
+   "trans": 2.0
+  }
+ ],
+ "comparaciones": {
+  "sel": [
+   {
+    "modelo": "Persistencia",
+    "ll": 0.3631,
+    "auc": 0.973,
+    "ece": 0.173,
+    "brier": 0.106,
+    "mcc": 0.7951,
+    "exact": 0.8966,
+    "trans": 0.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "Persistencia calibrada",
+    "ll": 0.3279,
+    "auc": 0.9656,
+    "ece": 0.116,
+    "brier": 0.0986,
+    "mcc": 0.7779,
+    "exact": 0.8851,
+    "trans": 1.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "Base U2 · semilla 42",
+    "ll": 0.4074,
+    "auc": 0.9128,
+    "ece": 0.0841,
+    "brier": 0.1316,
+    "mcc": 0.6587,
+    "exact": 0.8161,
+    "trans": 2.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "Base U2 · ensamble 10",
+    "ll": 0.3758,
+    "auc": 0.9334,
+    "ece": 0.0944,
+    "brier": 0.1196,
+    "mcc": 0.6438,
+    "exact": 0.8161,
+    "trans": 3.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "Logística (9 variables)",
+    "ll": 0.3061,
+    "auc": 0.9487,
+    "ece": 0.0681,
+    "brier": 0.0972,
+    "mcc": 0.7372,
+    "exact": 0.8621,
+    "trans": 1.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "MLP U3",
+    "ll": 0.3043,
+    "auc": 0.9561,
+    "ece": 0.1236,
+    "brier": 0.0953,
+    "mcc": 0.6905,
+    "exact": 0.8391,
+    "trans": 2.0,
+    "ntrans": 9.0
+   }
+  ],
+  "t26": [
+   {
+    "modelo": "Persistencia",
+    "ll": 0.4293,
+    "auc": 0.9476,
+    "ece": 0.2072,
+    "brier": 0.1312,
+    "mcc": 0.7552,
+    "exact": 0.8621,
+    "trans": 0.0,
+    "ntrans": 4.0
+   },
+   {
+    "modelo": "Persistencia calibrada",
+    "ll": 0.3513,
+    "auc": 0.9476,
+    "ece": 0.1502,
+    "brier": 0.1046,
+    "mcc": 0.7552,
+    "exact": 0.8621,
+    "trans": 0.0,
+    "ntrans": 4.0
+   },
+   {
+    "modelo": "Base U2 · semilla 42",
+    "ll": 0.5244,
+    "auc": 0.8524,
+    "ece": 0.1039,
+    "brier": 0.1662,
+    "mcc": 0.5168,
+    "exact": 0.7586,
+    "trans": 1.0,
+    "ntrans": 4.0
+   },
+   {
+    "modelo": "Base U2 · ensamble 10",
+    "ll": 0.4696,
+    "auc": 0.8619,
+    "ece": 0.1085,
+    "brier": 0.1574,
+    "mcc": 0.5168,
+    "exact": 0.7586,
+    "trans": 1.0,
+    "ntrans": 4.0
+   },
+   {
+    "modelo": "Logística (9 variables)",
+    "ll": 0.3825,
+    "auc": 0.9286,
+    "ece": 0.1139,
+    "brier": 0.1291,
+    "mcc": 0.5315,
+    "exact": 0.7586,
+    "trans": 0.0,
+    "ntrans": 4.0
+   },
+   {
+    "modelo": "MLP U3",
+    "ll": 0.38,
+    "auc": 0.9,
+    "ece": 0.0741,
+    "brier": 0.1211,
+    "mcc": 0.6716,
+    "exact": 0.8276,
+    "trans": 0.0,
+    "ntrans": 4.0
+   },
+   {
+    "modelo": "Embedding (no adoptado)",
+    "ll": 0.3136,
+    "auc": 0.9333,
+    "ece": 0.1232,
+    "brier": 0.0995,
+    "mcc": 0.8117,
+    "exact": 0.8966,
+    "trans": 1.0,
+    "ntrans": 4.0
+   }
+  ],
+  "et": [
+   {
+    "modelo": "Persistencia",
+    "ll": 0.3631,
+    "auc": 0.973,
+    "ece": 0.173,
+    "brier": 0.106,
+    "mcc": 0.7951,
+    "exact": 0.8966,
+    "trans": 0.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "Persistencia calibrada",
+    "ll": 0.3321,
+    "auc": 0.9619,
+    "ece": 0.1164,
+    "brier": 0.1007,
+    "mcc": 0.7779,
+    "exact": 0.8851,
+    "trans": 1.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "Base U2 · ensamble 10",
+    "ll": 0.4763,
+    "auc": 0.8689,
+    "ece": 0.0868,
+    "brier": 0.1565,
+    "mcc": 0.5633,
+    "exact": 0.7701,
+    "trans": 4.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "Logística (9 variables)",
+    "ll": 0.4161,
+    "auc": 0.9091,
+    "ece": 0.0735,
+    "brier": 0.1224,
+    "mcc": 0.6852,
+    "exact": 0.8391,
+    "trans": 3.0,
+    "ntrans": 9.0
+   },
+   {
+    "modelo": "MLP U3",
+    "ll": 0.3609,
+    "auc": 0.9323,
+    "ece": 0.092,
+    "brier": 0.1172,
+    "mcc": 0.6644,
+    "exact": 0.8276,
+    "trans": 3.0,
+    "ntrans": 9.0
+   }
+  ],
+  "esp": [
+   {
+    "modelo": "Persistencia",
+    "ll": 0.4179,
+    "auc": 0.914,
+    "ece": 0.1174,
+    "brier": 0.1274,
+    "mcc": 0.7036,
+    "exact": 0.8521,
+    "trans": null,
+    "ntrans": null
+   },
+   {
+    "modelo": "Base U2 · 1 red",
+    "ll": 0.4758,
+    "auc": 0.8554,
+    "ece": 0.0482,
+    "brier": 0.1543,
+    "mcc": 0.5655,
+    "exact": null,
+    "trans": null,
+    "ntrans": null
+   },
+   {
+    "modelo": "Base U2 · ensamble 10",
+    "ll": 0.4453,
+    "auc": 0.8722,
+    "ece": 0.0547,
+    "brier": 0.1471,
+    "mcc": 0.58,
+    "exact": 0.7887,
+    "trans": null,
+    "ntrans": null
+   },
+   {
+    "modelo": "Logística (9 variables)",
+    "ll": 0.3732,
+    "auc": 0.9163,
+    "ece": 0.0336,
+    "brier": 0.1136,
+    "mcc": 0.7038,
+    "exact": 0.8521,
+    "trans": null,
+    "ntrans": null
+   },
+   {
+    "modelo": "MLP U3 · 1 red",
+    "ll": 0.3732,
+    "auc": 0.9146,
+    "ece": 0.0461,
+    "brier": 0.1163,
+    "mcc": 0.6663,
+    "exact": null,
+    "trans": null,
+    "ntrans": null
+   },
+   {
+    "modelo": "MLP U3",
+    "ll": 0.3506,
+    "auc": 0.9227,
+    "ece": 0.0416,
+    "brier": 0.1104,
+    "mcc": 0.6899,
+    "exact": 0.8451,
+    "trans": null,
+    "ntrans": null
+   }
+  ]
+ },
+ "decisiones": [
+  {
+   "id": "I1",
+   "nombre": "I1 memoria m1",
+   "dll": -0.0358,
+   "ee": 0.0094,
+   "ic": [
+    -0.056,
+    -0.019
+   ],
+   "dauc": 0.0174,
+   "decision": "se retiene",
+   "retiene": true
+  },
+  {
+   "id": "I1",
+   "nombre": "I1 trayectoria m2, m3",
+   "dll": 0.0016,
+   "ee": 0.011,
+   "ic": [
+    -0.036,
+    0.055
+   ],
+   "dauc": -0.0001,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I2",
+   "nombre": "I2 semestre reciente d1",
+   "dll": -0.0374,
+   "ee": 0.0068,
+   "ic": [
+    -0.066,
+    -0.011
+   ],
+   "dauc": 0.0127,
+   "decision": "se retiene",
+   "retiene": true
+  },
+  {
+   "id": "I2",
+   "nombre": "I2 tendencias d2, d3",
+   "dll": 0.013,
+   "ee": 0.0087,
+   "ic": [
+    -0.03,
+    0.071
+   ],
+   "dauc": -0.0059,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I3",
+   "nombre": "I3 actores armados x3",
+   "dll": 0.025,
+   "ee": 0.0056,
+   "ic": [
+    -0.002,
+    0.063
+   ],
+   "dauc": -0.0145,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I4",
+   "nombre": "I4 vecindad (temporal)",
+   "dll": -0.004,
+   "ee": 0.0019,
+   "ic": [
+    -0.035,
+    0.027
+   ],
+   "dauc": 0.002,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I4",
+   "nombre": "I4 vecindad (espacial)",
+   "dll": 0.0094,
+   "ee": 0.0037,
+   "ic": [
+    -0.023,
+    0.046
+   ],
+   "dauc": -0.0054,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I5",
+   "nombre": "I5 objetivo blando (sin calibrar)",
+   "dll": 0.1193,
+   "ee": 0.0044,
+   "ic": [
+    0.054,
+    0.184
+   ],
+   "dauc": -0.0044,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I5",
+   "nombre": "I5 objetivo blando (ambos calibrados)",
+   "dll": 0.0678,
+   "ee": 0.0078,
+   "ic": [
+    0.028,
+    0.107
+   ],
+   "dauc": -0.0152,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I9",
+   "nombre": "I9 multitarea λ=0.5 (efecto en P(C))",
+   "dll": 0.0013,
+   "ee": 0.0027,
+   "ic": [
+    -0.006,
+    0.01
+   ],
+   "dauc": -0.0001,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I9",
+   "nombre": "I9 multitarea λ=1 (efecto en P(C))",
+   "dll": 0.0095,
+   "ee": 0.0052,
+   "ic": [
+    -0.002,
+    0.023
+   ],
+   "dauc": -0.0042,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "Arq.",
+   "nombre": "GRU trimestral",
+   "dll": 0.0098,
+   "ee": 0.0045,
+   "ic": [
+    -0.024,
+    0.053
+   ],
+   "dauc": -0.0033,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "Arq.",
+   "nombre": "CNN 1D trimestral",
+   "dll": 0.0143,
+   "ee": 0.0142,
+   "ic": [
+    -0.026,
+    0.062
+   ],
+   "dauc": -0.0064,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "Arq.",
+   "nombre": "Embedding de departamento",
+   "dll": -0.0259,
+   "ee": 0.0103,
+   "ic": [
+    -0.046,
+    -0.005
+   ],
+   "dauc": 0.0163,
+   "decision": "cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding",
+   "retiene": false
+  },
+  {
+   "id": "Arq.",
+   "nombre": "MLP profundo (16, 8)",
+   "dll": -0.0004,
+   "ee": 0.0135,
+   "ic": [
+    -0.022,
+    0.024
+   ],
+   "dauc": 0.0026,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "Arq.",
+   "nombre": "Logística (mismas variables)",
+   "dll": -0.0035,
+   "ee": 0.0043,
+   "ic": [
+    -0.053,
+    0.059
+   ],
+   "dauc": -0.0025,
+   "decision": "no se retiene",
+   "retiene": false
+  },
+  {
+   "id": "I6",
+   "nombre": "I6 capacidad / activación / L2 / presupuesto",
+   "dll": 0.0518,
+   "ee": null,
+   "ic": null,
+   "dauc": null,
+   "decision": "no se retiene (la selección no transfiere a 2025)",
+   "retiene": false
+  },
+  {
+   "id": "I7",
+   "nombre": "I7 ensamble de 10 semillas",
+   "dll": -0.0108,
+   "ee": null,
+   "ic": null,
+   "dauc": 0.0043,
+   "decision": "se retiene (estabilidad)",
+   "retiene": true
+  },
+  {
+   "id": "I8",
+   "nombre": "I8 calibración",
+   "dll": 0.0042,
+   "ee": null,
+   "ic": null,
+   "dauc": 0.0,
+   "decision": "no se retiene (no mejora sin mirar el futuro)",
+   "retiene": false
+  }
+ ],
+ "controles": [
+  {
+   "nombre": "sin estandarización",
+   "dll": 5.7803,
+   "ll": 6.0899,
+   "auc": 0.5332
+  },
+  {
+   "nombre": "sin logaritmos",
+   "dll": -0.0117,
+   "ll": 0.2979,
+   "auc": 0.9561
+  },
+  {
+   "nombre": "sin pesos de clase",
+   "dll": 0.0154,
+   "ll": 0.325,
+   "auc": 0.951
+  },
+  {
+   "nombre": "sin contracción",
+   "dll": 0.0021,
+   "ll": 0.3117,
+   "auc": 0.9498
+  },
+  {
+   "nombre": "escalador con fuga",
+   "dll": -0.0024,
+   "ll": 0.3072,
+   "auc": 0.9515
+  },
+  {
+   "nombre": "mapeo alternativo",
+   "dll": 0.0072,
+   "ll": 0.3168,
+   "auc": 0.9467
+  },
+  {
+   "nombre": "etiquetas barajadas",
+   "dll": 0.5057,
+   "ll": 0.8153,
+   "auc": 0.3162
+  }
+ ],
+ "psi": [
+  {
+   "var": "x1_eventos",
+   "psi": 0.0756,
+   "p95": 0.3708,
+   "estado": "estable",
+   "supera": false
+  },
+  {
+   "var": "x2_fatalidades",
+   "psi": 0.0189,
+   "p95": 0.375,
+   "estado": "estable",
+   "supera": false
+  },
+  {
+   "var": "x2b_letalidad",
+   "psi": 0.454,
+   "p95": 0.3726,
+   "estado": "deriva",
+   "supera": true
+  },
+  {
+   "var": "x4_coca",
+   "psi": 0.0004,
+   "p95": 0.214,
+   "estado": "estable",
+   "supera": false
+  },
+  {
+   "var": "x5_bosque",
+   "psi": 0.0113,
+   "p95": 0.3704,
+   "estado": "estable",
+   "supera": false
+  },
+  {
+   "var": "x6_distancia",
+   "psi": 0.0025,
+   "p95": 0.3841,
+   "estado": "estable",
+   "supera": false
+  },
+  {
+   "var": "x7_ipm",
+   "psi": 0.0053,
+   "p95": 0.387,
+   "estado": "estable",
+   "supera": false
+  },
+  {
+   "var": "m1_sC_t1",
+   "psi": 0.2261,
+   "p95": 0.3793,
+   "estado": "vigilar",
+   "supera": false
+  },
+  {
+   "var": "d1_sC_H2",
+   "psi": 0.1735,
+   "p95": 0.38,
+   "estado": "vigilar",
+   "supera": false
+  }
+ ],
+ "bandas": [
+  {
+   "conj": "2023-2025",
+   "modelo": "Después: MLP U3",
+   "filas": 87,
+   "banda": 71,
+   "aciertos": 66,
+   "trans": 16
+  },
+  {
+   "conj": "2023-2025",
+   "modelo": "Persistencia",
+   "filas": 87,
+   "banda": 45,
+   "aciertos": 45,
+   "trans": 42
+  },
+  {
+   "conj": "2023-2025",
+   "modelo": "Persistencia calibrada",
+   "filas": 87,
+   "banda": 56,
+   "aciertos": 54,
+   "trans": 31
+  },
+  {
+   "conj": "2026",
+   "modelo": "Después: MLP U3",
+   "filas": 29,
+   "banda": 24,
+   "aciertos": 21,
+   "trans": 5
+  },
+  {
+   "conj": "2026",
+   "modelo": "Persistencia",
+   "filas": 29,
+   "banda": 13,
+   "aciertos": 12,
+   "trans": 16
+  },
+  {
+   "conj": "2026",
+   "modelo": "Persistencia calibrada",
+   "filas": 29,
+   "banda": 20,
+   "aciertos": 19,
+   "trans": 9
+  }
+ ],
+ "importancia": [
+  [
+   "d₁ s_C 2.º semestre t-1",
+   0.1145,
+   0.0453
+  ],
+  [
+   "x₅ bosque (%)",
+   0.0485,
+   0.0353
+  ],
+  [
+   "m₁ s_C en t-1",
+   0.0484,
+   0.0287
+  ],
+  [
+   "x₂ fatalidades (log)",
+   0.0455,
+   0.0351
+  ],
+  [
+   "x₇ IPM (%)",
+   0.0232,
+   0.0196
+  ],
+  [
+   "x₂b letalidad",
+   0.0232,
+   0.0156
+  ],
+  [
+   "x₄ coca (log ha)",
+   0.0209,
+   0.0203
+  ],
+  [
+   "x₆ distancia (km)",
+   0.0074,
+   0.0211
+  ],
+  [
+   "x₁ eventos (log)",
+   0.0037,
+   0.0133
+  ]
+ ],
+ "u2": {
+  "e1": [
+   {
+    "val": "Temporal",
+    "modelo": "Persistencia",
+    "auc": 0.9646,
+    "ll": 0.3796
+   },
+   {
+    "val": "Temporal",
+    "modelo": "Logística base (x1-x7)",
+    "auc": 0.8746,
+    "ll": 0.4477
+   },
+   {
+    "val": "Temporal",
+    "modelo": "MLP base (x1-x7)",
+    "auc": 0.8921,
+    "ll": 0.436
+   },
+   {
+    "val": "Temporal",
+    "modelo": "MLP base, ensamble 5 semillas (E2)",
+    "auc": 0.918,
+    "ll": 0.4008
+   },
+   {
+    "val": "Temporal",
+    "modelo": "Logística + x8",
+    "auc": 0.9221,
+    "ll": 0.3526
+   },
+   {
+    "val": "Temporal",
+    "modelo": "MLP + x8 (E1)",
+    "auc": 0.9325,
+    "ll": 0.3624
+   },
+   {
+    "val": "Temporal",
+    "modelo": "MLP + x8, ensamble 5 semillas (E1+E2)",
+    "auc": 0.9325,
+    "ll": 0.3584
+   },
+   {
+    "val": "Espacial",
+    "modelo": "Persistencia",
+    "auc": 0.9178,
+    "ll": 0.4199
+   },
+   {
+    "val": "Espacial",
+    "modelo": "Logística base (x1-x7)",
+    "auc": 0.8408,
+    "ll": 0.5047
+   },
+   {
+    "val": "Espacial",
+    "modelo": "MLP base (x1-x7)",
+    "auc": 0.8043,
+    "ll": 0.5773
+   },
+   {
+    "val": "Espacial",
+    "modelo": "MLP base, ensamble 5 semillas (E2)",
+    "auc": 0.8494,
+    "ll": 0.4861
+   },
+   {
+    "val": "Espacial",
+    "modelo": "Logística + x8",
+    "auc": 0.9049,
+    "ll": 0.3935
+   },
+   {
+    "val": "Espacial",
+    "modelo": "MLP + x8 (E1)",
+    "auc": 0.8853,
+    "ll": 0.4511
+   },
+   {
+    "val": "Espacial",
+    "modelo": "MLP + x8, ensamble 5 semillas (E1+E2)",
+    "auc": 0.8968,
+    "ll": 0.4221
+   }
+  ],
+  "semillas_auc_prueba": [
+   0.852,
+   0.857,
+   0.876,
+   0.876,
+   0.81,
+   0.862,
+   0.81,
+   0.852,
+   0.843,
+   0.838
+  ],
+  "semillas_bce_prueba": [
+   0.469,
+   0.51,
+   0.459,
+   0.473,
+   0.531,
+   0.473,
+   0.532,
+   0.483,
+   0.487,
+   0.515
+  ]
+ },
+ "terminal": {
+  "pytest": [
+   "..........                                                               [100%]",
+   "10 passed in 7.00s"
+  ],
+  "todo": [
+   "[1-2] datos: 171 filas, 30 departamentos, 9 predictoras",
+   "[3-4] origen móvil 2023-2025 (n=87): AUC 0.956, log-loss 0.304 (persistencia 0.363; persistencia calibrada 0.328; base U2 0.407; base U2 ensamble 0.376); calibración: ninguna",
+   "[5] prueba 2026 (n=29): AUC 0.900, log-loss 0.380 (persistencia 0.429; persistencia calibrada 0.351; base U2 ensamble 0.470)",
+   "[6] artefacto: perfil_amenaza_u3.keras (152 KB, 10 redes)",
+   "[7] proyección 2027: {'C consolidado': 11, 'Transición': 11, 'D consolidado': 11} | PSI > 0,25: 1; PSI por encima del ruido de muestreo (p95): 1",
+   "[8] tarjeta del modelo escrita. Tiempo total: 63 s"
+  ],
+  "predecir": [
+   "      departamento  P(C) 2027 Categoría 2027                                                                 Énfasis sugerido",
+   "          Guaviare       0.99  C consolidado ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI",
+   "            Nariño       0.93  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "             Cauca       0.92  C consolidado ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI",
+   "           Caquetá       0.92  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "          Putumayo       0.89  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "         Antioquia       0.88  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "          Amazonas       0.88  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "Norte de Santander       0.86  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "            Vaupés       0.84  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "           Vichada       0.79  C consolidado                                    ISR, detección temprana y movilidad protegida",
+   "             Cesar       0.71  C consolidado                                    ISR, detección temprana y movilidad protegida"
+  ]
+ },
+ "pareadas": [
+  {
+   "conj": "origen móvil 2023-2025",
+   "comp": "Después vs. persistencia",
+   "n": 87,
+   "dll": -0.0589,
+   "ic": [
+    -0.142,
+    0.028
+   ],
+   "pm": 0.916,
+   "solo_a": 2,
+   "solo_b": 7,
+   "p_mc": 0.18
+  },
+  {
+   "conj": "origen móvil 2023-2025",
+   "comp": "Después vs. persistencia calibrada",
+   "n": 87,
+   "dll": -0.0236,
+   "ic": [
+    -0.096,
+    0.052
+   ],
+   "pm": 0.736,
+   "solo_a": 2,
+   "solo_b": 6,
+   "p_mc": 0.289
+  },
+  {
+   "conj": "origen móvil 2023-2025",
+   "comp": "Después vs. antes (U2, semilla 42)",
+   "n": 87,
+   "dll": -0.1031,
+   "ic": [
+    -0.185,
+    -0.033
+   ],
+   "pm": 1.0,
+   "solo_a": 3,
+   "solo_b": 1,
+   "p_mc": 0.625
+  },
+  {
+   "conj": "origen móvil 2023-2025",
+   "comp": "Después vs. antes (U2, ensamble 10)",
+   "n": 87,
+   "dll": -0.0715,
+   "ic": [
+    -0.114,
+    -0.033
+   ],
+   "pm": 1.0,
+   "solo_a": 3,
+   "solo_b": 1,
+   "p_mc": 0.625
+  },
+  {
+   "conj": "origen móvil 2023-2025",
+   "comp": "Después vs. logística",
+   "n": 87,
+   "dll": -0.0019,
+   "ic": [
+    -0.06,
+    0.045
+   ],
+   "pm": 0.515,
+   "solo_a": 1,
+   "solo_b": 3,
+   "p_mc": 0.625
+  },
+  {
+   "conj": "prueba 2026",
+   "comp": "Después vs. persistencia",
+   "n": 29,
+   "dll": -0.0493,
+   "ic": [
+    -0.162,
+    0.092
+   ],
+   "pm": 0.787,
+   "solo_a": 0,
+   "solo_b": 1,
+   "p_mc": 1.0
+  },
+  {
+   "conj": "prueba 2026",
+   "comp": "Después vs. persistencia calibrada",
+   "n": 29,
+   "dll": 0.0286,
+   "ic": [
+    -0.055,
+    0.125
+   ],
+   "pm": 0.272,
+   "solo_a": 0,
+   "solo_b": 1,
+   "p_mc": 1.0
+  },
+  {
+   "conj": "prueba 2026",
+   "comp": "Después vs. antes (U2, semilla 42)",
+   "n": 29,
+   "dll": -0.1445,
+   "ic": [
+    -0.27,
+    -0.033
+   ],
+   "pm": 0.997,
+   "solo_a": 3,
+   "solo_b": 1,
+   "p_mc": 0.625
+  },
+  {
+   "conj": "prueba 2026",
+   "comp": "Después vs. antes (U2, ensamble 10)",
+   "n": 29,
+   "dll": -0.0896,
+   "ic": [
+    -0.162,
+    -0.024
+   ],
+   "pm": 0.999,
+   "solo_a": 3,
+   "solo_b": 1,
+   "p_mc": 0.625
+  },
+  {
+   "conj": "prueba 2026",
+   "comp": "Después vs. logística",
+   "n": 29,
+   "dll": -0.0025,
+   "ic": [
+    -0.09,
+    0.1
+   ],
+   "pm": 0.556,
+   "solo_a": 2,
+   "solo_b": 0,
+   "p_mc": 0.5
+  },
+  {
+   "conj": "espacio-temporal",
+   "comp": "Después vs. persistencia",
+   "n": 87,
+   "dll": -0.0022,
+   "ic": [
+    -0.114,
+    0.13
+   ],
+   "pm": 0.534,
+   "solo_a": 3,
+   "solo_b": 9,
+   "p_mc": 0.146
+  },
+  {
+   "conj": "espacio-temporal",
+   "comp": "Después vs. persistencia calibrada",
+   "n": 87,
+   "dll": 0.0288,
+   "ic": [
+    -0.075,
+    0.154
+   ],
+   "pm": 0.329,
+   "solo_a": 3,
+   "solo_b": 8,
+   "p_mc": 0.227
+  },
+  {
+   "conj": "espacio-temporal",
+   "comp": "Después vs. antes (ensamble 10)",
+   "n": 87,
+   "dll": -0.1154,
+   "ic": [
+    -0.186,
+    -0.052
+   ],
+   "pm": 1.0,
+   "solo_a": 7,
+   "solo_b": 2,
+   "p_mc": 0.18
+  },
+  {
+   "conj": "espacio-temporal",
+   "comp": "Después vs. logística",
+   "n": 87,
+   "dll": -0.0552,
+   "ic": [
+    -0.236,
+    0.067
+   ],
+   "pm": 0.769,
+   "solo_a": 2,
+   "solo_b": 3,
+   "p_mc": 1.0
+  }
+ ],
+ "trans13": {
+  "MLP U3": [
+   2,
+   13
+  ],
+  "Persistencia": [
+   0,
+   13
+  ],
+  "Persistencia calibrada": [
+   1,
+   13
+  ],
+  "MLP base U2": [
+   3,
+   13
+  ],
+  "MLP base U2 (ensamble 10)": [
+   4,
+   13
+  ]
+ },
+ "resumen27": {
+  "C consolidado": 11,
+  "Transición": 11,
+  "D consolidado": 11
+ },
+ "panel": {
+  "filas": 171,
+  "repite": 0.865
+ },
+ "modelo": {
+  "variables": [
+   "x1_eventos",
+   "x2_fatalidades",
+   "x2b_letalidad",
+   "x4_coca",
+   "x5_bosque",
+   "x6_distancia",
+   "x7_ipm",
+   "m1_sC_t1",
+   "d1_sC_H2"
+  ]
+ }
+}

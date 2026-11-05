@@ -27,6 +27,7 @@ datos/                    export semanal de ACLED + datos/externos/ (coca, bosqu
 salidas_u3/               métricas, predicciones, figuras, modelos/perfil_amenaza_u3.keras, TARJETA_MODELO.md
 referencias_u2/           resultados guardados de la Unidad 2 (para comparar "antes vs. después")
 docs/                     guías y rúbricas, entregas U1 y U2, planeación U3 y el cuaderno U3 en texto
+presentaciones/           HTML interactivos del video (8–10 min) y de la clase (20–30 min) y sus guiones en Word
 graphify-out/             grafo de conocimiento del proyecto (graph.html, GRAPH_REPORT.md, graph.json)
 ```
 
@@ -50,6 +51,7 @@ PYTHONPATH=src python -m perfil_amenaza.pipeline predecir --anio 2026   # solo c
 jupyter nbconvert --to notebook --execute Proyecto_U3_Integrador.ipynb  # cuaderno completo (~20 min en CPU)
 python herramientas/cuaderno/exportar_texto.py                  # versión en texto del cuaderno (docs/u3_texto/)
 python informe/generar_figuras.py && python informe/construir_informe.py   # informe (requiere LibreOffice para el PDF)
+python presentaciones/construir_presentaciones.py && python presentaciones/construir_guiones.py  # presentaciones y guiones
 ```
 
 En Windows (PowerShell), use `$env:PYTHONPATH="src"` antes de los comandos de `perfil_amenaza`.

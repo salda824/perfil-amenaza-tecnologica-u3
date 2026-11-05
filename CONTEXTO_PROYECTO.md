@@ -4,7 +4,7 @@
 > qué problema resuelve, qué datos usa, qué se decidió en cada etapa y por qué, qué resultados hay, dónde está cada
 > archivo y qué falta. Léelo completo antes de tocar código o documentos. El grafo de conocimiento está en
 > `graphify-out/` (abre `graph.html` o lee `GRAPH_REPORT.md`). Última actualización: 5 de noviembre de 2026 (tras la
-> revisión de `revision/REVISION_U3.md`: persistencia calibrada, validación espacio-temporal y antes justo).
+> revisión de `revision/REVISION_U3.md` y con las presentaciones de `presentaciones/`).
 
 ---
 
@@ -23,6 +23,7 @@
 | Las cifras finales en CSV | `salidas_u3/` |
 | Qué falta por hacer | Sección 11 |
 | La revisión estricta del informe y las correcciones aplicadas | `revision/REVISION_U3.md` |
+| Las presentaciones (video de 8–10 min y clase de 20–30 min) y sus guiones en Word | `presentaciones/` (ver su `README.md`) |
 
 **Idioma.** Todo el proyecto está en español (código, comentarios, documentos). Mantenerlo así. Los números usan coma
 decimal en los documentos ("0,304") y punto en el código.
@@ -38,7 +39,7 @@ decimal en los documentos ("0,304") y punto en el código.
 | **Sector elegido** | Seguridad y defensa |
 | **Nombre del proyecto** | Clasificación del perfil de amenaza tecnológica de los territorios colombianos para orientar la adopción de tecnologías militares |
 | **Repositorio** | https://github.com/salda824/perfil-amenaza-tecnologica-u3 (privado; propietario `salda824` = Juan Diego) |
-| **Etapas** | U1 (formulación, entregada) → U2 (modelo base, entregada) → U3 (Proyecto Integrador, cuaderno + informe listos; faltan video y sustentación) |
+| **Etapas** | U1 (formulación, entregada) → U2 (modelo base, entregada) → U3 (Proyecto Integrador, cuaderno + informe listos; presentaciones y guiones listos; faltan grabar el video y la sustentación) |
 | **Roles** | Juan Diego: modelado, pipeline, demostración técnica. Laura: interpretación estratégica, documentación, informe, guion del video. Evaluación y decisiones metodológicas: conjuntas |
 
 ---
@@ -296,6 +297,7 @@ docs/guias/                   guías y rúbricas oficiales (U1, U2, U3 completa)
 docs/entregas/U1, U2/         PDF entregados, cuadernos .ipynb y su texto (notebooks_texto/)
 docs/planeacion_u3/           plan y andamiaje previos a construir la U3 (históricos)
 docs/u3_texto/                cuaderno U3 en texto (markdown con salidas) y su código en un .py
+presentaciones/               HTML interactivos del video (12 diap.) y de la clase (27 diap.), guiones .docx y sus generadores
 graphify-out/                 grafo de conocimiento (graph.html, graph.json, GRAPH_REPORT.md)
 ```
 
@@ -331,10 +333,12 @@ espacio-temporal, la evaluación de las bandas de decisión y el PSI con piso de
 
 ## 11. Pendientes y próximos pasos
 
-- [ ] **Video MP4 de 8–10 min** (Producto 2): síntesis del problema (§1), decisiones técnicas (escalera, validación
-  anidada, regla de retención), resultados (Tabla 6.3, espacial, 2026), conclusiones estratégicas (proyección 2027,
-  alerta A/B, límites). Guion: Laura; demostración del pipeline (`ejecutar_todo.bat` o `pipeline todo`): Juan Diego.
-- [ ] Sustentación sincrónica: ambos deben poder explicar cada decisión (D11–D20) y reproducir el proceso.
+- [ ] **Grabar el video MP4 de 8–10 min** (Producto 2). Ya están la presentación `presentaciones/Presentacion_Video_U3.html`
+  (12 diapositivas: problema 1–4, decisiones técnicas 5–8, resultados 9–10, conclusiones 11–12) y el guion
+  `presentaciones/Guion_Video_U3.docx` (Laura 1–4 y 10–11; Juan Diego 5–9; ambos 12; meta 9:15).
+- [ ] Sustentación en clase (20–30 min): presentación `presentaciones/Presentacion_Clase_Proyecto.html` (27 diapositivas,
+  U1–U3, meta 25:00) y guion `presentaciones/Guion_Presentacion_Clase.docx`, con 11 preguntas probables y sus respuestas.
+  Ambos deben poder explicar cada decisión (D11–D20) y reproducir el proceso.
 - [ ] Agregar al profesor como colaborador del repositorio (Settings → Collaborators) o publicar sin el CSV de ACLED.
 - [ ] Revisar y, si hace falta, reescribir con palabras propias las interpretaciones del cuaderno y del informe
   (la declaración de IA del informe y del cuaderno dice: apoyo en la programación del pipeline y del cuaderno y en la

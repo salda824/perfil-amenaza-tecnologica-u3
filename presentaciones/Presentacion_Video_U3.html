@@ -1,0 +1,1316 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perfil de amenaza · Video ejecutivo U3</title>
+<meta name="description" content="Perfil de amenaza tecnológica por departamento · Redes Neuronales · Universidad de La Sabana">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================================================================
+   Motor de diapositivas · Perfil de amenaza tecnológica (Redes Neuronales, U. de La Sabana)
+   Escenario fijo de 1920 × 1080 escalado a la ventana. Tema oscuro "centro de mando" (por defecto) y tema claro (T).
+   ===================================================================================================================== */
+:root {
+  color-scheme: dark;
+  --bg: #070b14; --bg2: #0b1220; --panel: #0f182a; --panel2: #142036; --linea: #1f2c45; --linea2: #2c3d5e;
+  --tinta: #eef2f8; --tinta2: #b7c2d6; --tenue: #7f8ca5; --rejilla: rgba(120, 150, 200, .07);
+  --acento: #f2a900; --acento2: #ffd166; --brillo: rgba(242, 169, 0, .22);
+  --A: #e66767; --B: #3987e5; --C: #c98500; --Cclaro: #f2a900; --D: #8f8e88;
+  --u3: #1fbf8f; --u3claro: #52e0b4; --violeta: #9085e9; --naranja: #d95926; --gris: #4d5a73; --gris2: #6b7891;
+  --laura: #e87ba4; --juan: #4cc9f0;
+  --papel: #fbfaf7; --sombra: 0 24px 60px rgba(0, 0, 0, .45);
+  --f-titulo: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --f-texto: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+}
+:root[data-theme="claro"] {
+  color-scheme: light;
+  --bg: #f3f1ea; --bg2: #ebe8df; --panel: #ffffff; --panel2: #f7f5ef; --linea: #dcd8cc; --linea2: #c9c4b5;
+  --tinta: #10151f; --tinta2: #3d4657; --tenue: #6d7586; --rejilla: rgba(40, 50, 80, .06);
+  --acento: #b97800; --acento2: #8a5a00; --brillo: rgba(185, 120, 0, .14);
+  --A: #e34948; --B: #2a78d6; --C: #eda100; --Cclaro: #c98500; --D: #888780;
+  --u3: #129a72; --u3claro: #0f7d5d; --violeta: #6250d6; --naranja: #eb6834; --gris: #9aa1ad; --gris2: #7c8494;
+  --laura: #c2306a; --juan: #0b7fa6; --sombra: 0 18px 40px rgba(40, 40, 30, .14);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; background: var(--bg); overflow: hidden; }
+body { font-family: var(--f-texto); color: var(--tinta); -webkit-font-smoothing: antialiased; }
+
+/* ----------------------------------------------------------------------------------------------- escenario */
+#escenario {
+  position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 50% 50%;
+  overflow: hidden; background:
+    radial-gradient(1200px 700px at 85% -10%, var(--brillo), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(31, 191, 143, .10), transparent 60%),
+    linear-gradient(var(--rejilla) 1px, transparent 1px) 0 0 / 60px 60px,
+    linear-gradient(90deg, var(--rejilla) 1px, transparent 1px) 0 0 / 60px 60px,
+    var(--bg);
+}
+:root[data-theme="claro"] #escenario { background:
+    radial-gradient(1200px 700px at 85% -10%, var(--brillo), transparent 60%),
+    linear-gradient(var(--rejilla) 1px, transparent 1px) 0 0 / 60px 60px,
+    linear-gradient(90deg, var(--rejilla) 1px, transparent 1px) 0 0 / 60px 60px, var(--bg); }
+
+.slide { position: absolute; inset: 0; padding: 92px 116px 118px; display: none; flex-direction: column; }
+.slide.activa { display: flex; }
+.slide.centrada { justify-content: center; }
+
+/* ----------------------------------------------------------------------------------------------- tipografía */
+.kicker { font-family: var(--f-mono); font-size: 21px; letter-spacing: .18em; text-transform: uppercase; color: var(--acento);
+  display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+.kicker .num { color: var(--tinta); background: var(--panel2); border: 1px solid var(--linea2); padding: 4px 12px; border-radius: 6px; }
+.kicker .unidad { margin-left: auto; color: var(--tenue); }
+h1, h2, h3 { font-family: var(--f-titulo); font-weight: 700; letter-spacing: -.02em; line-height: 1.04; }
+h1 { font-size: 108px; }
+h2 { font-size: 66px; margin-bottom: 30px; max-width: 1500px; }
+h3 { font-size: 34px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 12px; }
+p, li { font-size: 30px; line-height: 1.42; color: var(--tinta2); }
+.grande { font-size: 36px; color: var(--tinta); }
+.chico { font-size: 22px; line-height: 1.4; }
+.mono { font-family: var(--f-mono); }
+.resalta { color: var(--acento); }
+.ok { color: var(--u3claro); }
+.alerta-txt { color: var(--A); }
+.tenue { color: var(--tenue); }
+.fuente { font-family: var(--f-mono); font-size: 17px; color: var(--tenue); letter-spacing: .02em; }
+ul.limpia { list-style: none; display: grid; gap: 14px; }
+ul.limpia li { padding-left: 34px; position: relative; }
+ul.limpia li::before { content: ""; position: absolute; left: 0; top: .55em; width: 14px; height: 14px; border: 2px solid var(--acento);
+  transform: rotate(45deg); }
+sub, sup { font-size: .62em; }
+
+/* ----------------------------------------------------------------------------------------------- disposición */
+.fila { display: flex; gap: 44px; min-height: 0; }
+.col { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.crece { flex: 1; min-height: 0; }
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+.g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+.centro { align-items: center; }
+.abajo { margin-top: auto; }
+
+.tarjeta { position: relative; background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--linea);
+  border-radius: 18px; padding: 30px 34px; box-shadow: var(--sombra); }
+.tarjeta::before, .tarjeta::after { content: ""; position: absolute; width: 22px; height: 22px; border: 2px solid var(--acento);
+  opacity: .8; pointer-events: none; }
+.tarjeta::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; border-top-left-radius: 18px; }
+.tarjeta::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; border-bottom-right-radius: 18px; }
+.tarjeta.sin-marca::before, .tarjeta.sin-marca::after { display: none; }
+.tarjeta h3 { color: var(--tinta); }
+.tarjeta p { font-size: 26px; }
+
+.figura { background: var(--papel); border-radius: 16px; padding: 18px; box-shadow: var(--sombra); display: flex;
+  flex-direction: column; gap: 8px; min-height: 0; border: 1px solid rgba(255,255,255,.08); }
+.figura img { width: 100%; height: 100%; object-fit: contain; min-height: 0; flex: 1; display: block; }
+.figura figcaption { font-family: var(--f-mono); font-size: 16px; color: #52514e; }
+
+.stat { display: flex; flex-direction: column; gap: 6px; }
+.stat .valor { font-family: var(--f-titulo); font-weight: 700; font-size: 92px; line-height: 1; color: var(--tinta); letter-spacing: -.03em; }
+.stat .valor small { font-size: .45em; color: var(--tinta2); font-weight: 600; margin-left: 6px; }
+.stat .etq { font-family: var(--f-mono); font-size: 19px; letter-spacing: .1em; text-transform: uppercase; color: var(--tenue); }
+.stat.acento .valor { color: var(--acento); }
+.stat.verde .valor { color: var(--u3claro); }
+
+.chip { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 19px; letter-spacing: .06em;
+  padding: 7px 14px; border-radius: 999px; border: 1px solid var(--linea2); color: var(--tinta2); background: var(--panel); }
+.chip .pt { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.chip.si { border-color: var(--u3); color: var(--u3claro); }
+.chip.no { border-color: var(--gris2); color: var(--tenue); }
+.chip.r8 { border-color: var(--violeta); color: var(--violeta); }
+
+.cita { border-left: 4px solid var(--acento); padding: 6px 0 6px 30px; font-size: 32px; line-height: 1.45; color: var(--tinta); font-style: italic; }
+.formula { font-family: var(--f-mono); font-size: 30px; color: var(--tinta); background: var(--bg2); border: 1px dashed var(--linea2);
+  padding: 18px 24px; border-radius: 12px; }
+
+/* ----------------------------------------------------------------------------------------------- portada */
+.portada h1 { font-size: 112px; max-width: 1150px; }
+.portada .bajada { font-size: 36px; color: var(--tinta2); max-width: 1050px; margin-top: 26px; line-height: 1.35; }
+.portada .equipo { display: flex; gap: 40px; margin-top: 54px; }
+.portada .persona { display: flex; flex-direction: column; gap: 4px; }
+.portada .persona b { font-family: var(--f-titulo); font-size: 30px; color: var(--tinta); }
+.portada .persona span { font-family: var(--f-mono); font-size: 18px; color: var(--tenue); letter-spacing: .05em; }
+.portada .mapa-fondo { position: absolute; right: 70px; top: 40px; height: 1000px; width: 760px; opacity: .95; }
+.seccion h1 { font-size: 150px; }
+.seccion .numero-seccion { font-family: var(--f-mono); font-size: 34px; color: var(--acento); letter-spacing: .3em; }
+
+/* ----------------------------------------------------------------------------------------------- HUD */
+#hud-pie { position: absolute; left: 116px; right: 116px; bottom: 34px; display: flex; align-items: center; gap: 22px;
+  font-family: var(--f-mono); font-size: 17px; letter-spacing: .12em; text-transform: uppercase; color: var(--tenue); z-index: 20; }
+#hud-pie .marca { display: flex; align-items: center; gap: 12px; }
+#hud-pie .marca i { width: 10px; height: 10px; background: var(--acento); transform: rotate(45deg); display: inline-block; }
+#hud-pie .der { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+#hud-pie button { background: var(--panel); border: 1px solid var(--linea2); color: var(--tinta2); width: 40px; height: 40px; border-radius: 10px;
+  font-size: 20px; cursor: pointer; font-family: var(--f-mono); }
+#hud-pie button:hover { border-color: var(--acento); color: var(--acento); }
+#progreso { position: absolute; left: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--acento), var(--u3)); z-index: 21;
+  transition: width .5s cubic-bezier(.2, .8, .2, 1); }
+#orador { position: absolute; top: 34px; right: 116px; z-index: 20; display: flex; align-items: center; gap: 12px;
+  font-family: var(--f-mono); font-size: 18px; letter-spacing: .12em; text-transform: uppercase; color: var(--tinta2);
+  background: var(--panel); border: 1px solid var(--linea2); border-radius: 999px; padding: 8px 18px 8px 12px; transition: opacity .3s; }
+#orador i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; box-shadow: 0 0 0 4px rgba(255,255,255,.06); }
+#orador.oculto, #hud-pie.oculto { opacity: 0; pointer-events: none; }
+#cronometro { position: absolute; top: 34px; left: 50%; transform: translateX(-50%); z-index: 25; font-family: var(--f-mono); font-size: 20px;
+  background: var(--panel); border: 1px solid var(--linea2); border-radius: 12px; padding: 8px 16px; display: none; gap: 16px; color: var(--tinta2); }
+#cronometro.visible { display: flex; }
+#cronometro b { color: var(--tinta); }
+#cronometro .adelantado { color: var(--u3claro); } #cronometro .atrasado { color: var(--A); }
+
+#vista-general, #ayuda { position: absolute; inset: 0; z-index: 40; background: rgba(5, 8, 15, .94); display: none; padding: 80px 110px; }
+:root[data-theme="claro"] #vista-general, :root[data-theme="claro"] #ayuda { background: rgba(243, 241, 234, .97); }
+#vista-general.visible, #ayuda.visible { display: block; }
+#vista-general h2, #ayuda h2 { font-size: 48px; }
+#vista-general .rejilla { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
+#vista-general button { text-align: left; background: var(--panel); border: 1px solid var(--linea2); border-radius: 14px; padding: 16px 18px;
+  color: var(--tinta); font-family: var(--f-texto); font-size: 20px; cursor: pointer; min-height: 120px; display: flex; flex-direction: column; gap: 8px; }
+#vista-general button:hover, #vista-general button.actual { border-color: var(--acento); }
+#vista-general button .n { font-family: var(--f-mono); font-size: 16px; color: var(--tenue); display: flex; gap: 8px; align-items: center; }
+#vista-general button .n i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+#ayuda table { border-collapse: collapse; font-size: 26px; color: var(--tinta2); }
+#ayuda td { padding: 10px 28px 10px 0; border-bottom: 1px solid var(--linea); }
+#ayuda kbd { font-family: var(--f-mono); background: var(--panel2); border: 1px solid var(--linea2); border-radius: 8px; padding: 2px 12px; color: var(--tinta); }
+#pista { position: absolute; bottom: 90px; left: 50%; transform: translateX(-50%); font-family: var(--f-mono); font-size: 18px; color: var(--tenue);
+  background: var(--panel); border: 1px solid var(--linea2); border-radius: 999px; padding: 8px 18px; z-index: 30; transition: opacity 1s; }
+
+/* ----------------------------------------------------------------------------------------------- animaciones */
+.slide.activa .anim { animation: entrar .75s cubic-bezier(.2, .8, .2, 1) both; animation-delay: calc(var(--i, 0) * 110ms + 80ms); }
+@keyframes entrar { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+.paso { opacity: 0; transform: translateY(18px); transition: opacity .5s, transform .5s; }
+.paso.visible { opacity: 1; transform: none; }
+.pulso { animation: pulso 2.2s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes pulso { 0% { opacity: .9; transform: scale(.6); } 80%, 100% { opacity: 0; transform: scale(2.6); } }
+@media (prefers-reduced-motion: reduce) { .slide.activa .anim, .pulso { animation: none !important; } .paso { transition: none; } }
+
+/* ----------------------------------------------------------------------------------------------- componentes interactivos */
+.botonera { display: flex; gap: 10px; flex-wrap: wrap; }
+.botonera button, .boton { font-family: var(--f-mono); font-size: 19px; letter-spacing: .04em; padding: 9px 18px; border-radius: 10px; cursor: pointer;
+  background: var(--panel); color: var(--tinta2); border: 1px solid var(--linea2); transition: all .2s; }
+.botonera button:hover, .boton:hover { border-color: var(--acento); color: var(--tinta); }
+.botonera button.activo { background: var(--acento); color: #111; border-color: var(--acento); font-weight: 700; }
+
+#tooltip { position: fixed; z-index: 100; pointer-events: none; background: var(--panel2); color: var(--tinta); border: 1px solid var(--linea2);
+  border-radius: 10px; padding: 10px 14px; font-family: var(--f-texto); font-size: 14px; line-height: 1.45; box-shadow: var(--sombra);
+  opacity: 0; transition: opacity .12s; max-width: 320px; }
+#tooltip.visible { opacity: 1; }
+#tooltip b { font-family: var(--f-titulo); font-size: 16px; }
+#tooltip .t-fila { display: flex; justify-content: space-between; gap: 18px; color: var(--tinta2); }
+#tooltip .t-fila span:last-child { color: var(--tinta); font-family: var(--f-mono); }
+
+/* barras HTML */
+.barras { display: grid; gap: 14px; }
+.barra { display: grid; grid-template-columns: 330px 1fr 110px; align-items: center; gap: 18px; font-size: 23px; color: var(--tinta2); }
+.barra .riel { height: 30px; background: var(--bg2); border-radius: 6px; position: relative; overflow: visible; }
+.barra .relleno { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 6px 6px 0; background: var(--gris); width: 0;
+  transition: width .9s cubic-bezier(.2, .8, .2, 1); }
+.barra .v { font-family: var(--f-mono); color: var(--tinta); text-align: right; }
+.barra.u3 .relleno { background: var(--u3); } .barra.u3 { color: var(--tinta); font-weight: 600; }
+.barra.cal .relleno { background: var(--violeta); }
+.barra.emb .relleno { background: repeating-linear-gradient(45deg, var(--violeta) 0 8px, transparent 8px 14px); border: 1px solid var(--violeta); }
+.barra .bigote { position: absolute; top: 50%; height: 2px; background: var(--tinta2); }
+.barra .marca-ref { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--acento); }
+
+.barras.grandes { gap: 20px; }
+.barras.grandes .barra { grid-template-columns: 360px 1fr 120px; font-size: 27px; }
+.barras.grandes .barra .riel { height: 46px; }
+.barras.compacta { gap: 12px; }
+.barras.compacta .barra { grid-template-columns: 200px 1fr 86px; font-size: 21px; }
+.barras.compacta .barra .riel { height: 30px; }
+.tarjetas-grandes .tarjeta { display: flex; flex-direction: column; justify-content: center; gap: 10px; padding: 36px 40px; }
+.tarjetas-grandes .tarjeta h3 { font-size: 40px; }
+.tarjetas-grandes .tarjeta p { font-size: 30px; }
+
+.compactas { gap: 16px !important; }
+.compactas .tarjeta { padding: 20px 26px; }
+.compactas .tarjeta h3 { font-size: 30px; margin-bottom: 6px; }
+.compactas .tarjeta p { font-size: 23px; }
+
+.grande-lt .hito .nodo { width: 130px; height: 130px; font-size: 44px; }
+.grande-lt::before { top: 64px; }
+.grande-lt .hito h3 { font-size: 46px; }
+.grande-lt .hito p { font-size: 28px; }
+.panel-pestana .tarjeta { min-height: 520px; display: flex; flex-direction: column; gap: 10px; padding: 36px 38px; }
+.panel-pestana .tarjeta h3 { font-size: 40px; }
+.panel-pestana .tarjeta p { font-size: 30px; }
+.panel-pestana .figura { height: 560px; }
+.giro .cara p.chico { font-size: 25px; }
+
+/* pestañas */
+.pestanas { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.pestanas button { font-family: var(--f-mono); font-size: 20px; padding: 10px 18px; border-radius: 10px 10px 0 0; cursor: pointer; background: var(--panel);
+  border: 1px solid var(--linea2); border-bottom: 3px solid transparent; color: var(--tinta2); }
+.pestanas button.activo { color: var(--tinta); border-bottom-color: var(--acento); background: var(--panel2); }
+.pestanas button .pt { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; background: var(--gris2); }
+.pestanas button.si .pt { background: var(--u3); }
+.panel-pestana { display: none; } .panel-pestana.activo { display: grid; animation: entrar .45s both; }
+
+/* tarjetas giratorias */
+.giro { perspective: 1400px; cursor: pointer; }
+.giro .cara-in { position: relative; width: 100%; height: 100%; transition: transform .8s cubic-bezier(.2, .8, .2, 1); transform-style: preserve-3d; }
+.giro.girada .cara-in { transform: rotateY(180deg); }
+.giro .cara { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 18px; padding: 30px; border: 1px solid var(--linea2);
+  background: linear-gradient(180deg, var(--panel2), var(--panel)); display: flex; flex-direction: column; gap: 14px; }
+.giro .atras { transform: rotateY(180deg); }
+.giro .letra { font-family: var(--f-titulo); font-size: 120px; font-weight: 700; line-height: .9; }
+.giro .nombre { font-family: var(--f-titulo); font-size: 34px; color: var(--tinta); font-weight: 600; }
+.giro .pista-giro { margin-top: auto; font-family: var(--f-mono); font-size: 16px; color: var(--tenue); letter-spacing: .08em; }
+.giro svg.icono { width: 86px; height: 86px; }
+
+/* terminal */
+.terminal { background: #05080f; border: 1px solid #1f2c45; border-radius: 14px; box-shadow: var(--sombra); font-family: var(--f-mono); font-size: 19px;
+  color: #c8d3e6; display: flex; flex-direction: column; min-height: 0; }
+.terminal .barra-t { display: flex; gap: 9px; padding: 14px 18px; border-bottom: 1px solid #1f2c45; align-items: center; }
+.terminal .barra-t i { width: 13px; height: 13px; border-radius: 50%; display: inline-block; }
+.terminal .barra-t span { margin-left: 12px; color: #7f8ca5; font-size: 15px; }
+.terminal pre { padding: 18px 22px; white-space: pre-wrap; line-height: 1.5; overflow: hidden; flex: 1; font-family: inherit; font-size: inherit; }
+.terminal .prompt { color: #52e0b4; } .terminal .cmd { color: #ffd166; } .terminal .ok { color: #52e0b4; }
+.terminal .cursor { display: inline-block; width: 10px; height: 1.1em; background: #ffd166; vertical-align: -3px; animation: parpadeo 1s steps(1) infinite; }
+@keyframes parpadeo { 50% { opacity: 0; } }
+
+/* simulador */
+.sim-escala { position: relative; height: 54px; border-radius: 12px; overflow: hidden; display: flex; border: 1px solid var(--linea2); }
+.sim-escala div { display: flex; align-items: center; justify-content: center; font-family: var(--f-mono); font-size: 18px; color: var(--tinta); }
+input[type=range].deslizador { -webkit-appearance: none; appearance: none; width: 100%; height: 10px; border-radius: 6px; background: var(--linea2); outline: none; }
+input[type=range].deslizador::-webkit-slider-thumb { -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%; background: var(--acento);
+  border: 4px solid var(--bg); box-shadow: 0 0 0 2px var(--acento); cursor: grab; }
+input[type=range].deslizador::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: var(--acento); border: 4px solid var(--bg); cursor: grab; }
+.interruptor { display: inline-flex; align-items: center; gap: 14px; cursor: pointer; font-family: var(--f-mono); font-size: 20px; color: var(--tinta2); user-select: none; }
+.interruptor .caja { width: 62px; height: 34px; border-radius: 999px; background: var(--linea2); position: relative; transition: background .2s; }
+.interruptor .caja::after { content: ""; position: absolute; top: 4px; left: 4px; width: 26px; height: 26px; border-radius: 50%; background: var(--tinta); transition: left .2s; }
+.interruptor.on .caja { background: var(--A); } .interruptor.on .caja::after { left: 32px; }
+
+/* línea de tiempo */
+.linea-tiempo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; }
+.linea-tiempo::before { content: ""; position: absolute; left: 8%; right: 8%; top: 46px; height: 3px; background: linear-gradient(90deg, var(--acento), var(--u3)); }
+.hito { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 0 26px; cursor: pointer; position: relative; }
+.hito .nodo { width: 92px; height: 92px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--panel2);
+  border: 3px solid var(--acento); font-family: var(--f-titulo); font-weight: 700; font-size: 32px; color: var(--tinta); transition: transform .25s; z-index: 1; }
+.hito:hover .nodo { transform: scale(1.08); box-shadow: 0 0 0 10px var(--brillo); }
+.hito h3 { font-size: 34px; margin: 6px 0 0; }
+.hito p { font-size: 24px; }
+
+/* SVG genéricos */
+svg text { font-family: var(--f-texto); fill: var(--tinta2); }
+svg .eje text, svg text.mono { font-family: var(--f-mono); }
+svg .eje line, svg .eje path { stroke: var(--linea2); }
+svg .rejilla-g line { stroke: var(--linea); stroke-dasharray: 2 6; }
+.mapa-svg path.dpto { stroke: var(--bg); stroke-width: 1.4; transition: fill .5s, opacity .3s; cursor: pointer; }
+.mapa-svg path.dpto:hover { stroke: var(--tinta); stroke-width: 2.4; }
+.mapa-svg path.dpto.sel { stroke: var(--acento); stroke-width: 3.4; }
+.leyenda { display: flex; gap: 22px; flex-wrap: wrap; font-size: 20px; color: var(--tinta2); align-items: center; }
+.leyenda span { display: inline-flex; align-items: center; gap: 9px; }
+.leyenda i { width: 22px; height: 16px; border-radius: 4px; display: inline-block; }
+
+</style>
+</head>
+<body>
+<!-- Plantilla del VIDEO EJECUTIVO (8–10 min). Cada <section> lleva data-titulo, data-orador y data-seg (meta en segundos).
+     Las cifras con data-v se rellenan desde DATOS; {{FIG:...}} lo reemplaza construir_presentaciones.py. -->
+<div id="escenario" data-marca="Perfil de amenaza tecnológica · Video ejecutivo U3">
+
+<!-- 1 · PORTADA -->
+<section class="slide portada" data-titulo="Portada" data-orador="laura" data-seg="20">
+  <div class="kicker anim"><span class="num">U3</span> Redes Neuronales · Proyecto Integrador</div>
+  <h1 class="anim">¿Qué tecnología desplegar en cada territorio?</h1>
+  <p class="bajada anim">Un modelo neuronal que anticipa el perfil de amenaza de los departamentos de Colombia para orientar la inversión en defensa.</p>
+  <div class="equipo anim">
+    <div class="persona"><b style="color:var(--laura)">Laura Alejandra Díaz Sastoque</b><span>Interpretación estratégica · documentación</span></div>
+    <div class="persona"><b style="color:var(--juan)">Juan Diego Saldarriaga Muñoz</b><span>Modelado · pipeline</span></div>
+  </div>
+  <p class="fuente anim" style="margin-top:auto">Universidad de La Sabana · Maestría en Ciencia de Datos · 2026</p>
+  <div class="mapa-fondo anim"><div class="g-mapa" data-modo="2027" data-alto="1000" data-leyenda="0"></div></div>
+</section>
+
+<!-- 2 · EL PROBLEMA -->
+<section class="slide" data-titulo="El problema" data-orador="laura" data-seg="45">
+  <div class="kicker anim"><span class="num">01</span> Síntesis del problema <span class="unidad">U1</span></div>
+  <h2 class="anim">La mayor inversión militar de la historia, sin un mapa de la amenaza</h2>
+  <div class="fila crece">
+    <div class="col" style="width:640px">
+      <div class="tarjeta anim">
+        <div class="stat acento"><span class="valor">3,7<small>billones COP</small></span><span class="etq">modernización militar 2026 · +47 % frente a 2025</span></div>
+        <p class="chico" style="margin-top:18px">Escudo Nacional Antidrones · blindados de INDUMIL · drones de la CIAC</p>
+        <p class="fuente" style="margin-top:10px">Ministerio de Defensa (2025)</p>
+      </div>
+      <div class="cita anim">¿Qué perfil de amenaza tendrá cada departamento el próximo año, y qué tecnología conviene llevar allí?</div>
+    </div>
+    <div class="col crece">
+      <div class="g2 anim" style="gap:26px">
+        <div class="tarjeta sin-marca"><h3 class="alerta-txt">Sobreinvertir</h3><p>Sistemas antidrones costosos donde la amenaza real son explosivos o combates.</p></div>
+        <div class="tarjeta sin-marca"><h3 class="alerta-txt">Subinvertir</h3><p>Sin detección de artefactos explosivos donde ese es el vector principal.</p></div>
+      </div>
+      <div class="g4 anim" style="gap:18px">
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><path d="M32 6l6 14 15-4-9 13 12 9-15 2 1 15-10-11-10 11 1-15-15-2 12-9-9-13 15 4z" fill="none" stroke="var(--A)" stroke-width="3"/></svg><h3 style="margin:8px 0 0">A</h3><p class="chico">explosivos</p></div>
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><g fill="none" stroke="var(--B)" stroke-width="3"><rect x="24" y="26" width="16" height="12" rx="3"/><path d="M24 28L13 17M40 28l11-11M24 36L13 47M40 36l11 11"/><circle cx="12" cy="16" r="7"/><circle cx="52" cy="16" r="7"/><circle cx="12" cy="48" r="7"/><circle cx="52" cy="48" r="7"/></g></svg><h3 style="margin:8px 0 0">B</h3><p class="chico">drones</p></div>
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><g fill="none" stroke="var(--Cclaro)" stroke-width="3"><circle cx="32" cy="32" r="20"/><circle cx="32" cy="32" r="6"/><path d="M32 4v14M32 46v14M4 32h14M46 32h14"/></g></svg><h3 style="margin:8px 0 0">C</h3><p class="chico">convencional</p></div>
+        <div class="tarjeta sin-marca" style="padding:20px"><svg class="icono" viewBox="0 0 64 64" width="58" height="58"><g fill="none" stroke="var(--D)" stroke-width="3"><circle cx="20" cy="22" r="9"/><rect x="36" y="13" width="18" height="18" rx="2"/><path d="M20 38l11 18H9z"/><path d="M45 38l9 9-9 9-9-9z"/></g></svg><h3 style="margin:8px 0 0">D</h3><p class="chico">mixto</p></div>
+      </div>
+      <p class="chico anim">Un territorio tiene el perfil X si más del 50 % de sus eventos son de ese tipo (formulación de la Unidad 1).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · DATOS Y FORMULACIÓN -->
+<section class="slide" data-titulo="Datos y formulación" data-orador="laura" data-seg="50">
+  <div class="kicker anim"><span class="num">02</span> De la pregunta al dato <span class="unidad">U1 → U2</span></div>
+  <h2 class="anim">Ningún departamento es A ni B: el problema se vuelve C contra D</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:930px">
+      <div class="g-composicion" data-ancho="930" data-alto="560"></div>
+      <div class="leyenda"><span><i style="background:var(--C)"></i>C convencional</span><span><i style="background:var(--D)"></i>D mixto</span><span><i style="background:var(--A)"></i>A explosivos</span><span><i style="background:var(--B)"></i>B drones</span></div>
+      <p class="fuente">Eventos ACLED por año y perfil, Colombia 2020–2026 (<span data-v="acled|eventos" data-f="miles"></span> eventos; *2026: 33 semanas)</p>
+    </div>
+    <div class="col crece">
+      <div class="formula anim">y<sub>d,t</sub> = 1[ s<sup>C</sup><sub>d,t</sub> ≥ 0,5 ]<br>p̂ = f<sub>θ</sub>( x<sub>d,t−1</sub> )</div>
+      <p class="anim">Se predice el perfil del año siguiente con lo observado hasta el cierre del año anterior, como se asigna un presupuesto real. A y B quedan como una <b class="alerta-txt">alerta</b> aparte.</p>
+      <div class="g2 anim" style="gap:20px">
+        <div class="stat"><span class="valor" data-contar="171">171</span><span class="etq">filas departamento–año</span></div>
+        <div class="stat"><span class="valor" data-contar="30">30</span><span class="etq">departamentos con ≥ 10 eventos</span></div>
+      </div>
+      <p class="fuente anim">ACLED (Raleigh et al., 2010) · SIMCI-UNODC · Global Forest Watch · DANE</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · LA INERCIA -->
+<section class="slide" data-titulo="El rival: la inercia" data-orador="laura" data-seg="40">
+  <div class="kicker anim"><span class="num">03</span> Punto de partida <span class="unidad">U2</span></div>
+  <div class="fila crece">
+    <div class="col anim" style="width:900px"><div class="g-heatmap" data-ancho="900" data-alto="850"></div></div>
+    <div class="col crece" style="justify-content:center">
+      <h2 class="anim" style="font-size:58px">El rival a vencer es copiar el año anterior</h2>
+      <div class="stat acento anim"><span class="valor" data-v="panel|repite" data-f="pct1"></span><span class="etq">de las filas repite el perfil del año anterior</span></div>
+      <div class="tarjeta anim">
+        <p class="grande">El modelo base de la U2 perdía contra esa inercia:</p>
+        <div class="g2" style="margin-top:16px">
+          <div class="stat"><span class="valor" style="font-size:70px" data-v="comparaciones|sel|Base U2 · semilla 42|ll"></span><span class="etq">log-loss MLP base U2</span></div>
+          <div class="stat"><span class="valor" style="font-size:70px" data-v="comparaciones|sel|Persistencia|ll"></span><span class="etq">log-loss persistencia</span></div>
+        </div>
+        <p class="fuente" style="margin-top:12px">Validación con origen móvil 2023–2025 · menor es mejor</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · PROTOCOLO -->
+<section class="slide" data-titulo="Protocolo experimental" data-orador="juan" data-seg="45">
+  <div class="kicker anim"><span class="num">04</span> Decisión técnica · protocolo <span class="unidad">U3</span></div>
+  <h2 class="anim">Reglas fijadas antes de mirar los resultados</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:860px">
+      <div class="tarjeta sin-marca" style="padding:26px">
+        <div class="rej-prot" style="display:grid;grid-template-columns:200px repeat(6,1fr);gap:10px;font-family:var(--f-mono);font-size:22px;grid-auto-rows:62px;align-items:center">
+          <span></span><span class="tenue">2021</span><span class="tenue">2022</span><span class="tenue">2023</span><span class="tenue">2024</span><span class="tenue">2025</span><span class="tenue">2026</span>
+          <span>Pliegue 2023</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i><i></i><i></i>
+          <span>Pliegue 2024</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i><i></i>
+          <span>Pliegue 2025</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--naranja);height:100%;border-radius:6px"></i><i></i>
+          <span class="resalta">Prueba 2026</span><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--B);height:100%;border-radius:6px"></i><i style="background:var(--u3);height:100%;border-radius:6px"></i>
+        </div>
+        <div class="leyenda" style="margin-top:20px"><span><i style="background:var(--B)"></i>entrenamiento</span><span><i style="background:var(--naranja)"></i>validación (elige)</span><span><i style="background:var(--u3)"></i>prueba (una vez)</span></div>
+      </div>
+      <p class="anim">87 predicciones fuera de muestra deciden todo. 2026 se mira una sola vez, al final, con la configuración congelada.</p>
+    </div>
+    <div class="col crece">
+      <div class="tarjeta anim paso" data-paso="1"><h3>Métrica: log-loss</h3><p>Castiga la confianza equivocada, que es lo que importa al decidir con probabilidades.</p></div>
+      <div class="tarjeta anim paso" data-paso="2"><h3>Regla de retención</h3><p>Una mejora se queda solo si supera un error estándar entre 5 semillas pareadas.</p></div>
+      <div class="tarjeta anim paso" data-paso="3"><h3>Rivales exigentes</h3><p>La persistencia, su versión calibrada y el modelo de la U2.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · INTERVENCIONES -->
+<section class="slide" data-titulo="Intervenciones I1–I9" data-orador="juan" data-seg="60">
+  <div class="kicker anim"><span class="num">05</span> Decisión técnica · intervenciones <span class="unidad">U3</span></div>
+  <h2 class="anim" style="font-size:58px;max-width:1688px">Nueve hipótesis del diagnóstico; solo dos variables nuevas pasaron la regla</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1100px"><div class="g-bosque" data-ancho="1100" data-alto="690"></div></div>
+    <div class="col crece compactas">
+      <div class="tarjeta anim"><span class="chip si">se retiene</span><h3 style="margin-top:12px">m₁ · memoria del perfil</h3><p>Proporción C de t−1 con contracción bayesiana · Δ <span data-v="decisiones|I1 memoria m1|dll" data-f="3"></span></p></div>
+      <div class="tarjeta anim"><span class="chip si">se retiene</span><h3 style="margin-top:12px">d₁ · último semestre</h3><p>Lo que pasó en las 26 semanas finales · Δ <span data-v="decisiones|I2 semestre reciente d1|dll" data-f="3"></span></p></div>
+      <div class="tarjeta anim sin-marca"><span class="chip r8">regla 8</span><p style="margin-top:10px" class="chico">El embedding de departamento mejora la métrica, pero acierta menos cambios y no sirve en territorios nuevos.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 · MODELO FINAL -->
+<section class="slide" data-titulo="Modelo final" data-orador="juan" data-seg="50">
+  <div class="kicker anim"><span class="num">06</span> Modelo final <span class="unidad">U3</span></div>
+  <h2 class="anim">La arquitectura de la U2, con mejor información y 10 redes</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:860px">
+      <div class="g-red" data-entradas="9" data-ensamble="10" data-ancho="860" data-alto="560"></div>
+      <div style="display:flex;gap:20px;align-items:center">
+        <div class="botonera botones-red"><button data-r="adelante">▶ propagación</button><button data-r="atras">◀ retropropagación</button></div>
+        <div class="lazo mono chico" style="display:flex;gap:12px;flex-wrap:wrap"><span>x</span>→<span>ReLU</span>→<span>σ</span>→<span>BCE + L2</span>→<span>∂L/∂θ</span>→<span>Adam</span></div>
+      </div>
+    </div>
+    <div class="col crece">
+      <div class="anim"><div class="g-escalera" data-ancho="780" data-alto="500"></div></div>
+      <p class="fuente anim">Log-loss media de una red (5 semillas) al sumar cada intervención; el último paso es el ensamble de 10. *Rival agregado tras la revisión.</p>
+      <p class="chico anim">Adam η = 10⁻³ · L2 = 10⁻³ · lote 16 · 560 pasos · BCE ponderada por clase · bucle explícito <span class="mono">tf.GradientTape</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · PIPELINE -->
+<section class="slide" data-titulo="Pipeline integrado" data-orador="juan" data-seg="45">
+  <div class="kicker anim"><span class="num">07</span> Integración <span class="unidad">U3</span></div>
+  <h2 class="anim">Un pipeline de 8 etapas que se ejecuta con una orden</h2>
+  <div class="g-pipeline anim"></div>
+  <div class="fila crece" style="margin-top:24px">
+    <div class="col anim" style="width:1100px"><div class="g-terminal" data-lineas="5" style="height:330px"></div></div>
+    <div class="col crece anim" style="justify-content:center;gap:26px">
+      <div class="stat verde"><span class="valor" data-contar="10">10</span><span class="etq">pruebas automáticas (pytest)</span></div>
+      <div class="stat"><span class="valor" style="font-size:54px">152 KB</span><span class="etq">artefacto .keras con escalador y 10 redes</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · RESULTADOS -->
+<section class="slide" data-titulo="Resultados antes y después" data-orador="juan" data-seg="55">
+  <div class="kicker anim"><span class="num">08</span> Resultados <span class="unidad">U2 → U3</span></div>
+  <h2 class="anim">Frente al modelo de la U2, la mejora es clara y se sostiene en 2026</h2>
+  <div class="fila crece">
+    <div class="col anim" style="width:1060px"><div class="g-comparador" data-conjuntos="sel,t26,et" data-metricas="ll,auc,ece" data-grandes="1"></div></div>
+    <div class="col crece" style="gap:26px">
+      <div class="tarjeta anim">
+        <div class="fuente">Δ log-loss contra la base de la U2 (ensamble contra ensamble)</div>
+        <div class="g2" style="margin-top:14px">
+          <div class="stat verde"><span class="valor" style="font-size:64px" data-v="pareadas|conj=origen móvil 2023-2025&comp=Después vs. antes (U2, ensamble 10)|dll"></span><span class="etq">selección</span></div>
+          <div class="stat verde"><span class="valor" style="font-size:64px" data-v="pareadas|conj=prueba 2026&comp=Después vs. antes (U2, ensamble 10)|dll"></span><span class="etq">prueba 2026</span></div>
+        </div>
+        <p class="fuente" style="margin-top:10px">IC 95 % por departamento: <span data-v="pareadas|conj=prueba 2026&comp=Después vs. antes (U2, ensamble 10)|ic" data-f="ic"></span> en 2026</p>
+      </div>
+      <div class="tarjeta anim sin-marca">
+        <div class="stat"><span class="valor" style="font-size:64px"><span data-v="bandas|conj=2023-2025&modelo=Después: MLP U3|aciertos" data-f="0"></span><small>de <span data-v="bandas|conj=2023-2025&modelo=Después: MLP U3|banda" data-f="0"></span></small></span>
+        <span class="etq">aciertos en banda consolidada (P ≥ 0,7 o P &lt; 0,3)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 · LECTURA CRÍTICA -->
+<section class="slide" data-titulo="Lectura crítica" data-orador="laura" data-seg="45">
+  <div class="kicker anim"><span class="num">09</span> Lectura crítica <span class="unidad">U3</span></div>
+  <h2 class="anim">Frente a la inercia, lo que gana el modelo es calibración</h2>
+  <div class="g3" style="align-items:stretch">
+    <div class="tarjeta anim paso" data-paso="1"><span class="chip si">gana</span><h3 style="margin-top:14px">Persistencia cruda</h3>
+      <div class="stat"><span class="valor" style="font-size:66px"><span data-v="comparaciones|sel|MLP U3|ll"></span><small>vs <span data-v="comparaciones|sel|Persistencia|ll"></span></small></span><span class="etq">log-loss 2023–2025</span></div>
+      <p class="chico" style="margin-top:14px">Usar una proporción como probabilidad es demasiado confiado.</p></div>
+    <div class="tarjeta anim paso" data-paso="2"><span class="chip no">no demostrado</span><h3 style="margin-top:14px">Persistencia calibrada</h3>
+      <div class="stat"><span class="valor" style="font-size:66px"><span data-v="comparaciones|t26|MLP U3|ll"></span><small>vs <span data-v="comparaciones|t26|Persistencia calibrada|ll"></span></small></span><span class="etq">log-loss prueba 2026</span></div>
+      <p class="chico" style="margin-top:14px">Una inercia bien calibrada empata o gana a escala departamental.</p></div>
+    <div class="tarjeta anim paso" data-paso="3"><span class="chip no">límite</span><h3 style="margin-top:14px">Cambios de perfil</h3>
+      <div class="stat"><span class="valor" style="font-size:66px"><span data-v="trans13|MLP U3|0" data-f="0"></span><small>de <span data-v="trans13|MLP U3|1" data-f="0"></span></small></span><span class="etq">transiciones acertadas 2023–2026</span></div>
+      <p class="chico" style="margin-top:14px">Con 30 departamentos, anticipar los cambios sigue siendo el reto.</p></div>
+  </div>
+  <div class="tarjeta sin-marca anim" style="margin-top:28px;padding:24px 30px"><div class="g-trio"></div></div>
+</section>
+
+<!-- 11 · PROYECCIÓN 2027 -->
+<section class="slide" data-titulo="Proyección 2027" data-orador="laura" data-seg="55">
+  <div class="kicker anim"><span class="num">10</span> Conclusión estratégica <span class="unidad">2027</span></div>
+  <div class="fila crece">
+    <div class="col" style="width:400px">
+      <h2 class="anim" style="font-size:56px;margin-bottom:6px">Mapa de prioridades 2027</h2>
+      <div class="stat anim"><span class="valor" style="color:var(--Cclaro)" data-v="resumen27|C consolidado" data-f="0"></span><span class="etq">C consolidado · ISR y movilidad protegida</span></div>
+      <div class="stat anim"><span class="valor" style="color:var(--acento2)" data-v="resumen27|Transición" data-f="0"></span><span class="etq">en transición · portafolio flexible</span></div>
+      <div class="stat anim"><span class="valor" style="color:var(--tinta2)" data-v="resumen27|D consolidado" data-f="0"></span><span class="etq">D consolidado · capacidades mixtas</span></div>
+      <p class="chico anim"><b class="alerta-txt">Alerta A/B:</b> Guaviare (<span data-v="deptos|guaviare|sab" data-f="pct1"></span>) y Cauca (<span data-v="deptos|cauca|sab" data-f="pct1"></span> de eventos A+B) superan el doble de la proporción nacional.</p>
+    </div>
+    <div class="col crece anim"><div class="g-mapa" data-modo="2027" data-alto="740" data-controles="1" data-detalle="1" data-sel="guaviare" data-etiquetas="guaviare,cauca"></div></div>
+  </div>
+</section>
+
+<!-- 12 · CONCLUSIONES -->
+<section class="slide" data-titulo="Conclusiones" data-orador="ambos" data-seg="45">
+  <div class="kicker anim"><span class="num">11</span> Conclusiones estratégicas</div>
+  <h2 class="anim">Lo que este modelo permite decidir hoy</h2>
+  <div class="g2 crece tarjetas-grandes" style="gap:28px">
+    <div class="tarjeta anim paso" data-paso="1"><h3><span class="resalta">01</span> Representar mejor el dato</h3><p>La mejora vino de la memoria del perfil y del último semestre, no de una red más grande.</p></div>
+    <div class="tarjeta anim paso" data-paso="2"><h3><span class="resalta">02</span> Bandas en vez de un umbral</h3><p>Probabilidades calibradas que separan territorios consolidados de los que están en transición.</p></div>
+    <div class="tarjeta anim paso" data-paso="3"><h3><span class="resalta">03</span> Alerta A/B focalizada</h3><p>Guaviare y Cauca suman C-UAS y detección de explosivos al énfasis convencional.</p></div>
+    <div class="tarjeta anim paso" data-paso="4"><h3><span class="resalta">04</span> Siguiente paso: municipios</h3><p>Con 30 unidades el modelo no supera a una inercia calibrada; la escala municipal es la mejora prioritaria.</p></div>
+  </div>
+  <p class="fuente anim" style="margin-top:20px">Insumo analítico, no recomendación operativa · Código: github.com/salda824/perfil-amenaza-tecnologica-u3 · Uso de IA declarado en el informe</p>
+</section>
+
+</div>
+
+<script>window.DATOS = {"mapa":{"viewBox":"0 0 774 1053","inset":{"x":18,"y":18,"w":120,"h":150},"deptos":{"caqueta":{"d":"M342.6,681.2L342.7,683.5L354.0,696.8L357.9,704.0L359.2,710.1L378.6,725.7L392.3,716.5L391.5,710.1L396.0,708.3L405.0,708.5L413.9,715.0L416.4,714.0L420.6,719.1L428.7,733.9L440.3,737.5L446.5,742.2L445.9,746.1L449.7,747.5L450.2,752.7L454.2,752.9L455.7,760.2L459.5,760.9L464.0,766.5L468.4,767.8L471.1,771.1L479.4,772.5L484.0,770.4L488.8,776.5L491.4,777.5L490.4,779.0L477.8,781.9L473.2,779.8L463.6,785.4L461.6,791.4L463.2,795.6L458.3,798.0L444.1,797.5L441.5,801.4L436.5,802.7L434.0,809.8L431.1,811.7L430.3,818.7L425.7,821.6L418.5,816.3L412.0,823.2L408.7,824.2L399.2,816.0L391.0,819.5L386.2,816.1L380.7,814.3L376.5,818.7L370.5,819.9L362.7,812.6L353.2,814.0L348.2,813.2L347.6,809.4L341.6,807.4L331.4,805.9L321.7,802.5L314.9,795.8L311.9,797.4L303.7,793.4L299.9,787.8L294.4,785.8L288.1,788.7L278.1,778.9L280.6,777.8L279.7,771.2L276.0,768.2L269.4,767.9L266.4,765.8L261.9,766.0L257.7,751.2L247.6,751.5L245.2,746.1L246.9,743.9L243.8,737.7L238.8,733.6L233.6,735.4L226.4,732.2L220.4,726.8L212.9,729.3L204.4,723.2L199.4,715.4L192.7,715.6L188.5,712.4L180.5,710.7L179.2,704.5L185.3,697.3L187.4,682.7L190.2,684.1L195.8,683.1L203.9,674.8L207.4,674.4L214.3,670.4L226.7,649.9L232.3,648.3L235.9,637.7L240.6,634.8L251.6,620.2L250.7,612.4L255.4,611.0L266.0,597.4L267.2,600.6L271.9,599.2L274.5,603.1L280.1,602.2L282.2,613.2L285.2,616.2L279.5,622.8L280.0,629.4L275.7,637.1L275.6,640.4L281.4,642.1L284.9,648.8L281.8,651.3L286.9,659.5L286.8,666.6L292.5,669.2L301.7,670.3L308.8,674.8L322.0,679.6L330.4,681.5L337.7,679.6L342.6,681.2Z","cx":324.1,"cy":731.6},"cauca":{"d":"M194.5,581.3L192.3,582.9L193.4,592.1L196.6,594.9L196.1,598.9L204.3,604.2L208.9,605.4L209.9,609.6L213.5,612.6L207.8,622.6L208.9,627.2L206.4,630.8L199.2,626.0L195.8,632.3L190.1,633.6L188.9,639.0L190.4,643.3L185.0,644.9L179.2,639.6L174.1,640.5L171.6,649.2L163.7,648.5L161.5,650.5L161.6,657.2L159.3,658.8L161.5,665.5L171.1,670.2L175.0,673.8L174.3,677.9L182.7,676.9L187.4,682.7L185.3,697.3L179.2,704.5L180.5,710.7L188.5,712.4L192.7,715.6L187.7,717.4L184.7,720.5L173.1,720.4L171.8,721.7L164.3,716.9L163.1,714.7L164.5,706.5L161.7,700.3L160.7,693.5L154.8,691.7L141.0,697.8L140.5,689.2L146.3,681.1L140.0,674.0L121.3,678.4L115.7,676.6L118.7,665.9L123.5,660.2L115.5,654.1L117.0,650.5L116.1,643.4L107.6,639.4L105.9,645.1L101.8,644.7L90.7,648.9L84.4,646.3L83.6,641.1L79.3,631.7L78.6,617.5L79.9,615.0L87.2,611.9L90.5,608.4L94.5,599.2L93.3,595.2L101.3,585.1L109.5,579.4L114.6,586.5L116.5,584.4L121.6,588.5L129.8,583.7L139.9,588.1L141.7,582.7L147.8,582.3L156.0,589.0L164.1,588.6L167.5,584.3L169.7,575.0L176.7,577.8L183.7,578.0L186.1,581.1L194.5,581.3Z","cx":146.9,"cy":632.7},"putumayo":{"d":"M192.7,715.6L199.4,715.4L204.4,723.2L212.9,729.3L220.4,726.8L226.4,732.2L233.6,735.4L238.8,733.6L243.8,737.7L246.9,743.9L245.2,746.1L247.6,751.5L257.7,751.2L261.9,766.0L266.4,765.8L269.4,767.9L276.0,768.2L279.7,771.2L280.6,777.8L278.1,778.9L288.1,788.7L294.4,785.8L299.9,787.8L303.7,793.4L311.9,797.4L314.9,795.8L321.7,802.5L331.4,805.9L297.5,815.5L288.4,809.9L286.0,805.7L276.7,802.9L273.5,794.1L268.8,796.3L264.2,795.4L255.5,787.1L247.3,784.0L242.7,789.1L235.5,787.5L224.5,783.1L220.6,778.4L214.0,779.2L200.7,768.7L197.3,762.7L189.7,758.3L185.5,758.1L178.6,754.3L177.1,757.3L172.4,757.7L172.4,766.2L161.8,767.5L159.7,765.3L152.6,763.3L145.4,766.3L131.1,763.4L129.1,758.1L130.5,754.8L128.0,748.6L128.2,743.9L124.5,742.1L128.8,725.4L134.4,719.5L130.9,715.4L130.6,707.8L137.2,705.4L141.0,697.8L154.8,691.7L160.7,693.5L161.7,700.3L164.5,706.5L163.1,714.7L164.3,716.9L171.8,721.7L173.1,720.4L184.7,720.5L187.7,717.4L192.7,715.6Z","cx":207.0,"cy":753.3},"valle del cauca":{"d":"M215.6,489.0L216.1,492.4L208.7,492.1L206.1,495.5L204.9,506.5L210.1,508.7L211.1,515.0L208.9,519.0L207.8,526.9L213.3,528.4L209.9,537.5L206.4,541.0L202.7,549.4L200.7,550.9L198.3,557.4L198.9,560.5L196.2,565.0L194.1,573.2L195.5,576.5L194.5,581.3L186.1,581.1L183.7,578.0L176.7,577.8L169.7,575.0L167.5,584.3L164.1,588.6L156.0,589.0L147.8,582.3L141.7,582.7L139.9,588.1L129.8,583.7L121.6,588.5L116.5,584.4L114.6,586.5L109.5,579.4L105.3,581.8L102.0,580.9L106.4,575.2L115.2,567.4L113.4,565.2L117.5,559.8L121.9,559.1L124.7,554.6L123.8,548.9L124.9,543.6L118.5,543.0L116.4,536.3L122.9,532.6L121.0,528.0L116.6,531.4L113.8,537.8L108.2,530.8L114.2,520.9L117.1,522.9L126.3,521.9L133.0,527.3L136.4,525.7L141.3,527.2L144.3,531.2L155.8,535.4L161.5,533.6L167.1,529.2L170.4,522.3L163.1,510.3L174.0,503.3L180.2,489.1L178.6,486.7L184.9,481.8L189.0,481.2L192.4,474.5L193.1,468.3L201.9,483.1L210.8,488.7L215.6,489.0Z","cx":165.6,"cy":542.2},"guainia":{"d":"M578.6,674.9L565.6,671.0L557.8,664.3L561.9,657.3L562.7,649.9L569.3,643.3L564.6,639.1L557.3,642.8L553.4,640.8L549.8,644.3L542.6,640.6L538.3,642.7L534.3,639.1L530.0,637.8L525.3,627.9L521.6,623.8L516.6,622.0L512.3,622.5L510.7,619.6L547.3,603.9L547.0,601.2L551.7,599.3L553.2,592.8L551.5,587.2L553.7,584.3L561.1,582.6L559.3,577.7L562.1,571.3L566.9,569.3L569.1,572.1L576.8,568.4L576.9,562.0L582.9,560.1L588.1,561.4L595.1,557.8L596.2,553.1L604.6,553.8L611.1,552.1L622.9,553.5L627.4,555.6L630.1,552.9L644.4,550.0L648.8,547.6L656.3,547.0L657.2,544.9L664.7,543.2L666.7,537.8L671.2,537.9L673.3,534.5L678.4,534.9L690.0,532.5L700.2,538.3L703.9,534.5L710.8,530.4L711.7,537.2L716.7,548.4L723.6,547.6L727.4,555.5L727.1,558.9L729.7,565.4L733.6,567.2L735.2,570.7L733.9,574.4L701.2,603.6L703.7,605.9L713.9,607.8L716.1,606.7L719.8,612.5L719.4,615.8L724.5,615.9L725.5,618.5L733.3,624.7L736.1,629.8L742.9,635.4L740.9,641.7L744.5,649.0L747.5,648.9L748.5,654.0L747.0,658.4L750.1,661.3L752.5,670.4L756.9,677.9L756.8,682.2L759.4,686.2L760.0,692.7L763.5,696.3L761.9,701.2L763.4,705.1L749.1,708.9L748.3,703.1L744.9,699.5L749.9,696.1L749.7,689.9L747.6,682.3L745.7,681.7L746.3,669.9L742.2,666.4L740.5,662.7L735.8,663.3L733.1,658.1L732.5,650.3L734.2,648.1L731.7,643.8L718.3,649.7L717.4,654.5L712.7,656.7L706.6,656.4L699.9,663.7L698.4,669.3L686.3,662.9L683.7,658.9L680.0,658.0L675.1,667.3L678.4,668.3L682.6,674.1L606.5,674.2L597.8,671.0L591.0,673.9L578.6,674.9Z","cx":642.3,"cy":612.1},"vichada":{"d":"M710.8,530.4L703.9,534.5L700.2,538.3L690.0,532.5L678.4,534.9L673.3,534.5L671.2,537.9L666.7,537.8L664.7,543.2L657.2,544.9L656.3,547.0L648.8,547.6L644.4,550.0L630.1,552.9L627.4,555.6L622.9,553.5L611.1,552.1L604.6,553.8L596.2,553.1L595.1,557.8L588.1,561.4L582.9,560.1L576.9,562.0L576.8,568.4L569.1,572.1L566.9,569.3L562.1,571.3L559.3,577.7L561.1,582.6L553.7,584.3L551.5,587.2L553.2,592.8L551.7,599.3L547.0,601.2L547.3,603.9L538.0,608.3L532.9,605.1L524.4,610.7L518.2,606.8L511.1,608.3L509.7,604.9L503.8,604.4L502.4,602.5L502.3,477.5L507.0,472.5L510.7,463.4L515.5,462.3L526.1,453.6L527.1,448.6L546.8,434.8L552.7,436.3L559.6,434.0L565.5,427.7L578.4,409.3L579.2,406.7L597.7,406.4L609.5,400.2L611.7,403.6L616.2,404.2L623.2,397.3L628.2,395.5L638.5,398.8L641.3,398.1L652.9,401.2L655.8,399.1L669.3,397.7L674.4,398.9L676.8,397.0L686.9,394.8L691.1,397.0L697.4,394.3L702.9,389.5L707.0,390.9L716.5,391.4L721.5,393.2L726.3,397.5L724.0,401.3L729.1,408.5L718.1,419.2L715.5,425.7L715.2,431.2L717.5,437.4L715.9,441.6L705.0,449.0L702.0,452.3L703.6,455.9L701.7,462.6L704.7,467.8L702.7,474.5L703.9,489.4L702.3,493.2L701.5,500.7L705.6,504.3L707.3,510.8L704.7,513.6L705.2,518.9L710.8,530.4Z","cx":605.2,"cy":489.0},"casanare":{"d":"M579.2,406.7L578.4,409.3L565.5,427.7L559.6,434.0L552.7,436.3L546.8,434.8L527.1,448.6L526.1,453.6L515.5,462.3L510.7,463.4L507.0,472.5L502.3,477.5L494.1,482.5L471.4,491.4L470.1,493.2L461.7,497.6L456.8,497.6L445.4,509.5L435.5,505.8L426.5,508.0L420.3,513.5L411.0,512.3L409.4,514.6L397.7,512.6L397.5,510.3L389.8,503.7L385.4,496.0L382.4,493.8L378.7,482.8L382.6,471.1L385.3,472.5L389.4,467.0L385.1,462.2L389.8,455.1L390.9,449.5L395.1,447.5L402.8,453.7L414.3,443.6L420.8,435.9L426.7,439.8L427.5,433.6L431.3,429.8L426.2,422.0L416.9,418.4L419.6,415.2L425.2,413.2L422.7,406.9L422.1,399.9L419.8,397.5L422.4,389.4L424.3,387.8L422.6,390.2L424.0,395.1L427.2,396.5L428.1,400.8L436.8,405.1L447.7,398.8L452.7,399.3L459.1,397.2L474.2,395.9L477.0,396.7L481.4,394.1L485.8,394.8L493.6,390.7L501.2,392.0L508.2,395.0L520.3,393.6L524.3,395.8L534.6,394.0L536.2,394.9L545.5,390.5L549.6,391.8L556.7,390.9L561.5,393.2L567.1,399.1L570.1,399.4L579.2,406.7Z","cx":470.1,"cy":446.1},"amazonas":{"d":"M604.1,847.5L606.4,851.7L604.3,857.8L606.2,865.9L604.4,867.2L573.1,1042.8L570.1,1041.0L563.5,1033.2L558.1,1031.4L557.7,1024.8L553.7,1022.7L551.8,1018.5L547.1,1016.8L539.0,1021.5L534.1,1018.3L528.6,1018.6L524.9,1016.5L565.2,952.3L564.3,946.4L555.5,945.9L552.9,939.6L545.9,936.1L541.8,937.8L537.9,934.8L530.1,934.9L528.0,927.5L517.0,923.2L515.3,919.3L511.1,921.2L508.3,918.5L504.9,922.3L499.0,923.1L499.3,926.2L495.2,928.9L492.9,926.8L487.6,928.8L482.5,927.5L479.3,922.9L469.5,919.9L468.3,918.2L461.9,919.2L462.7,915.4L455.6,917.4L450.5,928.0L444.3,928.1L442.3,926.2L437.8,930.3L422.7,935.8L420.6,932.2L412.8,931.4L406.2,927.5L402.5,933.2L398.1,930.0L389.3,932.8L384.5,926.5L380.1,927.9L373.8,921.3L377.6,907.9L376.0,906.2L376.7,898.0L373.8,896.1L370.5,890.2L362.7,893.0L352.1,888.6L350.0,886.5L354.8,879.7L344.4,860.1L341.2,858.2L335.6,859.5L329.7,857.2L327.5,851.2L323.5,851.0L319.9,847.2L304.6,841.9L305.1,832.5L298.2,820.9L297.5,815.5L331.4,805.9L341.6,807.4L347.6,809.4L348.2,813.2L353.2,814.0L362.7,812.6L370.5,819.9L376.5,818.7L380.7,814.3L386.2,816.1L391.0,819.5L399.2,816.0L408.7,824.2L412.0,823.2L418.5,816.3L425.7,821.6L430.3,818.7L431.1,811.7L434.0,809.8L436.5,802.7L441.5,801.4L444.1,797.5L458.3,798.0L463.2,795.6L461.6,791.4L463.6,785.4L473.2,779.8L477.8,781.9L490.4,779.0L495.7,775.2L498.7,780.8L507.2,781.4L513.5,787.6L510.6,791.1L514.3,794.3L514.7,798.6L517.8,803.8L523.3,799.0L527.8,802.9L529.6,801.1L534.1,804.1L537.0,803.5L542.0,810.8L552.4,807.1L553.9,810.4L549.2,815.3L552.7,817.3L553.4,827.4L551.0,831.3L555.1,836.7L550.3,841.9L554.3,844.5L558.0,849.4L561.2,850.0L566.2,841.9L571.5,841.2L573.0,849.2L578.9,844.9L587.3,846.2L588.8,855.8L594.2,852.2L595.8,855.1L601.1,856.5L604.1,847.5Z","cx":476.2,"cy":877.0},"vaupes":{"d":"M562.2,652.2L561.9,657.3L557.8,664.3L565.6,671.0L578.6,674.9L578.5,714.4L584.8,712.1L589.2,714.8L611.0,713.8L618.5,719.4L622.2,738.4L618.5,743.0L608.7,743.0L604.0,737.0L601.1,735.6L591.7,741.7L588.3,740.0L586.1,743.0L573.0,746.9L566.2,746.3L566.1,788.0L564.9,791.4L575.1,802.1L579.6,803.7L587.0,809.4L593.0,812.2L595.5,820.4L593.0,828.7L598.3,835.1L598.2,838.2L604.2,844.2L601.1,856.5L595.8,855.1L594.2,852.2L588.8,855.8L587.3,846.2L578.9,844.9L573.0,849.2L571.5,841.2L566.2,841.9L561.2,850.0L558.0,849.4L554.3,844.5L550.3,841.9L555.1,836.7L551.0,831.3L553.4,827.4L552.7,817.3L549.2,815.3L553.9,810.4L552.4,807.1L542.0,810.8L537.0,803.5L534.1,804.1L529.6,801.1L527.8,802.9L523.3,799.0L517.8,803.8L514.7,798.6L514.3,794.3L510.6,791.1L513.5,787.6L507.2,781.4L498.7,780.8L495.7,775.2L491.4,777.5L488.8,776.5L484.0,770.4L479.4,772.5L471.1,771.1L468.4,767.8L464.0,766.5L459.5,760.9L455.7,760.2L454.2,752.9L450.2,752.7L449.7,747.5L445.9,746.1L446.5,742.2L443.3,740.0L457.5,726.1L461.4,720.1L467.5,719.5L471.7,714.1L473.3,702.5L479.0,690.4L480.1,685.3L483.0,682.1L482.3,674.4L487.6,674.9L491.1,677.8L497.0,672.3L507.9,668.1L513.7,662.2L525.4,663.0L538.9,660.3L541.7,657.6L554.8,655.0L557.4,655.7L562.2,652.2Z","cx":534.2,"cy":741.1},"guaviare":{"d":"M502.4,602.5L503.8,604.4L509.7,604.9L511.1,608.3L518.2,606.8L524.4,610.7L532.9,605.1L538.0,608.3L510.7,619.6L512.3,622.5L516.6,622.0L521.6,623.8L525.3,627.9L530.0,637.8L534.3,639.1L538.3,642.7L542.6,640.6L549.8,644.3L553.4,640.8L557.3,642.8L564.6,639.1L569.3,643.3L562.7,649.9L562.2,652.2L557.4,655.7L554.8,655.0L541.7,657.6L538.9,660.3L525.4,663.0L513.7,662.2L507.9,668.1L497.0,672.3L491.1,677.8L487.6,674.9L482.3,674.4L483.0,682.1L480.1,685.3L479.0,690.4L473.3,702.5L471.7,714.1L467.5,719.5L461.4,720.1L457.5,726.1L443.3,740.0L440.3,737.5L428.7,733.9L420.6,719.1L416.4,714.0L413.9,715.0L405.0,708.5L396.0,708.3L391.5,710.1L392.3,716.5L378.6,725.7L359.2,710.1L357.9,704.0L354.0,696.8L342.7,683.5L342.6,639.0L344.4,635.3L351.7,635.5L356.4,633.5L365.0,636.4L368.6,633.1L374.0,634.4L379.4,630.8L382.7,630.3L387.4,626.0L388.3,622.5L394.8,619.1L399.8,621.8L402.0,618.8L408.2,619.1L410.5,614.9L415.3,614.7L416.2,611.7L421.2,611.5L423.1,608.8L432.7,603.9L438.4,602.9L442.4,606.5L454.1,604.9L461.3,602.4L466.8,606.3L478.2,601.8L483.1,604.8L486.8,601.9L490.0,603.4L502.4,602.5Z","cx":437.2,"cy":661.7},"caldas":{"d":"M280.5,423.6L282.8,428.0L279.9,439.2L280.3,446.1L276.2,453.4L269.0,451.7L263.5,451.8L256.3,454.2L252.6,461.2L242.0,462.6L238.5,466.2L240.1,469.5L238.0,475.0L239.8,479.5L236.6,483.4L233.3,482.6L229.9,476.4L215.6,473.9L213.6,468.3L209.4,476.2L204.7,473.7L203.0,466.3L210.2,458.9L210.1,453.8L216.9,455.4L219.7,452.1L214.0,446.6L209.6,448.8L206.7,447.8L206.1,440.8L214.6,436.3L217.1,439.0L224.5,438.8L222.7,425.5L230.1,430.0L236.4,429.4L242.7,445.3L246.1,440.0L250.7,438.3L254.1,434.9L253.6,431.3L260.2,426.8L268.1,424.9L271.7,427.8L275.9,427.8L277.5,423.5L280.5,423.6Z","cx":240.7,"cy":450.1},"quindio":{"d":"M235.7,488.8L234.1,494.6L227.9,498.7L224.0,505.2L223.1,513.4L216.7,525.0L213.3,528.4L207.8,526.9L208.9,519.0L211.1,515.0L210.1,508.7L204.9,506.5L206.1,495.5L208.7,492.1L216.1,492.4L215.6,489.0L223.7,489.4L229.3,491.9L235.7,488.8Z","cx":217.1,"cy":505.0},"risaralda":{"d":"M206.1,440.8L206.7,447.8L209.6,448.8L214.0,446.6L219.7,452.1L216.9,455.4L210.1,453.8L210.2,458.9L203.0,466.3L204.7,473.7L209.4,476.2L213.6,468.3L215.6,473.9L229.9,476.4L233.3,482.6L236.6,483.4L235.7,488.8L229.3,491.9L223.7,489.4L210.8,488.7L201.9,483.1L198.6,479.0L193.1,468.3L194.2,462.8L190.2,460.5L185.5,451.2L186.2,446.6L192.4,443.6L192.7,438.1L197.4,436.0L198.9,439.0L206.1,440.8Z","cx":207.5,"cy":466.1},"antioquia":{"d":"M270.3,272.8L273.1,277.0L276.8,278.0L284.2,282.9L289.5,291.3L290.2,302.3L286.9,307.2L286.5,315.0L284.6,318.5L291.2,325.9L296.0,322.5L296.1,318.7L301.8,319.9L297.0,325.6L296.2,334.7L301.7,346.0L306.4,347.0L326.8,328.9L325.4,335.9L328.6,342.8L328.0,348.0L320.9,352.6L314.5,361.7L307.3,365.2L305.8,367.3L299.4,369.9L296.3,372.9L297.1,381.2L293.7,388.6L289.0,392.2L283.7,401.4L286.8,404.4L286.8,409.1L283.7,411.3L285.1,415.7L282.2,417.5L280.5,423.6L277.5,423.5L275.9,427.8L271.7,427.8L268.1,424.9L260.2,426.8L253.6,431.3L254.1,434.9L250.7,438.3L246.1,440.0L242.7,445.3L236.4,429.4L230.1,430.0L222.7,425.5L224.5,438.8L217.1,439.0L214.6,436.3L206.1,440.8L198.9,439.0L197.4,436.0L197.5,432.6L192.5,428.5L194.0,426.1L191.8,418.5L194.4,415.7L191.5,408.1L188.0,409.0L186.1,405.5L184.9,397.8L183.2,396.3L174.6,397.2L171.9,398.9L160.7,397.3L153.6,398.6L153.5,395.8L149.1,389.5L149.8,378.9L142.3,373.2L138.9,367.3L137.8,359.7L143.8,356.4L148.8,355.6L146.9,346.9L156.1,345.4L164.0,347.1L167.0,336.7L165.1,331.4L159.9,327.8L157.0,319.4L148.4,311.8L140.0,311.0L138.5,307.5L128.5,298.2L134.4,292.0L136.3,284.0L139.9,281.0L137.3,269.3L140.7,283.6L140.9,290.3L146.7,291.3L151.6,290.0L152.2,274.4L150.0,268.6L151.0,260.9L146.9,254.4L140.6,251.6L143.1,246.6L157.8,243.6L158.9,239.9L164.3,237.9L172.4,231.0L176.9,245.4L181.5,245.6L184.9,252.8L183.9,261.6L180.1,264.8L176.2,272.6L176.4,275.6L171.4,281.6L172.4,284.8L168.1,296.3L167.4,313.6L174.3,322.9L207.5,325.7L213.9,309.2L215.8,311.2L222.3,310.9L230.4,299.0L246.1,281.1L247.9,282.3L256.3,282.3L261.9,279.6L264.2,280.6L270.3,272.8Z","cx":224.8,"cy":352.0},"choco":{"d":"M137.3,269.3L139.9,281.0L136.3,284.0L134.4,292.0L128.5,298.2L138.5,307.5L140.0,311.0L148.4,311.8L157.0,319.4L159.9,327.8L165.1,331.4L167.0,336.7L164.0,347.1L156.1,345.4L146.9,346.9L148.8,355.6L143.8,356.4L137.8,359.7L138.9,367.3L142.3,373.2L149.8,378.9L149.1,389.5L153.5,395.8L153.6,398.6L160.7,397.3L171.9,398.9L174.6,397.2L183.2,396.3L184.9,397.8L186.1,405.5L188.0,409.0L191.5,408.1L194.4,415.7L191.8,418.5L194.0,426.1L192.5,428.5L197.5,432.6L197.4,436.0L192.7,438.1L192.4,443.6L186.2,446.6L185.5,451.2L190.2,460.5L194.2,462.8L192.4,474.5L189.0,481.2L184.9,481.8L178.6,486.7L180.2,489.1L174.0,503.3L163.1,510.3L170.4,522.3L167.1,529.2L161.5,533.6L155.8,535.4L144.3,531.2L141.3,527.2L136.4,525.7L133.0,527.3L126.3,521.9L117.1,522.9L114.2,520.9L108.2,530.8L103.5,525.3L103.6,517.3L109.6,513.5L114.1,507.4L115.9,497.9L116.7,485.2L114.5,482.9L112.9,473.8L112.1,453.3L110.5,446.2L112.0,443.7L106.9,440.8L102.7,441.4L104.9,435.0L110.0,432.4L115.1,432.8L119.8,426.8L120.2,422.0L118.2,418.7L115.3,409.1L107.9,400.9L106.2,397.2L110.7,395.1L113.8,384.9L113.8,378.9L116.0,375.2L111.5,370.7L108.3,365.4L104.2,368.5L100.8,359.9L97.9,357.0L92.1,354.6L95.1,347.2L81.4,333.7L87.0,318.6L92.6,315.6L89.8,309.1L90.1,305.2L96.1,306.7L98.6,313.6L100.9,315.7L105.6,311.0L116.7,291.6L125.0,290.3L119.9,272.0L115.4,268.2L112.2,257.9L108.2,254.2L114.8,245.2L118.3,249.8L120.7,256.0L128.1,259.8L133.8,269.5L137.3,269.3Z","cx":140.0,"cy":412.7},"narino":{"d":"M78.6,617.5L79.3,631.7L83.6,641.1L84.4,646.3L90.7,648.9L101.8,644.7L105.9,645.1L107.6,639.4L116.1,643.4L117.0,650.5L115.5,654.1L123.5,660.2L118.7,665.9L115.7,676.6L121.3,678.4L140.0,674.0L146.3,681.1L140.5,689.2L141.0,697.8L137.2,705.4L130.6,707.8L130.9,715.4L134.4,719.5L128.8,725.4L124.5,742.1L128.2,743.9L128.0,748.6L130.5,754.8L129.1,758.1L117.7,758.6L116.0,757.2L103.7,755.4L103.8,748.3L106.0,740.5L101.2,740.8L93.0,734.4L95.0,730.9L92.0,728.4L82.4,731.5L76.4,730.1L72.1,726.7L62.1,722.4L62.1,720.1L57.5,716.3L54.8,707.4L48.4,709.3L42.9,707.0L40.6,704.1L35.8,703.7L30.3,696.9L25.3,693.9L23.6,689.9L14.9,682.4L11.9,678.4L20.9,669.2L24.1,667.8L29.9,671.5L37.0,670.0L40.9,666.0L37.1,663.4L37.9,658.9L32.7,655.3L30.1,647.0L35.4,637.4L35.6,634.1L40.2,626.7L53.6,616.5L65.4,615.0L69.7,619.3L72.1,617.0L78.6,617.5Z","cx":82.2,"cy":683.8},"cordoba":{"d":"M216.4,197.7L224.5,205.9L231.4,208.4L232.3,214.5L235.5,213.3L242.4,218.7L246.8,220.1L249.4,226.2L244.6,230.5L237.3,233.8L239.5,239.5L238.0,244.4L239.5,250.4L243.2,255.0L246.6,255.8L248.3,260.6L251.9,256.1L257.2,256.8L259.3,253.5L264.4,254.2L267.5,260.2L272.1,264.3L273.3,268.0L264.2,280.6L261.9,279.6L256.3,282.3L247.9,282.3L246.1,281.1L230.4,299.0L222.3,310.9L215.8,311.2L213.9,309.2L207.5,325.7L174.3,322.9L167.4,313.6L168.1,296.3L172.4,284.8L171.4,281.6L176.4,275.6L176.2,272.6L180.1,264.8L183.9,261.6L184.9,252.8L181.5,245.6L176.9,245.4L172.4,231.0L176.9,228.2L181.5,223.3L182.4,219.6L186.2,216.0L187.4,208.9L191.6,206.1L192.9,202.3L199.3,199.9L201.1,195.7L211.3,198.8L216.4,197.7Z","cx":210.9,"cy":262.9},"bolivar":{"d":"M245.9,111.9L244.3,116.3L246.0,122.1L244.8,128.9L251.9,136.5L254.7,135.6L261.9,141.0L265.3,145.5L263.2,153.2L269.7,156.3L272.9,160.7L267.6,165.2L267.6,170.6L271.2,174.5L271.9,181.8L273.8,185.7L271.8,188.9L276.0,197.0L278.4,196.7L286.7,203.9L289.8,208.7L294.4,206.2L296.7,209.9L300.5,208.9L306.2,213.0L315.2,221.9L321.4,221.3L329.6,225.6L329.9,230.2L334.2,234.5L334.6,238.8L332.7,244.1L337.3,256.3L335.5,276.2L329.9,280.9L330.2,286.9L332.1,289.4L334.1,299.3L332.1,302.1L334.1,306.5L331.1,313.6L326.8,317.9L328.1,320.5L326.8,328.9L306.4,347.0L301.7,346.0L296.2,334.7L297.0,325.6L301.8,319.9L296.1,318.7L296.0,322.5L291.2,325.9L284.6,318.5L286.5,315.0L286.9,307.2L290.2,302.3L289.5,291.3L284.2,282.9L276.8,278.0L273.1,277.0L270.3,272.8L273.3,268.0L281.5,265.7L288.2,258.8L288.6,255.7L284.0,239.9L288.2,235.3L282.1,224.6L270.4,219.4L268.1,214.0L265.8,213.1L263.4,201.4L265.2,197.4L257.8,194.3L251.6,186.3L242.5,180.7L239.7,184.4L236.6,182.4L239.0,172.8L235.4,168.6L230.9,166.8L229.4,158.8L224.3,155.8L227.3,150.5L225.0,144.5L228.6,142.6L228.1,125.7L235.3,119.0L242.7,116.9L245.9,111.9Z","cx":290.4,"cy":239.2},"cesar":{"d":"M389.6,134.2L388.9,154.1L383.5,166.0L385.2,170.2L380.1,181.1L378.2,188.7L372.6,192.1L365.0,206.4L356.9,216.9L358.0,219.9L356.3,224.8L355.7,231.8L358.0,236.8L354.8,239.0L349.3,247.6L350.6,252.4L354.2,257.4L351.5,260.7L355.2,262.8L359.1,261.7L361.8,264.5L358.4,270.0L356.7,276.5L360.1,278.6L360.8,283.8L366.3,286.1L366.2,289.2L361.7,291.9L361.7,297.9L358.0,302.8L353.7,305.2L344.3,300.8L336.9,300.6L337.0,297.4L342.0,291.8L341.7,288.7L336.2,281.3L335.5,276.2L337.3,256.3L332.7,244.1L334.6,238.8L334.2,234.5L329.9,230.2L329.8,227.2L334.1,219.6L330.0,216.2L328.3,212.4L323.9,211.6L325.2,205.3L322.3,203.6L322.9,199.0L313.1,192.4L319.3,186.5L329.8,186.0L333.8,183.7L331.4,173.8L328.0,171.3L324.2,165.5L322.1,165.1L316.5,156.8L317.6,150.9L324.5,140.2L328.3,136.9L335.2,136.6L342.6,132.9L346.4,125.5L346.7,117.5L349.4,114.7L346.4,109.4L353.8,107.4L365.4,107.7L367.6,110.0L367.2,115.8L376.4,119.1L378.8,121.7L377.3,127.0L372.6,131.4L375.6,136.5L378.0,134.9L384.3,136.4L389.6,134.2Z","cx":351.4,"cy":189.7},"la guajira":{"d":"M389.6,134.2L384.3,136.4L378.0,134.9L375.6,136.5L372.6,131.4L377.3,127.0L378.8,121.7L376.4,119.1L367.2,115.8L367.6,110.0L365.4,107.7L353.8,107.4L346.4,109.4L342.3,99.8L344.6,90.4L347.3,87.5L347.9,83.1L361.0,82.9L366.4,81.5L374.6,73.9L381.9,68.5L390.7,64.2L394.2,59.8L400.6,55.8L416.9,51.0L430.6,44.3L436.8,30.7L436.5,22.4L447.5,21.3L445.6,25.7L447.8,27.9L453.9,24.1L449.8,18.8L453.9,15.1L457.4,18.3L464.4,14.5L468.6,9.9L473.6,9.9L489.7,15.9L500.1,31.9L498.8,37.0L492.6,40.1L483.8,48.9L457.6,57.0L447.1,59.1L430.1,90.2L423.7,89.8L415.3,93.1L415.3,95.4L409.4,104.7L405.9,106.4L401.3,114.6L398.8,122.0L389.6,134.2Z","cx":418.6,"cy":69.7},"magdalena":{"d":"M347.9,83.1L347.3,87.5L344.6,90.4L342.3,99.8L349.4,114.7L346.7,117.5L346.4,125.5L342.6,132.9L335.2,136.6L328.3,136.9L324.5,140.2L317.6,150.9L316.5,156.8L322.1,165.1L324.2,165.5L328.0,171.3L331.4,173.8L333.8,183.7L329.8,186.0L319.3,186.5L313.1,192.4L322.9,199.0L322.3,203.6L325.2,205.3L323.9,211.6L328.3,212.4L330.0,216.2L334.1,219.6L329.8,227.2L329.6,225.6L321.4,221.3L315.2,221.9L300.5,208.9L296.7,209.9L294.4,206.2L289.8,208.7L286.7,203.9L278.4,196.7L276.0,197.0L271.8,188.9L273.8,185.7L271.9,181.8L271.2,174.5L267.6,170.6L267.6,165.2L272.9,160.7L269.7,156.3L263.2,153.2L265.3,145.5L271.6,131.7L276.1,127.0L277.0,105.1L274.4,99.5L268.9,92.7L284.6,98.7L292.3,100.5L299.6,100.7L305.3,98.7L308.1,95.1L306.9,85.5L312.6,78.4L316.8,79.5L322.9,78.2L330.5,82.2L347.9,83.1Z","cx":305.5,"cy":145.8},"sucre":{"d":"M273.3,268.0L272.1,264.3L267.5,260.2L264.4,254.2L259.3,253.5L257.2,256.8L251.9,256.1L248.3,260.6L246.6,255.8L243.2,255.0L239.5,250.4L238.0,244.4L239.5,239.5L237.3,233.8L244.6,230.5L249.4,226.2L246.8,220.1L242.4,218.7L235.5,213.3L232.3,214.5L231.4,208.4L224.5,205.9L216.4,197.7L220.4,196.7L222.9,192.8L224.5,184.9L219.9,176.3L223.8,164.2L224.3,155.8L229.4,158.8L230.9,166.8L235.4,168.6L239.0,172.8L236.6,182.4L239.7,184.4L242.5,180.7L251.6,186.3L257.8,194.3L265.2,197.4L263.4,201.4L265.8,213.1L268.1,214.0L270.4,219.4L282.1,224.6L288.2,235.3L284.0,239.9L288.6,255.7L288.2,258.8L281.5,265.7L273.3,268.0Z","cx":253.3,"cy":219.5},"san andres":{"d":"M87.3,38.0L87.3,134.9L28.0,158.0L53.1,70.3L87.3,38.0Z","cx":64.4,"cy":104.4},"arauca":{"d":"M604.4,402.5L597.7,406.4L579.2,406.7L570.1,399.4L567.1,399.1L561.5,393.2L556.7,390.9L549.6,391.8L545.5,390.5L536.2,394.9L534.6,394.0L524.3,395.8L520.3,393.6L508.2,395.0L501.2,392.0L493.6,390.7L485.8,394.8L481.4,394.1L477.0,396.7L474.2,395.9L459.1,397.2L452.7,399.3L447.7,398.8L436.8,405.1L428.1,400.8L427.2,396.5L424.0,395.1L422.6,390.2L429.2,381.8L436.8,377.3L439.6,369.0L439.1,362.9L442.1,361.6L448.5,346.5L455.5,345.6L457.0,343.4L463.0,345.0L467.0,344.0L471.7,345.6L480.9,344.8L483.7,346.1L499.2,345.2L500.3,347.8L505.8,348.8L513.6,343.5L525.9,341.4L531.4,343.2L535.1,342.6L537.9,346.8L542.4,346.7L549.0,351.3L555.1,348.7L561.8,348.5L604.4,402.5Z","cx":509.1,"cy":373.9},"boyaca":{"d":"M442.4,344.8L448.5,346.5L442.1,361.6L439.1,362.9L439.6,369.0L436.8,377.3L429.2,381.8L422.4,389.4L419.8,397.5L422.1,399.9L422.7,406.9L425.2,413.2L419.6,415.2L416.9,418.4L426.2,422.0L431.3,429.8L427.5,433.6L426.7,439.8L420.8,435.9L414.3,443.6L402.8,453.7L395.1,447.5L390.9,449.5L389.8,455.1L385.1,462.2L389.4,467.0L385.3,472.5L382.6,471.1L378.7,482.8L380.2,487.5L377.1,492.2L369.6,491.1L369.7,487.7L364.5,487.8L360.4,483.5L358.6,478.7L351.3,478.7L349.6,475.9L351.6,469.0L353.8,467.2L350.6,453.9L347.7,452.5L345.2,446.1L335.1,440.2L332.9,436.9L328.4,439.4L327.4,443.6L322.2,447.9L312.7,443.4L302.4,432.8L303.9,425.0L300.9,419.9L294.9,424.2L288.8,422.2L285.0,424.9L280.7,424.6L282.2,417.5L285.1,415.7L283.7,411.3L286.8,409.1L286.8,404.4L283.7,401.4L289.0,392.2L293.7,403.1L298.2,406.8L303.9,404.1L310.5,414.7L320.0,421.2L321.8,425.3L327.5,425.3L330.2,427.1L339.5,423.0L343.9,426.3L346.4,417.3L344.5,415.7L347.2,408.8L352.7,402.5L358.5,405.8L360.5,408.8L358.6,415.3L356.0,415.3L354.2,420.6L359.3,424.7L362.1,419.0L372.1,418.5L369.9,414.6L371.1,409.0L375.4,411.7L386.3,405.1L395.6,395.8L399.3,394.6L398.4,389.5L400.0,387.1L399.8,378.8L404.4,381.7L411.9,378.9L411.5,374.0L415.3,368.5L414.2,352.9L421.0,355.1L425.9,351.4L427.3,347.6L431.7,348.0L433.0,344.7L442.4,344.8Z","cx":376.8,"cy":423.3},"cundinamarca":{"d":"M380.2,487.5L375.8,517.1L361.6,513.3L354.2,516.1L349.4,514.1L348.0,507.2L346.2,505.0L348.3,500.5L345.0,498.4L338.5,502.0L333.6,507.0L335.0,514.6L337.4,516.7L336.9,521.3L333.1,520.7L324.3,527.0L321.3,526.4L315.4,532.4L312.3,532.9L314.9,522.7L312.2,517.3L315.5,511.8L314.4,508.1L321.3,498.4L321.1,482.3L318.4,481.6L310.9,489.1L310.6,503.0L308.5,508.8L306.5,526.8L301.5,525.3L299.0,530.9L299.3,538.5L294.4,549.9L294.0,545.5L288.5,542.9L289.9,536.1L288.7,531.1L292.1,526.2L291.7,522.3L286.8,516.3L282.1,520.1L278.2,520.0L271.3,515.0L267.2,516.7L270.1,505.7L272.9,501.7L271.3,496.9L272.8,492.4L271.3,487.6L275.6,484.2L275.1,479.5L277.3,465.5L276.2,453.4L280.3,446.1L279.9,439.2L282.8,428.0L280.7,424.6L285.0,424.9L288.8,422.2L294.9,424.2L300.9,419.9L303.9,425.0L302.4,432.8L312.7,443.4L322.2,447.9L327.4,443.6L328.4,439.4L332.9,436.9L335.1,440.2L345.2,446.1L347.7,452.5L350.6,453.9L353.8,467.2L351.6,469.0L349.6,475.9L351.3,478.7L358.6,478.7L360.4,483.5L364.5,487.8L369.7,487.7L369.6,491.1L377.1,492.2L380.2,487.5Z","cx":315.3,"cy":482.0},"norte de santander":{"d":"M442.4,344.8L433.0,344.7L431.7,348.0L427.3,347.6L425.9,351.4L421.0,355.1L414.2,352.9L411.1,348.1L400.6,346.9L396.6,344.2L392.2,337.7L393.3,335.1L391.5,330.0L393.3,324.8L389.6,320.3L390.0,317.8L384.8,314.4L383.9,310.2L370.0,308.0L368.2,312.6L361.5,313.5L352.2,310.3L351.5,307.7L344.3,300.8L353.7,305.2L358.0,302.8L361.7,297.9L361.7,291.9L366.2,289.2L366.3,286.1L360.8,283.8L360.1,278.6L356.7,276.5L358.4,270.0L361.8,264.5L359.1,261.7L355.2,262.8L351.5,260.7L354.2,257.4L350.6,252.4L349.3,247.6L354.8,239.0L358.0,236.8L355.7,231.8L356.3,224.8L358.0,219.9L356.9,216.9L360.7,212.5L367.9,213.4L372.6,212.3L382.9,205.2L385.7,210.8L384.6,214.1L387.6,218.1L390.7,215.1L397.9,217.0L404.8,247.1L421.2,263.6L421.6,270.8L423.4,275.5L422.2,278.7L423.9,282.9L415.2,288.6L417.8,293.9L416.3,298.0L415.9,307.9L417.3,312.2L415.7,316.3L419.0,322.3L429.5,323.8L433.1,323.2L435.8,326.8L434.8,331.6L442.4,344.8Z","cx":390.7,"cy":279.3},"bogota":{"d":"M312.3,532.9L307.4,533.5L300.9,544.2L294.4,549.9L299.3,538.5L299.0,530.9L301.5,525.3L306.5,526.8L308.5,508.8L310.6,503.0L310.9,489.1L318.4,481.6L321.1,482.3L321.3,498.4L314.4,508.1L315.5,511.8L312.2,517.3L314.9,522.7L312.3,532.9Z","cx":310.7,"cy":513.4},"meta":{"d":"M502.3,477.5L502.4,602.5L490.0,603.4L486.8,601.9L483.1,604.8L478.2,601.8L466.8,606.3L461.3,602.4L454.1,604.9L442.4,606.5L438.4,602.9L432.7,603.9L423.1,608.8L421.2,611.5L416.2,611.7L415.3,614.7L410.5,614.9L408.2,619.1L402.0,618.8L399.8,621.8L394.8,619.1L388.3,622.5L387.4,626.0L382.7,630.3L379.4,630.8L374.0,634.4L368.6,633.1L365.0,636.4L356.4,633.5L351.7,635.5L344.4,635.3L342.6,639.0L342.6,681.2L337.7,679.6L330.4,681.5L322.0,679.6L308.8,674.8L301.7,670.3L292.5,669.2L286.8,666.6L286.9,659.5L281.8,651.3L284.9,648.8L281.4,642.1L275.6,640.4L275.7,637.1L280.0,629.4L279.5,622.8L285.2,616.2L282.2,613.2L280.1,602.2L274.5,603.1L271.9,599.2L267.2,600.6L266.0,597.4L275.2,588.5L283.5,575.3L282.1,572.4L283.5,566.7L290.6,555.1L300.9,544.2L307.4,533.5L315.4,532.4L321.3,526.4L324.3,527.0L333.1,520.7L336.9,521.3L337.4,516.7L335.0,514.6L333.6,507.0L338.5,502.0L345.0,498.4L348.3,500.5L346.2,505.0L348.0,507.2L349.4,514.1L354.2,516.1L361.6,513.3L375.8,517.1L380.2,487.5L382.4,493.8L385.4,496.0L389.8,503.7L397.5,510.3L397.7,512.6L409.4,514.6L411.0,512.3L420.3,513.5L426.5,508.0L435.5,505.8L445.4,509.5L456.8,497.6L461.7,497.6L470.1,493.2L471.4,491.4L494.1,482.5L502.3,477.5Z","cx":386.0,"cy":573.7},"huila":{"d":"M294.4,549.9L295.9,549.3L290.6,555.1L283.5,566.7L282.1,572.4L283.5,575.3L275.2,588.5L266.0,597.4L255.4,611.0L250.7,612.4L251.6,620.2L240.6,634.8L235.9,637.7L232.3,648.3L226.7,649.9L214.3,670.4L207.4,674.4L203.9,674.8L195.8,683.1L190.2,684.1L187.4,682.7L182.7,676.9L174.3,677.9L175.0,673.8L171.1,670.2L161.5,665.5L159.3,658.8L161.6,657.2L161.5,650.5L163.7,648.5L171.6,649.2L174.1,640.5L179.2,639.6L185.0,644.9L190.4,643.3L188.9,639.0L190.1,633.6L195.8,632.3L199.2,626.0L206.4,630.8L208.9,627.2L207.8,622.6L213.5,612.6L209.9,609.6L208.9,605.4L204.3,604.2L196.1,598.9L206.6,603.1L210.1,602.3L217.0,595.6L221.0,595.0L221.3,590.5L223.7,587.5L224.1,581.5L230.1,572.8L233.4,573.4L237.1,570.0L244.8,570.1L250.5,568.2L256.9,568.4L257.5,577.4L265.5,577.2L274.3,567.9L273.7,562.7L279.8,553.9L287.2,547.6L288.5,542.9L294.0,545.5L294.4,549.9Z","cx":223.7,"cy":621.7},"santander":{"d":"M344.3,300.8L351.5,307.7L352.2,310.3L361.5,313.5L368.2,312.6L370.0,308.0L383.9,310.2L384.8,314.4L390.0,317.8L389.6,320.3L393.3,324.8L391.5,330.0L393.3,335.1L392.2,337.7L396.6,344.2L400.6,346.9L411.1,348.1L414.2,352.9L415.3,368.5L411.5,374.0L411.9,378.9L404.4,381.7L399.8,378.8L400.0,387.1L398.4,389.5L399.3,394.6L395.6,395.8L386.3,405.1L375.4,411.7L371.1,409.0L369.9,414.6L372.1,418.5L362.1,419.0L359.3,424.7L354.2,420.6L356.0,415.3L358.6,415.3L360.5,408.8L358.5,405.8L352.7,402.5L347.2,408.8L344.5,415.7L346.4,417.3L343.9,426.3L339.5,423.0L330.2,427.1L327.5,425.3L321.8,425.3L320.0,421.2L310.5,414.7L303.9,404.1L298.2,406.8L293.7,403.1L289.0,392.2L293.7,388.6L297.1,381.2L296.3,372.9L299.4,369.9L305.8,367.3L307.3,365.2L314.5,361.7L320.9,352.6L328.0,348.0L328.6,342.8L325.4,335.9L328.1,320.5L326.8,317.9L331.1,313.6L334.1,306.5L332.1,302.1L334.1,299.3L332.1,289.4L330.2,286.9L329.9,280.9L335.5,276.2L336.2,281.3L341.7,288.7L342.0,291.8L337.0,297.4L336.9,300.6L344.3,300.8Z","cx":353.5,"cy":366.1},"tolima":{"d":"M276.2,453.4L277.3,465.5L275.1,479.5L275.6,484.2L271.3,487.6L272.8,492.4L271.3,496.9L272.9,501.7L270.1,505.7L267.2,516.7L271.3,515.0L278.2,520.0L282.1,520.1L286.8,516.3L291.7,522.3L292.1,526.2L288.7,531.1L289.9,536.1L287.2,547.6L279.8,553.9L273.7,562.7L274.3,567.9L265.5,577.2L257.5,577.4L256.9,568.4L250.5,568.2L244.8,570.1L237.1,570.0L233.4,573.4L230.1,572.8L224.1,581.5L223.7,587.5L221.3,590.5L221.0,595.0L217.0,595.6L210.1,602.3L206.6,603.1L196.1,598.9L196.6,594.9L193.4,592.1L192.3,582.9L194.5,581.3L195.5,576.5L194.1,573.2L196.2,565.0L198.9,560.5L198.3,557.4L200.7,550.9L202.7,549.4L206.4,541.0L209.9,537.5L213.3,528.4L216.7,525.0L223.1,513.4L224.0,505.2L227.9,498.7L234.1,494.6L236.6,483.4L239.8,479.5L238.0,475.0L240.1,469.5L238.5,466.2L242.0,462.6L252.6,461.2L256.3,454.2L263.5,451.8L269.0,451.7L276.2,453.4Z","cx":243.8,"cy":531.0},"atlantico":{"d":"M265.3,145.5L261.9,141.0L254.7,135.6L251.9,136.5L244.8,128.9L246.0,122.1L244.3,116.3L245.9,111.9L257.0,105.4L259.4,100.4L268.9,92.7L274.4,99.5L277.0,105.1L276.1,127.0L271.6,131.7L265.3,145.5Z","cx":262.2,"cy":118.9}},"fuente":"DANE, Marco Geoestadístico Nacional 2018 (límites departamentales), simplificado"},"deptos":{"guaviare":{"n":"Guaviare","p27":0.9881,"cat":"C consolidado","alerta":true,"sab":0.1443,"perf26":"C","sc26":0.7647,"ev26":34,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI","hist":[[2021,0.68,"C",false,25,null],[2022,0.6765,"C",false,34,null],[2023,0.7436,"C",false,39,0.8133],[2024,0.6,"C",false,20,0.7529],[2025,0.6984,"C",false,63,0.7994],[2026,0.7647,"C",false,34,0.9682]]},"narino":{"n":"Nariño","p27":0.9342,"cat":"C consolidado","alerta":false,"sab":0.0676,"perf26":"C","sc26":0.6989,"ev26":176,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2021,0.6105,"C",false,285,null],[2022,0.6043,"C",false,187,null],[2023,0.5735,"C",false,340,0.8659],[2024,0.5611,"C",false,221,0.8652],[2025,0.6482,"C",false,253,0.8317],[2026,0.6989,"C",false,176,0.8964]]},"cauca":{"n":"Cauca","p27":0.9246,"cat":"C consolidado","alerta":true,"sab":0.1338,"perf26":"C","sc26":0.6998,"ev26":443,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI","hist":[[2021,0.7237,"C",false,579,null],[2022,0.8311,"C",false,598,null],[2023,0.7793,"C",false,666,0.9737],[2024,0.7722,"C",false,654,0.952],[2025,0.7087,"C",false,745,0.9532],[2026,0.6998,"C",false,443,0.9467]]},"caqueta":{"n":"Caquetá","p27":0.9208,"cat":"C consolidado","alerta":false,"sab":0.0984,"perf26":"C","sc26":0.8125,"ev26":48,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2021,0.9273,"C",false,55,null],[2022,0.7419,"C",false,62,null],[2023,0.7534,"C",false,73,0.9019],[2024,0.6897,"C",false,58,0.879],[2025,0.6351,"C",false,74,0.9097],[2026,0.8125,"C",false,48,0.8528]]},"putumayo":{"n":"Putumayo","p27":0.8876,"cat":"C consolidado","alerta":false,"sab":0.0374,"perf26":"C","sc26":0.814,"ev26":43,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2021,0.7841,"C",false,88,null],[2022,0.8876,"C",false,89,null],[2023,0.8395,"C",false,81,0.9694],[2024,0.9027,"C",false,113,0.9694],[2025,0.7812,"C",false,64,0.9741],[2026,0.814,"C",false,43,0.8837]]},"antioquia":{"n":"Antioquia","p27":0.8833,"cat":"C consolidado","alerta":false,"sab":0.0678,"perf26":"C","sc26":0.6533,"ev26":398,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2021,0.6071,"C",false,560,null],[2022,0.6264,"C",false,530,null],[2023,0.5285,"C",false,596,0.9389],[2024,0.6248,"C",false,573,0.8476],[2025,0.6627,"C",false,664,0.884],[2026,0.6533,"C",false,398,0.938]]},"amazonas":{"n":"Amazonas","p27":0.8752,"cat":"C consolidado","alerta":false,"sab":0.0,"perf26":"C","sc26":0.7778,"ev26":9,"conf26":false,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2022,1.0,"C",false,11,null],[2023,0.625,"C",false,16,0.8428],[2024,0.8,"C",false,10,0.7746],[2025,0.9167,"C",false,24,0.7982]]},"norte de santander":{"n":"Norte de Santander","p27":0.865,"cat":"C consolidado","alerta":false,"sab":0.1016,"perf26":"C","sc26":0.604,"ev26":404,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2021,0.6379,"C",false,475,null],[2022,0.6869,"C",false,495,null],[2023,0.5864,"C",false,457,0.9196],[2024,0.6415,"C",false,357,0.8391],[2025,0.6798,"C",false,531,0.8364],[2026,0.604,"C",false,404,0.9471]]},"vaupes":{"n":"Vaupés","p27":0.8386,"cat":"C consolidado","alerta":false,"sab":0.0,"perf26":"C","sc26":0.5,"ev26":6,"conf26":false,"enf":"ISR, detección temprana y movilidad protegida","hist":[]},"vichada":{"n":"Vichada","p27":0.7888,"cat":"C consolidado","alerta":false,"sab":0.0588,"perf26":"C","sc26":0.7273,"ev26":11,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2026,0.7273,"C",false,11,0.6558]]},"cesar":{"n":"Cesar","p27":0.7131,"cat":"C consolidado","alerta":false,"sab":0.0714,"perf26":"C","sc26":0.6667,"ev26":87,"conf26":true,"enf":"ISR, detección temprana y movilidad protegida","hist":[[2021,0.4756,"D",false,82,null],[2022,0.5119,"C",true,84,null],[2023,0.5242,"C",false,124,0.3781],[2024,0.4173,"D",true,127,0.4621],[2025,0.5328,"C",true,137,0.2459],[2026,0.6667,"C",false,87,0.4517]]},"san andres":{"n":"San Andrés","p27":0.6692,"cat":"Transición","alerta":false,"sab":0.0,"perf26":"C","sc26":1.0,"ev26":1,"conf26":false,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[]},"choco":{"n":"Chocó","p27":0.6183,"cat":"Transición","alerta":false,"sab":0.0797,"perf26":"D","sc26":0.4459,"ev26":148,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.4793,"D",true,169,null],[2022,0.6453,"C",true,172,null],[2023,0.6136,"C",false,176,0.8474],[2024,0.7377,"C",false,183,0.8508],[2025,0.7059,"C",false,153,0.9163],[2026,0.4459,"D",true,148,0.8772]]},"valle del cauca":{"n":"Valle del Cauca","p27":0.6099,"cat":"Transición","alerta":false,"sab":0.0707,"perf26":"D","sc26":0.4982,"ev26":271,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.302,"D",true,553,null],[2022,0.6141,"C",true,368,null],[2023,0.4386,"D",true,285,0.8382],[2024,0.4375,"D",false,288,0.5062],[2025,0.5228,"C",true,394,0.4832],[2026,0.4982,"D",true,271,0.7573]]},"arauca":{"n":"Arauca","p27":0.6098,"cat":"Transición","alerta":false,"sab":0.0976,"perf26":"C","sc26":0.6475,"ev26":122,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.7231,"C",false,195,null],[2022,0.8431,"C",false,255,null],[2023,0.7516,"C",false,322,0.843],[2024,0.869,"C",false,252,0.7683],[2025,0.7206,"C",false,247,0.8524],[2026,0.6475,"C",false,122,0.7922]]},"cordoba":{"n":"Córdoba","p27":0.5662,"cat":"Transición","alerta":false,"sab":0.012,"perf26":"C","sc26":0.5278,"ev26":36,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.4196,"D",true,112,null],[2022,0.4912,"D",false,114,null],[2023,0.3355,"D",false,152,0.4117],[2024,0.4783,"D",false,92,0.2049],[2025,0.5496,"C",true,131,0.2055],[2026,0.5278,"C",false,36,0.6839]]},"guainia":{"n":"Guainía","p27":0.5485,"cat":"Transición","alerta":false,"sab":0.0,"perf26":"C","sc26":0.5,"ev26":2,"conf26":false,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[]},"casanare":{"n":"Casanare","p27":0.5209,"cat":"Transición","alerta":false,"sab":0.087,"perf26":"C","sc26":0.5789,"ev26":19,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.1765,"D",true,17,null],[2022,0.9333,"C",true,15,null],[2023,0.6923,"C",false,13,0.3218],[2024,0.8065,"C",false,31,0.4124],[2025,0.6667,"C",false,27,0.6401],[2026,0.5789,"C",false,19,0.5045]]},"huila":{"n":"Huila","p27":0.506,"cat":"Transición","alerta":false,"sab":0.0745,"perf26":"C","sc26":0.6154,"ev26":65,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.34,"D",true,50,null],[2022,0.7273,"C",true,11,null],[2023,0.6024,"C",false,83,0.3606],[2024,0.6447,"C",false,76,0.4724],[2025,0.7292,"C",false,96,0.6272],[2026,0.6154,"C",false,65,0.7708]]},"meta":{"n":"Meta","p27":0.4988,"cat":"Transición","alerta":false,"sab":0.0144,"perf26":"C","sc26":0.5536,"ev26":56,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.7808,"C",false,146,null],[2022,0.7159,"C",false,88,null],[2023,0.5694,"C",false,72,0.7792],[2024,0.4167,"D",true,72,0.4125],[2025,0.6747,"C",true,83,0.2541],[2026,0.5536,"C",false,56,0.761]]},"sucre":{"n":"Sucre","p27":0.433,"cat":"Transición","alerta":false,"sab":0.0,"perf26":"D","sc26":0.4762,"ev26":21,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.2326,"D",false,86,null],[2022,0.3652,"D",false,178,null],[2023,0.3556,"D",false,90,0.1426],[2024,0.2889,"D",false,45,0.1298],[2025,0.3889,"D",false,54,0.0966],[2026,0.4762,"D",false,21,0.2405]]},"magdalena":{"n":"Magdalena","p27":0.3406,"cat":"Transición","alerta":false,"sab":0.0082,"perf26":"D","sc26":0.4732,"ev26":112,"conf26":true,"enf":"Portafolio flexible y monitoreo trimestral del perfil","hist":[[2021,0.3049,"D",false,82,null],[2022,0.4943,"D",false,87,null],[2023,0.331,"D",false,145,0.3732],[2024,0.4019,"D",false,107,0.1959],[2025,0.5649,"C",true,131,0.2096],[2026,0.4732,"D",true,112,0.5541]]},"la guajira":{"n":"La Guajira","p27":0.2829,"cat":"D consolidado","alerta":false,"sab":0.0294,"perf26":"D","sc26":0.4511,"ev26":184,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.2366,"D",false,93,null],[2022,0.3158,"D",false,133,null],[2023,0.1712,"D",false,368,0.1058],[2024,0.1577,"D",false,336,0.0399],[2025,0.4164,"D",false,293,0.0282],[2026,0.4511,"D",false,184,0.2986]]},"bolivar":{"n":"Bolívar","p27":0.2292,"cat":"D consolidado","alerta":false,"sab":0.0495,"perf26":"D","sc26":0.3064,"ev26":173,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.1883,"D",false,324,null],[2022,0.3923,"D",false,390,null],[2023,0.3472,"D",false,409,0.534],[2024,0.3619,"D",false,268,0.3497],[2025,0.5271,"C",true,332,0.3062],[2026,0.3064,"D",true,173,0.8095]]},"tolima":{"n":"Tolima","p27":0.1939,"cat":"D consolidado","alerta":false,"sab":0.0182,"perf26":"D","sc26":0.4316,"ev26":95,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.0597,"D",false,201,null],[2022,0.1119,"D",false,143,null],[2023,0.1832,"D",false,131,0.0459],[2024,0.3284,"D",false,67,0.0522],[2025,0.2714,"D",false,70,0.1175],[2026,0.4316,"D",false,95,0.0857]]},"atlantico":{"n":"Atlántico","p27":0.0957,"cat":"D consolidado","alerta":false,"sab":0.0038,"perf26":"D","sc26":0.2427,"ev26":103,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.121,"D",false,124,null],[2022,0.1117,"D",false,188,null],[2023,0.1582,"D",false,196,0.0732],[2024,0.1648,"D",false,176,0.0597],[2025,0.283,"D",false,159,0.0424],[2026,0.2427,"D",false,103,0.1738]]},"risaralda":{"n":"Risaralda","p27":0.066,"cat":"D consolidado","alerta":false,"sab":0.02,"perf26":"D","sc26":0.2903,"ev26":31,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.1429,"D",false,84,null],[2022,0.1667,"D",false,36,null],[2023,0.0635,"D",false,63,0.0356],[2024,0.2083,"D",false,48,0.0133],[2025,0.3768,"D",false,69,0.0363],[2026,0.2903,"D",false,31,0.1634]]},"caldas":{"n":"Caldas","p27":0.0653,"cat":"D consolidado","alerta":false,"sab":0.0088,"perf26":"D","sc26":0.322,"ev26":59,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.0603,"D",false,116,null],[2022,0.075,"D",false,40,null],[2023,0.1509,"D",false,53,0.0267],[2024,0.0351,"D",false,57,0.0338],[2025,0.1636,"D",false,55,0.0117],[2026,0.322,"D",false,59,0.0246]]},"quindio":{"n":"Quindío","p27":0.0582,"cat":"D consolidado","alerta":false,"sab":0.0,"perf26":"D","sc26":0.25,"ev26":12,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.1379,"D",false,29,null],[2023,0.1538,"D",false,13,0.1965],[2024,0.3077,"D",false,13,0.0633],[2025,0.4,"D",false,15,0.1423],[2026,0.25,"D",false,12,0.0976]]},"santander":{"n":"Santander","p27":0.0423,"cat":"D consolidado","alerta":false,"sab":0.0167,"perf26":"D","sc26":0.1631,"ev26":141,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.0401,"D",false,274,null],[2022,0.2137,"D",false,131,null],[2023,0.1324,"D",false,219,0.1004],[2024,0.1323,"D",false,189,0.0338],[2025,0.1519,"D",false,158,0.0378],[2026,0.1631,"D",false,141,0.0337]]},"cundinamarca":{"n":"Cundinamarca","p27":0.0375,"cat":"D consolidado","alerta":false,"sab":0.0,"perf26":"D","sc26":0.2857,"ev26":21,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.0258,"D",false,194,null],[2022,0.3043,"D",false,23,null],[2023,0.06,"D",false,50,0.0715],[2024,0.0758,"D",false,66,0.014],[2025,0.2286,"D",false,35,0.0135],[2026,0.2857,"D",false,21,0.056]]},"boyaca":{"n":"Boyacá","p27":0.0239,"cat":"D consolidado","alerta":false,"sab":0.0145,"perf26":"D","sc26":0.1522,"ev26":46,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.125,"D",false,32,null],[2023,0.14,"D",false,50,0.167],[2024,0.25,"D",false,20,0.0416],[2025,0.2609,"D",false,23,0.0874],[2026,0.1522,"D",false,46,0.0776]]},"bogota":{"n":"Bogotá D.C.","p27":0.0071,"cat":"D consolidado","alerta":false,"sab":0.0014,"perf26":"D","sc26":0.0474,"ev26":211,"conf26":true,"enf":"Orden público y capacidades mixtas","hist":[[2021,0.0324,"D",false,555,null],[2022,0.08,"D",false,300,null],[2023,0.0361,"D",false,416,0.0269],[2024,0.0428,"D",false,397,0.0108],[2025,0.029,"D",false,482,0.0087],[2026,0.0474,"D",false,211,0.0061]]}},"acled":{"filas_export":17573,"eventos":33275,"fatalidades":13591,"deptos":33,"anios":[2020,2021,2022,2023,2024,2025,2026],"por_anio":{"A":[210,145,217,177,185,236,115],"B":[6,2,1,3,19,107,126],"C":[1860,2205,2596,2560,2390,2999,1838],"D":[1010,3249,1974,2969,2332,2235,1509]},"subtipos":[["Peaceful protest",10836,"D"],["Attack",7802,"C"],["Armed clash",4785,"C"],["Looting/property destruction",1566,"C"],["Violent demonstration",1276,"D"],["Mob violence",1257,"D"],["Abduction/forced disappearance",1223,"C"],["Other",1145,"D"],["Disrupted weapons use",1072,"C"],["Remote explosive/landmine/IED",931,"A"]]},"escalera":[{"paso":"Modelo base U2","ll":0.3828,"de":0.0213,"auc":0.9211,"trans":2.4},{"paso":"+ I1 memoria m₁","ll":0.347,"de":0.01,"auc":0.9386,"trans":2.4},{"paso":"+ I2 semestre d₁","ll":0.3096,"de":0.0096,"auc":0.9513,"trans":2.0},{"paso":"+ I7 ensamble (10)","ll":0.3043,"de":0.0,"auc":0.9561,"trans":2.0}],"comparaciones":{"sel":[{"modelo":"Persistencia","ll":0.3631,"auc":0.973,"ece":0.173,"brier":0.106,"mcc":0.7951,"exact":0.8966,"trans":0.0,"ntrans":9.0},{"modelo":"Persistencia calibrada","ll":0.3279,"auc":0.9656,"ece":0.116,"brier":0.0986,"mcc":0.7779,"exact":0.8851,"trans":1.0,"ntrans":9.0},{"modelo":"Base U2 · semilla 42","ll":0.4074,"auc":0.9128,"ece":0.0841,"brier":0.1316,"mcc":0.6587,"exact":0.8161,"trans":2.0,"ntrans":9.0},{"modelo":"Base U2 · ensamble 10","ll":0.3758,"auc":0.9334,"ece":0.0944,"brier":0.1196,"mcc":0.6438,"exact":0.8161,"trans":3.0,"ntrans":9.0},{"modelo":"Logística (9 variables)","ll":0.3061,"auc":0.9487,"ece":0.0681,"brier":0.0972,"mcc":0.7372,"exact":0.8621,"trans":1.0,"ntrans":9.0},{"modelo":"MLP U3","ll":0.3043,"auc":0.9561,"ece":0.1236,"brier":0.0953,"mcc":0.6905,"exact":0.8391,"trans":2.0,"ntrans":9.0}],"t26":[{"modelo":"Persistencia","ll":0.4293,"auc":0.9476,"ece":0.2072,"brier":0.1312,"mcc":0.7552,"exact":0.8621,"trans":0.0,"ntrans":4.0},{"modelo":"Persistencia calibrada","ll":0.3513,"auc":0.9476,"ece":0.1502,"brier":0.1046,"mcc":0.7552,"exact":0.8621,"trans":0.0,"ntrans":4.0},{"modelo":"Base U2 · semilla 42","ll":0.5244,"auc":0.8524,"ece":0.1039,"brier":0.1662,"mcc":0.5168,"exact":0.7586,"trans":1.0,"ntrans":4.0},{"modelo":"Base U2 · ensamble 10","ll":0.4696,"auc":0.8619,"ece":0.1085,"brier":0.1574,"mcc":0.5168,"exact":0.7586,"trans":1.0,"ntrans":4.0},{"modelo":"Logística (9 variables)","ll":0.3825,"auc":0.9286,"ece":0.1139,"brier":0.1291,"mcc":0.5315,"exact":0.7586,"trans":0.0,"ntrans":4.0},{"modelo":"MLP U3","ll":0.38,"auc":0.9,"ece":0.0741,"brier":0.1211,"mcc":0.6716,"exact":0.8276,"trans":0.0,"ntrans":4.0},{"modelo":"Embedding (no adoptado)","ll":0.3136,"auc":0.9333,"ece":0.1232,"brier":0.0995,"mcc":0.8117,"exact":0.8966,"trans":1.0,"ntrans":4.0}],"et":[{"modelo":"Persistencia","ll":0.3631,"auc":0.973,"ece":0.173,"brier":0.106,"mcc":0.7951,"exact":0.8966,"trans":0.0,"ntrans":9.0},{"modelo":"Persistencia calibrada","ll":0.3321,"auc":0.9619,"ece":0.1164,"brier":0.1007,"mcc":0.7779,"exact":0.8851,"trans":1.0,"ntrans":9.0},{"modelo":"Base U2 · ensamble 10","ll":0.4763,"auc":0.8689,"ece":0.0868,"brier":0.1565,"mcc":0.5633,"exact":0.7701,"trans":4.0,"ntrans":9.0},{"modelo":"Logística (9 variables)","ll":0.4161,"auc":0.9091,"ece":0.0735,"brier":0.1224,"mcc":0.6852,"exact":0.8391,"trans":3.0,"ntrans":9.0},{"modelo":"MLP U3","ll":0.3609,"auc":0.9323,"ece":0.092,"brier":0.1172,"mcc":0.6644,"exact":0.8276,"trans":3.0,"ntrans":9.0}],"esp":[{"modelo":"Persistencia","ll":0.4179,"auc":0.914,"ece":0.1174,"brier":0.1274,"mcc":0.7036,"exact":0.8521,"trans":null,"ntrans":null},{"modelo":"Base U2 · 1 red","ll":0.4758,"auc":0.8554,"ece":0.0482,"brier":0.1543,"mcc":0.5655,"exact":null,"trans":null,"ntrans":null},{"modelo":"Base U2 · ensamble 10","ll":0.4453,"auc":0.8722,"ece":0.0547,"brier":0.1471,"mcc":0.58,"exact":0.7887,"trans":null,"ntrans":null},{"modelo":"Logística (9 variables)","ll":0.3732,"auc":0.9163,"ece":0.0336,"brier":0.1136,"mcc":0.7038,"exact":0.8521,"trans":null,"ntrans":null},{"modelo":"MLP U3 · 1 red","ll":0.3732,"auc":0.9146,"ece":0.0461,"brier":0.1163,"mcc":0.6663,"exact":null,"trans":null,"ntrans":null},{"modelo":"MLP U3","ll":0.3506,"auc":0.9227,"ece":0.0416,"brier":0.1104,"mcc":0.6899,"exact":0.8451,"trans":null,"ntrans":null}]},"decisiones":[{"id":"I1","nombre":"I1 memoria m1","dll":-0.0358,"ee":0.0094,"ic":[-0.056,-0.019],"dauc":0.0174,"decision":"se retiene","retiene":true},{"id":"I1","nombre":"I1 trayectoria m2, m3","dll":0.0016,"ee":0.011,"ic":[-0.036,0.055],"dauc":-0.0001,"decision":"no se retiene","retiene":false},{"id":"I2","nombre":"I2 semestre reciente d1","dll":-0.0374,"ee":0.0068,"ic":[-0.066,-0.011],"dauc":0.0127,"decision":"se retiene","retiene":true},{"id":"I2","nombre":"I2 tendencias d2, d3","dll":0.013,"ee":0.0087,"ic":[-0.03,0.071],"dauc":-0.0059,"decision":"no se retiene","retiene":false},{"id":"I3","nombre":"I3 actores armados x3","dll":0.025,"ee":0.0056,"ic":[-0.002,0.063],"dauc":-0.0145,"decision":"no se retiene","retiene":false},{"id":"I4","nombre":"I4 vecindad (temporal)","dll":-0.004,"ee":0.0019,"ic":[-0.035,0.027],"dauc":0.002,"decision":"no se retiene","retiene":false},{"id":"I4","nombre":"I4 vecindad (espacial)","dll":0.0094,"ee":0.0037,"ic":[-0.023,0.046],"dauc":-0.0054,"decision":"no se retiene","retiene":false},{"id":"I5","nombre":"I5 objetivo blando (sin calibrar)","dll":0.1193,"ee":0.0044,"ic":[0.054,0.184],"dauc":-0.0044,"decision":"no se retiene","retiene":false},{"id":"I5","nombre":"I5 objetivo blando (ambos calibrados)","dll":0.0678,"ee":0.0078,"ic":[0.028,0.107],"dauc":-0.0152,"decision":"no se retiene","retiene":false},{"id":"I9","nombre":"I9 multitarea λ=0.5 (efecto en P(C))","dll":0.0013,"ee":0.0027,"ic":[-0.006,0.01],"dauc":-0.0001,"decision":"no se retiene","retiene":false},{"id":"I9","nombre":"I9 multitarea λ=1 (efecto en P(C))","dll":0.0095,"ee":0.0052,"ic":[-0.002,0.023],"dauc":-0.0042,"decision":"no se retiene","retiene":false},{"id":"Arq.","nombre":"GRU trimestral","dll":0.0098,"ee":0.0045,"ic":[-0.024,0.053],"dauc":-0.0033,"decision":"no se retiene","retiene":false},{"id":"Arq.","nombre":"CNN 1D trimestral","dll":0.0143,"ee":0.0142,"ic":[-0.026,0.062],"dauc":-0.0064,"decision":"no se retiene","retiene":false},{"id":"Arq.","nombre":"Embedding de departamento","dll":-0.0259,"ee":0.0103,"ic":[-0.046,-0.005],"dauc":0.0163,"decision":"cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding","retiene":false},{"id":"Arq.","nombre":"MLP profundo (16, 8)","dll":-0.0004,"ee":0.0135,"ic":[-0.022,0.024],"dauc":0.0026,"decision":"no se retiene","retiene":false},{"id":"Arq.","nombre":"Logística (mismas variables)","dll":-0.0035,"ee":0.0043,"ic":[-0.053,0.059],"dauc":-0.0025,"decision":"no se retiene","retiene":false},{"id":"I6","nombre":"I6 capacidad / activación / L2 / presupuesto","dll":0.0518,"ee":null,"ic":null,"dauc":null,"decision":"no se retiene (la selección no transfiere a 2025)","retiene":false},{"id":"I7","nombre":"I7 ensamble de 10 semillas","dll":-0.0108,"ee":null,"ic":null,"dauc":0.0043,"decision":"se retiene (estabilidad)","retiene":true},{"id":"I8","nombre":"I8 calibración","dll":0.0042,"ee":null,"ic":null,"dauc":0.0,"decision":"no se retiene (no mejora sin mirar el futuro)","retiene":false}],"controles":[{"nombre":"sin estandarización","dll":5.7803,"ll":6.0899,"auc":0.5332},{"nombre":"sin logaritmos","dll":-0.0117,"ll":0.2979,"auc":0.9561},{"nombre":"sin pesos de clase","dll":0.0154,"ll":0.325,"auc":0.951},{"nombre":"sin contracción","dll":0.0021,"ll":0.3117,"auc":0.9498},{"nombre":"escalador con fuga","dll":-0.0024,"ll":0.3072,"auc":0.9515},{"nombre":"mapeo alternativo","dll":0.0072,"ll":0.3168,"auc":0.9467},{"nombre":"etiquetas barajadas","dll":0.5057,"ll":0.8153,"auc":0.3162}],"psi":[{"var":"x1_eventos","psi":0.0756,"p95":0.3708,"estado":"estable","supera":false},{"var":"x2_fatalidades","psi":0.0189,"p95":0.375,"estado":"estable","supera":false},{"var":"x2b_letalidad","psi":0.454,"p95":0.3726,"estado":"deriva","supera":true},{"var":"x4_coca","psi":0.0004,"p95":0.214,"estado":"estable","supera":false},{"var":"x5_bosque","psi":0.0113,"p95":0.3704,"estado":"estable","supera":false},{"var":"x6_distancia","psi":0.0025,"p95":0.3841,"estado":"estable","supera":false},{"var":"x7_ipm","psi":0.0053,"p95":0.387,"estado":"estable","supera":false},{"var":"m1_sC_t1","psi":0.2261,"p95":0.3793,"estado":"vigilar","supera":false},{"var":"d1_sC_H2","psi":0.1735,"p95":0.38,"estado":"vigilar","supera":false}],"bandas":[{"conj":"2023-2025","modelo":"Después: MLP U3","filas":87,"banda":71,"aciertos":66,"trans":16},{"conj":"2023-2025","modelo":"Persistencia","filas":87,"banda":45,"aciertos":45,"trans":42},{"conj":"2023-2025","modelo":"Persistencia calibrada","filas":87,"banda":56,"aciertos":54,"trans":31},{"conj":"2026","modelo":"Después: MLP U3","filas":29,"banda":24,"aciertos":21,"trans":5},{"conj":"2026","modelo":"Persistencia","filas":29,"banda":13,"aciertos":12,"trans":16},{"conj":"2026","modelo":"Persistencia calibrada","filas":29,"banda":20,"aciertos":19,"trans":9}],"importancia":[["d₁ s_C 2.º semestre t-1",0.1145,0.0453],["x₅ bosque (%)",0.0485,0.0353],["m₁ s_C en t-1",0.0484,0.0287],["x₂ fatalidades (log)",0.0455,0.0351],["x₇ IPM (%)",0.0232,0.0196],["x₂b letalidad",0.0232,0.0156],["x₄ coca (log ha)",0.0209,0.0203],["x₆ distancia (km)",0.0074,0.0211],["x₁ eventos (log)",0.0037,0.0133]],"u2":{"e1":[{"val":"Temporal","modelo":"Persistencia","auc":0.9646,"ll":0.3796},{"val":"Temporal","modelo":"Logística base (x1-x7)","auc":0.8746,"ll":0.4477},{"val":"Temporal","modelo":"MLP base (x1-x7)","auc":0.8921,"ll":0.436},{"val":"Temporal","modelo":"MLP base, ensamble 5 semillas (E2)","auc":0.918,"ll":0.4008},{"val":"Temporal","modelo":"Logística + x8","auc":0.9221,"ll":0.3526},{"val":"Temporal","modelo":"MLP + x8 (E1)","auc":0.9325,"ll":0.3624},{"val":"Temporal","modelo":"MLP + x8, ensamble 5 semillas (E1+E2)","auc":0.9325,"ll":0.3584},{"val":"Espacial","modelo":"Persistencia","auc":0.9178,"ll":0.4199},{"val":"Espacial","modelo":"Logística base (x1-x7)","auc":0.8408,"ll":0.5047},{"val":"Espacial","modelo":"MLP base (x1-x7)","auc":0.8043,"ll":0.5773},{"val":"Espacial","modelo":"MLP base, ensamble 5 semillas (E2)","auc":0.8494,"ll":0.4861},{"val":"Espacial","modelo":"Logística + x8","auc":0.9049,"ll":0.3935},{"val":"Espacial","modelo":"MLP + x8 (E1)","auc":0.8853,"ll":0.4511},{"val":"Espacial","modelo":"MLP + x8, ensamble 5 semillas (E1+E2)","auc":0.8968,"ll":0.4221}],"semillas_auc_prueba":[0.852,0.857,0.876,0.876,0.81,0.862,0.81,0.852,0.843,0.838],"semillas_bce_prueba":[0.469,0.51,0.459,0.473,0.531,0.473,0.532,0.483,0.487,0.515]},"terminal":{"pytest":["..........                                                               [100%]","10 passed in 7.00s"],"todo":["[1-2] datos: 171 filas, 30 departamentos, 9 predictoras","[3-4] origen móvil 2023-2025 (n=87): AUC 0.956, log-loss 0.304 (persistencia 0.363; persistencia calibrada 0.328; base U2 0.407; base U2 ensamble 0.376); calibración: ninguna","[5] prueba 2026 (n=29): AUC 0.900, log-loss 0.380 (persistencia 0.429; persistencia calibrada 0.351; base U2 ensamble 0.470)","[6] artefacto: perfil_amenaza_u3.keras (152 KB, 10 redes)","[7] proyección 2027: {'C consolidado': 11, 'Transición': 11, 'D consolidado': 11} | PSI > 0,25: 1; PSI por encima del ruido de muestreo (p95): 1","[8] tarjeta del modelo escrita. Tiempo total: 63 s"],"predecir":["      departamento  P(C) 2027 Categoría 2027                                                                 Énfasis sugerido","          Guaviare       0.99  C consolidado ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI","            Nariño       0.93  C consolidado                                    ISR, detección temprana y movilidad protegida","             Cauca       0.92  C consolidado ISR, detección temprana y movilidad protegida + evaluar C-UAS / detección de AEI","           Caquetá       0.92  C consolidado                                    ISR, detección temprana y movilidad protegida","          Putumayo       0.89  C consolidado                                    ISR, detección temprana y movilidad protegida","         Antioquia       0.88  C consolidado                                    ISR, detección temprana y movilidad protegida","          Amazonas       0.88  C consolidado                                    ISR, detección temprana y movilidad protegida","Norte de Santander       0.86  C consolidado                                    ISR, detección temprana y movilidad protegida","            Vaupés       0.84  C consolidado                                    ISR, detección temprana y movilidad protegida","           Vichada       0.79  C consolidado                                    ISR, detección temprana y movilidad protegida","             Cesar       0.71  C consolidado                                    ISR, detección temprana y movilidad protegida"]},"pareadas":[{"conj":"origen móvil 2023-2025","comp":"Después vs. persistencia","n":87,"dll":-0.0589,"ic":[-0.142,0.028],"pm":0.916,"solo_a":2,"solo_b":7,"p_mc":0.18},{"conj":"origen móvil 2023-2025","comp":"Después vs. persistencia calibrada","n":87,"dll":-0.0236,"ic":[-0.096,0.052],"pm":0.736,"solo_a":2,"solo_b":6,"p_mc":0.289},{"conj":"origen móvil 2023-2025","comp":"Después vs. antes (U2, semilla 42)","n":87,"dll":-0.1031,"ic":[-0.185,-0.033],"pm":1.0,"solo_a":3,"solo_b":1,"p_mc":0.625},{"conj":"origen móvil 2023-2025","comp":"Después vs. antes (U2, ensamble 10)","n":87,"dll":-0.0715,"ic":[-0.114,-0.033],"pm":1.0,"solo_a":3,"solo_b":1,"p_mc":0.625},{"conj":"origen móvil 2023-2025","comp":"Después vs. logística","n":87,"dll":-0.0019,"ic":[-0.06,0.045],"pm":0.515,"solo_a":1,"solo_b":3,"p_mc":0.625},{"conj":"prueba 2026","comp":"Después vs. persistencia","n":29,"dll":-0.0493,"ic":[-0.162,0.092],"pm":0.787,"solo_a":0,"solo_b":1,"p_mc":1.0},{"conj":"prueba 2026","comp":"Después vs. persistencia calibrada","n":29,"dll":0.0286,"ic":[-0.055,0.125],"pm":0.272,"solo_a":0,"solo_b":1,"p_mc":1.0},{"conj":"prueba 2026","comp":"Después vs. antes (U2, semilla 42)","n":29,"dll":-0.1445,"ic":[-0.27,-0.033],"pm":0.997,"solo_a":3,"solo_b":1,"p_mc":0.625},{"conj":"prueba 2026","comp":"Después vs. antes (U2, ensamble 10)","n":29,"dll":-0.0896,"ic":[-0.162,-0.024],"pm":0.999,"solo_a":3,"solo_b":1,"p_mc":0.625},{"conj":"prueba 2026","comp":"Después vs. logística","n":29,"dll":-0.0025,"ic":[-0.09,0.1],"pm":0.556,"solo_a":2,"solo_b":0,"p_mc":0.5},{"conj":"espacio-temporal","comp":"Después vs. persistencia","n":87,"dll":-0.0022,"ic":[-0.114,0.13],"pm":0.534,"solo_a":3,"solo_b":9,"p_mc":0.146},{"conj":"espacio-temporal","comp":"Después vs. persistencia calibrada","n":87,"dll":0.0288,"ic":[-0.075,0.154],"pm":0.329,"solo_a":3,"solo_b":8,"p_mc":0.227},{"conj":"espacio-temporal","comp":"Después vs. antes (ensamble 10)","n":87,"dll":-0.1154,"ic":[-0.186,-0.052],"pm":1.0,"solo_a":7,"solo_b":2,"p_mc":0.18},{"conj":"espacio-temporal","comp":"Después vs. logística","n":87,"dll":-0.0552,"ic":[-0.236,0.067],"pm":0.769,"solo_a":2,"solo_b":3,"p_mc":1.0}],"trans13":{"MLP U3":[2,13],"Persistencia":[0,13],"Persistencia calibrada":[1,13],"MLP base U2":[3,13],"MLP base U2 (ensamble 10)":[4,13]},"resumen27":{"C consolidado":11,"Transición":11,"D consolidado":11},"panel":{"filas":171,"repite":0.865},"modelo":{"variables":["x1_eventos","x2_fatalidades","x2b_letalidad","x4_coca","x5_bosque","x6_distancia","x7_ipm","m1_sC_t1","d1_sC_H2"]}};</script>
+<script>
+/* =====================================================================================================================
+   Motor de diapositivas (sin dependencias). Teclas: → / Espacio avanzar · ← retroceder · O vista general · F pantalla
+   completa · T tema claro/oscuro · C cronómetro · S ocultar orador y pie · H ayuda · número + Enter ir a diapositiva.
+   Cada <section class="slide"> declara data-titulo, data-orador ("laura" | "juan" | "ambos") y data-seg (segundos meta).
+   Al entrar a una diapositiva se emite el evento "diapositiva" en document con { detail: { slide, indice } }.
+   ===================================================================================================================== */
+(function () {
+  "use strict";
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const ORADORES = {
+    laura: { nombre: "Laura Díaz", color: "var(--laura)" },
+    juan: { nombre: "Juan Diego Saldarriaga", color: "var(--juan)" },
+    ambos: { nombre: "Laura y Juan Diego", color: "linear-gradient(90deg, var(--laura) 50%, var(--juan) 50%)" },
+  };
+  const guardar = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* almacenamiento no disponible */ } };
+  const leer = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+
+  const escenario = $("#escenario");
+  const slides = $$(".slide", escenario);
+  let actual = 0, inicioCrono = null, buffer = "", tBuffer = null;
+
+  // ------------------------------------------------------------------------------------------ HUD
+  escenario.insertAdjacentHTML("beforeend", `
+    <div id="orador"><i></i><span></span></div>
+    <div id="cronometro"><span>⏱ <b id="cr-t">00:00</b></span><span>meta <b id="cr-m">00:00</b></span><span id="cr-d"></span></div>
+    <div id="hud-pie"><span class="marca"><i></i>${escenario.dataset.marca || "Perfil de amenaza tecnológica"}</span>
+      <span class="der"><span id="hud-n"></span><button id="b-ant" title="Anterior (←)">‹</button><button id="b-sig" title="Siguiente (→)">›</button>
+      <button id="b-vista" title="Vista general (O)">▦</button></span></div>
+    <div id="progreso"></div>
+    <div id="vista-general"><h2>Vista general</h2><div class="rejilla"></div></div>
+    <div id="ayuda"><h2>Atajos</h2><table>
+      <tr><td><kbd>→</kbd> <kbd>Espacio</kbd></td><td>Avanzar (muestra el siguiente paso o la siguiente diapositiva)</td></tr>
+      <tr><td><kbd>←</kbd></td><td>Retroceder</td></tr>
+      <tr><td><kbd>O</kbd> / <kbd>Esc</kbd></td><td>Vista general de todas las diapositivas</td></tr>
+      <tr><td><kbd>F</kbd></td><td>Pantalla completa (recomendado para grabar el video)</td></tr>
+      <tr><td><kbd>C</kbd></td><td>Cronómetro de ensayo con la meta de tiempo de cada diapositiva · <kbd>R</kbd> reinicia</td></tr>
+      <tr><td><kbd>S</kbd></td><td>Ocultar o mostrar el orador y el pie</td></tr>
+      <tr><td><kbd>T</kbd></td><td>Tema claro (para proyectores con poco contraste) u oscuro</td></tr>
+      <tr><td><kbd>3</kbd><kbd>Enter</kbd></td><td>Ir a la diapositiva 3</td></tr>
+      <tr><td><kbd>H</kbd></td><td>Esta ayuda</td></tr></table></div>
+    <div id="pista">→ avanzar · O vista general · H ayuda</div>`);
+  document.body.insertAdjacentHTML("beforeend", `<div id="tooltip"></div>`);
+  setTimeout(() => { const p = $("#pista"); if (p) p.style.opacity = 0; }, 4500);
+
+  // metas de tiempo acumuladas
+  const metas = []; let acum = 0;
+  slides.forEach((s) => { acum += +(s.dataset.seg || 60); metas.push(acum); });
+  const fmt = (seg) => `${String(Math.floor(seg / 60)).padStart(2, "0")}:${String(Math.floor(seg % 60)).padStart(2, "0")}`;
+
+  // vista general
+  const rej = $("#vista-general .rejilla");
+  slides.forEach((s, i) => {
+    const o = ORADORES[s.dataset.orador] || ORADORES.ambos;
+    const b = document.createElement("button");
+    b.innerHTML = `<span class="n"><i style="background:${o.color}"></i>${String(i + 1).padStart(2, "0")} · ${fmt(+(s.dataset.seg || 60))}</span>${s.dataset.titulo || ""}`;
+    b.addEventListener("click", () => { cerrarCapas(); ir(i); });
+    rej.appendChild(b);
+  });
+
+  // ------------------------------------------------------------------------------------------ escala
+  function escalar() {
+    const k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    escenario.style.transform = `translate(-50%, -50%) scale(${k})`;
+    escenario.dataset.escala = k;
+  }
+  window.addEventListener("resize", escalar); escalar();
+
+  // ------------------------------------------------------------------------------------------ pasos (fragmentos)
+  const pasos = (s) => $$(".paso", s).sort((a, b) => (+a.dataset.paso || 0) - (+b.dataset.paso || 0));
+  function mostrarPasos(s, todos) { pasos(s).forEach((p) => p.classList.toggle("visible", !!todos)); }
+
+  function ir(i, conPasos = false) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[actual].classList.remove("activa");
+    actual = i;
+    const s = slides[actual];
+    $$(".anim", s).forEach((el, k) => el.style.setProperty("--i", el.dataset.i || k));
+    mostrarPasos(s, conPasos);
+    s.classList.add("activa");
+    const o = ORADORES[s.dataset.orador] || ORADORES.ambos;
+    $("#orador i").style.background = o.color; $("#orador span").textContent = o.nombre;
+    $("#hud-n").textContent = `${String(actual + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+    $("#progreso").style.width = `${((actual + 1) / slides.length) * 100}%`;
+    $$("#vista-general button").forEach((b, k) => b.classList.toggle("actual", k === actual));
+    if (history.replaceState) history.replaceState(null, "", `#${actual + 1}`);
+    document.dispatchEvent(new CustomEvent("diapositiva", { detail: { slide: s, indice: actual } }));
+  }
+  function avanzar() {
+    const oc = pasos(slides[actual]).find((p) => !p.classList.contains("visible"));
+    if (oc) { oc.classList.add("visible"); document.dispatchEvent(new CustomEvent("paso", { detail: { slide: slides[actual], paso: oc } })); }
+    else if (actual < slides.length - 1) ir(actual + 1);
+  }
+  function retroceder() {
+    const vis = pasos(slides[actual]).filter((p) => p.classList.contains("visible"));
+    if (vis.length) vis[vis.length - 1].classList.remove("visible");
+    else if (actual > 0) ir(actual - 1, true);
+  }
+  window.Presentacion = { ir, avanzar, retroceder, get actual() { return actual; } };
+
+  // ------------------------------------------------------------------------------------------ capas y utilidades
+  const capa = (id) => $("#" + id);
+  function cerrarCapas() { ["vista-general", "ayuda"].forEach((id) => capa(id).classList.remove("visible")); }
+  function alternar(id) { const v = capa(id).classList.contains("visible"); cerrarCapas(); if (!v) capa(id).classList.add("visible"); }
+  function tema(t) { document.documentElement.dataset.theme = t; guardar("pa-tema", t); document.dispatchEvent(new CustomEvent("tema")); }
+  function pantallaCompleta() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+    else document.exitFullscreen && document.exitFullscreen();
+  }
+  const t0 = leer("pa-tema"); if (t0 === "claro") tema("claro");
+
+  setInterval(() => {
+    if (!inicioCrono) return;
+    const t = (Date.now() - inicioCrono) / 1000, m = metas[actual];
+    $("#cr-t").textContent = fmt(t); $("#cr-m").textContent = fmt(m);
+    const d = m - t, el = $("#cr-d");
+    el.textContent = (d >= 0 ? "−" : "+") + fmt(Math.abs(d)); el.className = d >= 0 ? "adelantado" : "atrasado";
+  }, 250);
+
+  // ------------------------------------------------------------------------------------------ eventos
+  $("#b-sig").addEventListener("click", avanzar);
+  $("#b-ant").addEventListener("click", retroceder);
+  $("#b-vista").addEventListener("click", () => alternar("vista-general"));
+  document.addEventListener("keydown", (e) => {
+    const t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA") && e.key !== "Escape") return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = e.key;
+    if (/^[0-9]$/.test(k)) { buffer += k; clearTimeout(tBuffer); tBuffer = setTimeout(() => (buffer = ""), 1600); return; }
+    if (k === "Enter" && buffer) { ir(+buffer - 1); buffer = ""; e.preventDefault(); return; }
+    switch (k) {
+      case "ArrowRight": case "PageDown": case " ": case "Enter": e.preventDefault(); cerrarCapas(); avanzar(); break;
+      case "ArrowLeft": case "PageUp": case "Backspace": e.preventDefault(); cerrarCapas(); retroceder(); break;
+      case "Home": ir(0); break;
+      case "End": ir(slides.length - 1); break;
+      case "o": case "O": alternar("vista-general"); break;
+      case "Escape": capa("vista-general").classList.contains("visible") || capa("ayuda").classList.contains("visible") ? cerrarCapas() : alternar("vista-general"); break;
+      case "h": case "H": case "?": alternar("ayuda"); break;
+      case "f": case "F": pantallaCompleta(); break;
+      case "t": case "T": tema(document.documentElement.dataset.theme === "claro" ? "oscuro" : "claro"); break;
+      case "s": case "S": $("#orador").classList.toggle("oculto"); $("#hud-pie").classList.toggle("oculto"); break;
+      case "c": case "C": $("#cronometro").classList.toggle("visible"); if (!inicioCrono) inicioCrono = Date.now(); break;
+      case "r": case "R": inicioCrono = Date.now(); break;
+    }
+  });
+  let x0 = null;
+  escenario.addEventListener("touchstart", (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+  escenario.addEventListener("touchend", (e) => {
+    if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 60) (dx < 0 ? avanzar : retroceder)();
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const h = parseInt((location.hash || "").replace("#", ""), 10);
+    ir(Number.isFinite(h) ? h - 1 : 0);
+  });
+})();
+
+/* =====================================================================================================================
+   Componentes interactivos de las presentaciones. Todas las cifras salen de window.DATOS (lo incrusta
+   construir_presentaciones.py a partir de salidas_u3/, referencias_u2/ y el export de ACLED).
+   Cada componente se declara en el HTML con una clase (g-mapa, g-heatmap, ...) y se anima al entrar a su diapositiva.
+   ===================================================================================================================== */
+(function () {
+  "use strict";
+  const D = window.DATOS;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const NS = "http://www.w3.org/2000/svg";
+  const MENOS = "−";
+
+  // ------------------------------------------------------------------------------------------ formato (coma decimal)
+  const f = (x, n = 3) => (x === null || x === undefined || Number.isNaN(x)) ? "–"
+    : (x < 0 ? MENOS : "") + Math.abs(x).toFixed(n).replace(".", ",");
+  const fs = (x, n = 3) => (x > 0 ? "+" : "") + f(x, n);
+  const miles = (x) => Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  const pct = (x, n = 0) => f(x * 100, n) + " %";
+  const ic = (a) => a ? `[${f(a[0])}; ${f(a[1])}]` : "–";
+  const FORMATOS = { "0": (x) => f(x, 0), "1": (x) => f(x, 1), "2": (x) => f(x, 2), "3": (x) => f(x, 3),
+    s3: (x) => fs(x, 3), s2: (x) => fs(x, 2), pct0: (x) => pct(x, 0), pct1: (x) => pct(x, 1), miles, ic, txt: (x) => x };
+
+  function resolver(ruta) {
+    let o = D;
+    for (const parte of ruta.split("|")) {
+      if (o === undefined || o === null) return undefined;
+      if (Array.isArray(o) && /^[a-z_]+=/.test(parte)) {
+        const conds = parte.split("&").map((c) => c.split("="));
+        o = o.find((e) => e && conds.every(([k, v]) => String(e[k]) === v));
+      } else if (Array.isArray(o) && !/^\d+$/.test(parte)) {
+        o = o.find((e) => e && ["modelo", "nombre", "paso", "var", "id", "conj", "comp"].some((k) => e[k] === parte));
+      } else o = o[parte];
+    }
+    return o;
+  }
+  function rellenar(raiz = document) {
+    $$("[data-v]", raiz).forEach((el) => {
+      const v = resolver(el.dataset.v);
+      if (v === undefined) { el.textContent = "¿?"; el.style.color = "red"; console.warn("dato no encontrado", el.dataset.v); return; }
+      el.textContent = (FORMATOS[el.dataset.f || "3"] || FORMATOS["3"])(v);
+    });
+  }
+
+  // ------------------------------------------------------------------------------------------ utilidades
+  function el(tag, attrs = {}, padre) {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (k === "texto") e.textContent = v; else if (k === "estilo") e.setAttribute("style", v); else e.setAttribute(k, v);
+    }
+    if (padre) padre.appendChild(e);
+    return e;
+  }
+  const svg = (w, h, padre, clase = "") => el("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, class: clase }, padre);
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  function mezclar(a, b, t) {
+    const h = (c) => [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16));
+    const [x, y] = [h(a), h(b)];
+    return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, "0")).join("");
+  }
+  const tip = $("#tooltip");
+  function mostrarTip(e, html) {
+    tip.innerHTML = html; tip.classList.add("visible");
+    const r = tip.getBoundingClientRect();
+    let x = e.clientX + 16, y = e.clientY + 16;
+    if (x + r.width > innerWidth - 8) x = e.clientX - r.width - 16;
+    if (y + r.height > innerHeight - 8) y = e.clientY - r.height - 16;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  }
+  const ocultarTip = () => tip.classList.remove("visible");
+  const filaTip = (a, b) => `<div class="t-fila"><span>${a}</span><span>${b}</span></div>`;
+
+  const alEntrar = [];
+  function enDiapositiva(nodo, fn) { alEntrar.push({ slide: nodo.closest(".slide"), fn }); }
+  document.addEventListener("diapositiva", (e) => alEntrar.filter((a) => a.slide === e.detail.slide).forEach((a) => a.fn()));
+  const alTema = [];
+  document.addEventListener("tema", () => alTema.forEach((fn) => fn()));
+
+  const COL_PERFIL = { A: "var(--A)", B: "var(--B)", C: "var(--C)", D: "var(--D)" };
+  const NOMBRE_PERFIL = { A: "A · explosivos", B: "B · drones", C: "C · convencional", D: "D · mixto" };
+
+  // ------------------------------------------------------------------------------------------ mapa de Colombia
+  function mapa(cont) {
+    const M = D.mapa, [, , W, H] = M.viewBox.split(" ").map(Number);
+    const alto = +(cont.dataset.alto || 760), ancho = Math.round(alto * W / H);
+    let modo = cont.dataset.modo || "2027", anio = 2026, sel = cont.dataset.sel || null;
+    const etiquetas = (cont.dataset.etiquetas || "").split(",").filter(Boolean);
+    cont.style.display = "flex"; cont.style.gap = "30px"; cont.style.alignItems = "stretch";
+    const izq = document.createElement("div"); izq.style.cssText = "display:flex;flex-direction:column;gap:14px;flex:none";
+    cont.appendChild(izq);
+    if (cont.dataset.controles) {
+      const bot = document.createElement("div"); bot.className = "botonera";
+      bot.innerHTML = `<button data-m="2027">Proyección 2027</button><button data-m="2026">Perfil observado 2026</button><button data-m="anio">Histórico</button>`;
+      izq.appendChild(bot);
+      const anios = document.createElement("div"); anios.className = "botonera"; anios.style.display = "none";
+      anios.innerHTML = [2021, 2022, 2023, 2024, 2025, 2026].map((a) => `<button data-a="${a}">${a}</button>`).join("");
+      izq.appendChild(anios);
+      bot.addEventListener("click", (e) => { const m = e.target.dataset.m; if (!m) return; modo = m; pintar(); });
+      anios.addEventListener("click", (e) => { const a = e.target.dataset.a; if (!a) return; anio = +a; pintar(); });
+      cont._bot = bot; cont._anios = anios;
+    }
+    const s = svg(ancho, alto, izq, "mapa-svg"); s.setAttribute("viewBox", M.viewBox);
+    const defs = el("defs", {}, s);
+    const pat = el("pattern", { id: "rayado-" + (cont.id || Math.random().toString(36).slice(2)), width: 9, height: 9, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
+    el("rect", { width: 9, height: 9, estilo: "fill: var(--panel2)" }, pat);
+    el("rect", { width: 4.5, height: 9, estilo: "fill: var(--C); opacity:.85" }, pat);
+    const idRayado = pat.getAttribute("id");
+    const ins = M.inset; el("rect", { x: ins.x, y: ins.y, width: ins.w, height: ins.h, rx: 8, estilo: "fill:none;stroke:var(--linea2);stroke-dasharray:4 5" }, s);
+    el("text", { x: ins.x + 8, y: ins.y + ins.h + 18, "font-size": 15, class: "mono", texto: "San Andrés" }, s);
+    const capaD = el("g", {}, s), capaA = el("g", {}, s), capaT = el("g", {}, s);
+    const paths = {};
+    for (const [k, g] of Object.entries(M.deptos)) {
+      const p = el("path", { d: g.d, class: "dpto" }, capaD); paths[k] = p;
+      p.addEventListener("mousemove", (e) => mostrarTip(e, tipDepto(k)));
+      p.addEventListener("mouseleave", ocultarTip);
+      p.addEventListener("click", () => { sel = k; pintar(); });
+    }
+    for (const [k, d] of Object.entries(D.deptos)) {
+      if (!d.alerta) continue;
+      const g = M.deptos[k];
+      el("circle", { cx: g.cx, cy: g.cy, r: 16, class: "pulso", estilo: "fill:none;stroke:var(--A);stroke-width:4" }, capaA);
+      el("circle", { cx: g.cx, cy: g.cy, r: 8, estilo: "fill:var(--A);stroke:var(--bg);stroke-width:2" }, capaA);
+    }
+    const leyenda = document.createElement("div"); leyenda.className = "leyenda"; if (cont.dataset.leyenda !== "0") izq.appendChild(leyenda);
+    let det = null;
+    if (cont.dataset.detalle) { det = document.createElement("div"); det.className = "tarjeta"; det.style.cssText = "flex:1;min-width:0;display:flex;flex-direction:column;gap:16px"; cont.appendChild(det); }
+
+    function fila(k) { return (D.deptos[k].hist || []).find((h) => h[0] === anio); }
+    function relleno(k) {
+      const d = D.deptos[k];
+      if (modo === "2027") return d.cat === "C consolidado" ? "var(--C)" : d.cat === "Transición" ? `url(#${idRayado})` : "var(--D)";
+      if (modo === "2026") return !d.conf26 ? "var(--panel2)" : d.perf26 === "C" ? "var(--C)" : "var(--D)";
+      const h = fila(k); return !h ? "var(--panel2)" : h[2] === "C" ? "var(--C)" : "var(--D)";
+    }
+    function tipDepto(k) {
+      const d = D.deptos[k];
+      let h = `<b>${d.n}</b>`;
+      if (modo === "2027") {
+        h += filaTip("P(C) 2027", f(d.p27, 2)) + filaTip("Categoría", d.cat) + filaTip("A+B 2025–26", pct(d.sab, 1));
+        if (d.alerta) h += `<div class="t-fila"><span style="color:var(--A)">⚠ alerta A/B</span><span>C-UAS · AEI</span></div>`;
+        if (!d.conf26) h += `<div class="t-fila"><span>* menos de 10 eventos en 2026</span><span></span></div>`;
+      } else if (modo === "2026") {
+        h += filaTip("Perfil 2026 (33 sem.)", d.conf26 ? d.perf26 : "sin etiqueta") + filaTip("s_C 2026", f(d.sc26, 2)) + filaTip("Eventos", miles(d.ev26));
+      } else {
+        const r = fila(k);
+        h += r ? filaTip("Año", r[0]) + filaTip("Perfil", r[2] + (r[3] ? " (transición)" : "")) + filaTip("s_C", f(r[1], 2)) +
+          filaTip("Eventos", miles(r[4])) + (r[5] !== null ? filaTip("P(C) del modelo", f(r[5], 2)) : "")
+          : filaTip(String(anio), "menos de 10 eventos");
+      }
+      return h;
+    }
+    function pintarDetalle() {
+      if (!det || !sel) return;
+      const d = D.deptos[sel];
+      const color = d.cat === "C consolidado" ? "var(--Cclaro)" : d.cat === "Transición" ? "var(--acento2)" : "var(--tinta2)";
+      det.innerHTML = `<div class="fuente">Departamento seleccionado</div>
+        <h3 style="font-size:46px;margin:0">${d.n}</h3>
+        <div class="stat"><span class="valor" style="color:${color}">${f(d.p27, 2)}</span><span class="etq">P(C) 2027 · <b style="color:${color}">${d.cat}</b></span></div>
+        <p class="chico">${d.enf}${d.conf26 ? "" : " · <i>pocos eventos en 2026: revisión experta</i>"}</p>
+        ${d.alerta ? `<div class="chip" style="border-color:var(--A);color:var(--A)">⚠ Alerta A/B · ${pct(d.sab, 1)} de eventos A+B en 2025–2026</div>` : ""}
+        <div class="fuente" style="margin-top:6px">Proporción de eventos C (s_C) y P(C) del modelo por año</div><div class="spark"></div>`;
+      chispa($(".spark", det), d.hist);
+    }
+    function pintar() {
+      for (const [k, p] of Object.entries(paths)) {
+        p.style.fill = relleno(k);
+        p.classList.toggle("sel", k === sel);
+        const h = modo === "anio" ? fila(k) : null;
+        p.style.strokeDasharray = (modo === "2027" && !D.deptos[k].conf26) ? "5 4" : "";
+        p.style.stroke = h && h[3] ? "var(--tinta)" : ""; p.style.strokeWidth = h && h[3] ? "3" : "";
+      }
+      capaA.style.display = modo === "2027" ? "" : "none";
+      capaT.innerHTML = "";
+      etiquetas.forEach((k) => {
+        const g = M.deptos[k]; if (!g) return;
+        const t = el("text", { x: g.cx, y: g.cy - 22, "text-anchor": "middle", "font-size": 22, estilo: "fill:var(--tinta);font-weight:600;paint-order:stroke;stroke:var(--bg);stroke-width:5px" }, capaT);
+        t.textContent = D.deptos[k].n + (modo === "2027" ? " " + f(D.deptos[k].p27, 2) : "");
+      });
+      if (cont._bot) {
+        $$("button", cont._bot).forEach((b) => b.classList.toggle("activo", b.dataset.m === modo));
+        cont._anios.style.display = modo === "anio" ? "flex" : "none";
+        $$("button", cont._anios).forEach((b) => b.classList.toggle("activo", +b.dataset.a === anio));
+      }
+      const cuenta = (c) => Object.values(D.deptos).filter((d) => d.cat === c).length;
+      leyenda.innerHTML = modo === "2027"
+        ? `<span><i style="background:var(--C)"></i>C consolidado (${cuenta("C consolidado")})</span>
+           <span><i style="background:repeating-linear-gradient(45deg,var(--C) 0 4px,var(--panel2) 4px 8px)"></i>Transición (${cuenta("Transición")})</span>
+           <span><i style="background:var(--D)"></i>D consolidado (${cuenta("D consolidado")})</span>
+           <span><i style="background:var(--A);border-radius:50%;width:16px"></i>Alerta A/B</span>`
+        : `<span><i style="background:var(--C)"></i>C · convencional</span><span><i style="background:var(--D)"></i>D · mixto</span>
+           <span><i style="background:var(--panel2);border:1px solid var(--linea2)"></i>sin etiqueta (&lt; 10 eventos)</span>
+           ${modo === "anio" ? `<span><i style="border:3px solid var(--tinta)"></i>transición</span>` : ""}`;
+      pintarDetalle();
+    }
+    pintar();
+    cont._pintar = pintar;
+  }
+
+  // mini gráfico por departamento (s_C observado y P(C) predicha)
+  function chispa(cont, hist) {
+    const W = 560, H = 210, m = { l: 46, r: 14, t: 14, b: 34 };
+    const s = svg(W, H, cont); s.style.width = "100%"; s.style.height = "auto";
+    const x = (a) => m.l + (a - 2021) / 5 * (W - m.l - m.r), y = (v) => m.t + (1 - v) * (H - m.t - m.b);
+    const ej = el("g", { class: "eje" }, s);
+    [0, 0.5, 1].forEach((v) => { el("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), estilo: v === .5 ? "stroke:var(--acento);stroke-dasharray:5 5" : "" }, ej);
+      el("text", { x: m.l - 8, y: y(v) + 5, "text-anchor": "end", "font-size": 15, texto: f(v, 1) }, ej); });
+    [2021, 2022, 2023, 2024, 2025, 2026].forEach((a) => el("text", { x: x(a), y: H - 8, "text-anchor": "middle", "font-size": 15, texto: a }, ej));
+    const pts = hist.filter((h) => h[1] !== null);
+    if (pts.length > 1) el("path", { d: "M" + pts.map((h) => `${x(h[0])},${y(h[1])}`).join("L"), estilo: "fill:none;stroke:var(--Cclaro);stroke-width:3" }, s);
+    pts.forEach((h) => el("circle", { cx: x(h[0]), cy: y(h[1]), r: 6, estilo: `fill:${h[2] === "C" ? "var(--C)" : "var(--D)"};stroke:var(--bg);stroke-width:2` }, s));
+    hist.filter((h) => h[5] !== null).forEach((h) => el("rect", { x: x(h[0]) - 6, y: y(h[5]) - 6, width: 12, height: 12, transform: `rotate(45 ${x(h[0])} ${y(h[5])})`, estilo: "fill:none;stroke:var(--u3claro);stroke-width:3" }, s));
+    const ley = document.createElement("div"); ley.className = "leyenda"; ley.style.fontSize = "17px";
+    ley.innerHTML = `<span><i style="background:var(--Cclaro);height:4px"></i>s_C observado</span><span><i style="border:3px solid var(--u3claro);width:14px;height:14px;transform:rotate(45deg)"></i>P(C) del modelo (fuera de muestra)</span><span><i style="background:var(--acento);height:3px"></i>umbral 0,5</span>`;
+    cont.appendChild(ley);
+  }
+
+  // ------------------------------------------------------------------------------------------ mapa de calor depto × año
+  function heatmap(cont) {
+    const anios = [2021, 2022, 2023, 2024, 2025, 2026];
+    const filas = Object.entries(D.deptos).filter(([, d]) => d.hist.length)
+      .map(([k, d]) => ({ k, n: d.n, h: d.hist, m: d.hist.reduce((a, h) => a + h[1], 0) / d.hist.length }))
+      .sort((a, b) => b.m - a.m);
+    const W = +(cont.dataset.ancho || 900), H = +(cont.dataset.alto || 820), L = 250, T = 40, B = 70;
+    const cw = (W - L - 10) / anios.length, ch = (H - T - B) / filas.length;
+    function dibujar() {
+      cont.innerHTML = "";
+      const s = svg(W, H, cont);
+      const c0 = css("--panel2"), c1 = css("--Cclaro"), cD = css("--D");
+      anios.forEach((a, j) => el("text", { x: L + j * cw + cw / 2, y: 26, "text-anchor": "middle", "font-size": 19, class: "mono", texto: a + (a === 2026 ? "*" : "") }, s));
+      filas.forEach((r, i) => {
+        el("text", { x: L - 12, y: T + i * ch + ch / 2 + 6, "text-anchor": "end", "font-size": Math.min(17, ch * .7), texto: r.n }, s);
+        anios.forEach((a, j) => {
+          const h = r.h.find((x) => x[0] === a);
+          const rc = el("rect", { x: L + j * cw + 1.5, y: T + i * ch + 1.5, width: cw - 3, height: ch - 3, rx: 3, class: "celda" }, s);
+          if (!h) { rc.setAttribute("style", `fill:none;stroke:${css("--linea")};stroke-dasharray:2 3`); return; }
+          rc.setAttribute("style", `fill:${h[1] >= .5 ? mezclar(c0, c1, .35 + .65 * (h[1] - .5) / .5) : mezclar(c0, cD, .25 + .55 * (.5 - h[1]) / .5)};${h[3] ? `stroke:${css("--tinta")};stroke-width:2.5` : ""}`);
+          rc.addEventListener("mousemove", (e) => mostrarTip(e, `<b>${r.n} · ${a}</b>` + filaTip("s_C", f(h[1], 2)) + filaTip("Perfil", h[2] === "C" ? "C · convencional" : "D · mixto") +
+            filaTip("Eventos", miles(h[4])) + (h[3] ? filaTip("Cambio de perfil", "sí") : "") + (h[5] !== null ? filaTip("P(C) del modelo", f(h[5], 2)) : "")));
+          rc.addEventListener("mouseleave", ocultarTip);
+        });
+      });
+      // leyenda: divergente alrededor del umbral 0,5
+      const lg = el("g", {}, s), lx = L, ly = H - 40, lw = W - L - 40;
+      const grad = el("linearGradient", { id: "hm-grad" }, el("defs", {}, s));
+      [[0, mezclar(c0, cD, .8)], [.5, c0], [1, c1]].forEach(([o, c]) => el("stop", { offset: o, "stop-color": c }, grad));
+      el("rect", { x: lx, y: ly, width: lw, height: 14, rx: 4, fill: "url(#hm-grad)" }, lg);
+      [[0, "s_C = 0 (D)"], [.5, "0,5 umbral"], [1, "1 (C)"]].forEach(([v, t]) => el("text", { x: lx + v * lw, y: ly + 36, "text-anchor": v === 0 ? "start" : v === 1 ? "end" : "middle", "font-size": 16, class: "mono", texto: t }, lg));
+      el("rect", { x: lx - 150, y: ly - 2, width: 18, height: 18, rx: 3, estilo: `fill:none;stroke:${css("--tinta")};stroke-width:2.5` }, lg);
+      el("text", { x: lx - 124, y: ly + 13, "font-size": 16, class: "mono", texto: "transición" }, lg);
+    }
+    dibujar(); alTema.push(dibujar);
+  }
+
+  // ------------------------------------------------------------------------------------------ composición nacional ACLED
+  function composicion(cont) {
+    const A = D.acled, W = +(cont.dataset.ancho || 900), H = +(cont.dataset.alto || 560), m = { l: 20, r: 20, t: 46, b: 50 };
+    const s = svg(W, H, cont), n = A.anios.length, bw = (W - m.l - m.r) / n * .72, paso = (W - m.l - m.r) / n;
+    const orden = ["C", "D", "A", "B"];
+    A.anios.forEach((a, j) => {
+      const tot = orden.reduce((t, p) => t + A.por_anio[p][j], 0);
+      let y0 = H - m.b; const x = m.l + j * paso + (paso - bw) / 2;
+      orden.forEach((p) => {
+        const v = A.por_anio[p][j], h = v / tot * (H - m.t - m.b);
+        const r = el("rect", { x, y: y0 - h, width: bw, height: Math.max(h - 2, 0), rx: 3, estilo: `fill:${COL_PERFIL[p]}`, class: "crecer" }, s);
+        r.addEventListener("mousemove", (e) => mostrarTip(e, `<b>${NOMBRE_PERFIL[p]} · ${a}</b>` + filaTip("Eventos", miles(v)) + filaTip("Proporción", pct(v / tot, 1))));
+        r.addEventListener("mouseleave", ocultarTip);
+        if ((p === "C" || p === "D") && h > 40) el("text", { x: x + bw / 2, y: y0 - h / 2 + 8, "text-anchor": "middle", "font-size": 22, estilo: "fill:#111;font-weight:700", class: "mono", texto: pct(v / tot) }, s);
+        y0 -= h;
+      });
+      const ab = (A.por_anio.A[j] + A.por_anio.B[j]) / tot;
+      el("text", { x: x + bw / 2, y: m.t - 14, "text-anchor": "middle", "font-size": 18, class: "mono", estilo: "fill:var(--A)", texto: "A+B " + pct(ab) }, s);
+      el("text", { x: x + bw / 2, y: H - m.b + 32, "text-anchor": "middle", "font-size": 20, class: "mono", texto: a + (a === 2026 ? "*" : "") }, s);
+    });
+  }
+
+  // ------------------------------------------------------------------------------------------ barras HTML genéricas
+  function barrasHTML(cont, filas, { dom = [0, 1], fmt = (v) => f(v), clase = () => "", ref = null, bigote = null } = {}) {
+    cont.classList.add("barras"); cont.innerHTML = "";
+    const esc = (v) => Math.max(0, Math.min(1, (v - dom[0]) / (dom[1] - dom[0]))) * 100;
+    filas.forEach((r) => {
+      const b = document.createElement("div"); b.className = "barra " + clase(r);
+      b.innerHTML = `<span>${r.etq}</span><span class="riel"><span class="relleno"></span></span><span class="v">${fmt(r.v)}</span>`;
+      const rel = $(".relleno", b); rel.dataset.w = esc(r.v);
+      if (bigote && r.de) { const g = document.createElement("span"); g.className = "bigote"; g.style.left = esc(r.v - r.de) + "%"; g.style.width = (esc(r.v + r.de) - esc(r.v - r.de)) + "%"; $(".riel", b).appendChild(g); }
+      if (ref !== null) { const mk = document.createElement("span"); mk.className = "marca-ref"; mk.style.left = esc(typeof ref === "function" ? ref(r) : ref) + "%"; $(".riel", b).appendChild(mk); }
+      if (r.tip) { b.addEventListener("mousemove", (e) => mostrarTip(e, r.tip)); b.addEventListener("mouseleave", ocultarTip); }
+      cont.appendChild(b);
+    });
+    const animar = () => { $$(".relleno", cont).forEach((x) => (x.style.width = 0)); requestAnimationFrame(() => setTimeout(() => $$(".relleno", cont).forEach((x) => (x.style.width = x.dataset.w + "%")), 60)); };
+    if (!cont._anim) enDiapositiva(cont, () => cont._anim());
+    cont._anim = animar; animar();
+  }
+
+  function subtipos(cont) {
+    const max = D.acled.subtipos[0][1];
+    barrasHTML(cont, D.acled.subtipos.map(([s, v, p]) => ({ etq: s, v, p, tip: `<b>${s}</b>` + filaTip("Perfil", NOMBRE_PERFIL[p]) + filaTip("Eventos 2020–2026", miles(v)) })),
+      { dom: [0, max], fmt: miles, clase: (r) => "p" + r.p });
+    $$(".barra", cont).forEach((b, i) => { $(".relleno", b).style.background = COL_PERFIL[D.acled.subtipos[i][2]]; });
+  }
+
+  function importancia(cont) {
+    const max = Math.max(...D.importancia.map((r) => r[1] + r[2]));
+    barrasHTML(cont, D.importancia.map(([n, v, de]) => ({ etq: n, v, de, tip: `<b>${n}</b>` + filaTip("Δ log-loss al permutar", f(v, 3)) + filaTip("desv. est. entre pliegues", f(de, 3)) })),
+      { dom: [0, max], bigote: true, clase: (r) => /d₁|m₁/.test(r.etq) ? "u3" : "" });
+  }
+
+  function psi(cont) {
+    const NOM = { x1_eventos: "x₁ eventos", x2_fatalidades: "x₂ fatalidades", x2b_letalidad: "x₂b letalidad", x4_coca: "x₄ coca", x5_bosque: "x₅ bosque",
+      x6_distancia: "x₆ distancia", x7_ipm: "x₇ IPM", m1_sC_t1: "m₁ memoria", d1_sC_H2: "d₁ semestre" };
+    barrasHTML(cont, D.psi.map((r) => ({ etq: NOM[r.var] || r.var, v: r.psi, p95: r.p95, sup: r.supera,
+      tip: `<b>${NOM[r.var]}</b>` + filaTip("PSI 2026", f(r.psi, 2)) + filaTip("p95 sin deriva", f(r.p95, 2)) + filaTip("Estado", r.estado) })),
+      { dom: [0, .5], fmt: (v) => f(v, 2), ref: (r) => r.p95, clase: (r) => r.sup ? "alerta" : "" });
+    $$(".barra.alerta .relleno", cont).forEach((x) => (x.style.background = "var(--A)"));
+  }
+
+  // ------------------------------------------------------------------------------------------ escalera de mejora
+  function escalera(cont) {
+    const E = D.escalera, W = +(cont.dataset.ancho || 820), H = +(cont.dataset.alto || 520), m = { l: 96, r: 200, t: 40, b: 80 };
+    const pers = resolver("comparaciones|sel|Persistencia|ll"), cal = resolver("comparaciones|sel|Persistencia calibrada|ll");
+    const y0 = .26, y1 = .40, y = (v) => m.t + (1 - (v - y0) / (y1 - y0)) * (H - m.t - m.b);
+    const s = svg(W, H, cont), paso = (W - m.l - m.r) / E.length, bw = paso * .58;
+    const ej = el("g", { class: "eje" }, s);
+    [.26, .30, .34, .38].forEach((v) => { el("line", { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), estilo: "stroke:var(--linea);stroke-dasharray:2 6" }, ej);
+      el("text", { x: m.l - 10, y: y(v) + 6, "text-anchor": "end", "font-size": 18, texto: f(v, 2) }, ej); });
+    el("text", { x: 22, y: m.t + (H - m.t - m.b) / 2, "font-size": 18, transform: `rotate(-90 22 ${m.t + (H - m.t - m.b) / 2})`, "text-anchor": "middle", class: "mono", texto: "log-loss 2023–2025" }, ej);
+    E.forEach((r, i) => {
+      const x = m.l + i * paso + (paso - bw) / 2, yb = y(r.ll), base = y(y0);
+      const g = el("g", { class: "crecer-y" }, s);
+      el("rect", { x, y: yb, width: bw, height: base - yb, rx: 5, estilo: `fill:${i === 0 ? "var(--gris)" : "var(--u3)"}` }, g);
+      if (r.de > 0) { el("line", { x1: x + bw / 2, x2: x + bw / 2, y1: y(r.ll + r.de), y2: y(r.ll - r.de), estilo: "stroke:var(--tinta);stroke-width:2" }, g);
+        [r.ll + r.de, r.ll - r.de].forEach((v) => el("line", { x1: x + bw / 2 - 8, x2: x + bw / 2 + 8, y1: y(v), y2: y(v), estilo: "stroke:var(--tinta);stroke-width:2" }, g)); }
+      el("text", { x: x + bw / 2, y: y(r.ll + (r.de || 0)) - 12, "text-anchor": "middle", "font-size": 24, class: "mono", estilo: "fill:var(--tinta);font-weight:700", texto: f(r.ll) }, g);
+      const etq = r.paso.replace("+ ", "+ ").split(" ");
+      el("text", { x: x + bw / 2, y: H - m.b + 30, "text-anchor": "middle", "font-size": 18, texto: etq.slice(0, 2).join(" ") }, s);
+      el("text", { x: x + bw / 2, y: H - m.b + 54, "text-anchor": "middle", "font-size": 18, texto: etq.slice(2).join(" ") }, s);
+      g.addEventListener("mousemove", (e) => mostrarTip(e, `<b>${r.paso}</b>` + filaTip("log-loss media", f(r.ll)) + filaTip("desv. est. (5 semillas)", f(r.de)) + filaTip("AUC", f(r.auc)) + filaTip("transiciones acertadas (de 9)", f(r.trans, 1))));
+      g.addEventListener("mouseleave", ocultarTip);
+    });
+    [[pers, "persistencia", "var(--acento)"], [cal, "pers. calibrada*", "var(--violeta)"]].forEach(([v, t, c]) => {
+      el("line", { x1: m.l, x2: W - m.r + 6, y1: y(v), y2: y(v), estilo: `stroke:${c};stroke-width:2.5;stroke-dasharray:9 7` }, s);
+      el("text", { x: W - m.r + 12, y: y(v) - 4, "font-size": 18, class: "mono", estilo: `fill:${c}`, texto: t }, s);
+      el("text", { x: W - m.r + 12, y: y(v) + 18, "font-size": 18, class: "mono", estilo: `fill:${c};font-weight:700`, texto: f(v) }, s);
+    });
+    const animar = () => $$(".crecer-y", cont).forEach((g, i) => { g.style.transition = "none"; g.style.opacity = 0; g.style.transform = "translateY(30px)";
+      setTimeout(() => { g.style.transition = "all .7s cubic-bezier(.2,.8,.2,1)"; g.style.opacity = 1; g.style.transform = "none"; }, 150 + i * 260); });
+    enDiapositiva(cont, animar);
+  }
+
+  // ------------------------------------------------------------------------------------------ comparador antes / después / rivales
+  const ORDEN_MOD = ["Persistencia", "Persistencia calibrada", "Base U2 · semilla 42", "Base U2 · 1 red", "Base U2 · ensamble 10",
+    "Logística (9 variables)", "MLP U3 · 1 red", "MLP U3", "Embedding (no adoptado)"];
+  const CONJ = { sel: "Selección 2023–2025 · n = 87", t26: "Prueba 2026 · n = 29 · una sola vez", et: "Departamentos nuevos y años futuros · n = 87", esp: "Departamentos nuevos (5 grupos)" };
+  const MET = { ll: ["Log-loss", "menor es mejor", [0, .56]], auc: ["ROC-AUC", "mayor es mejor · eje desde 0,5", [.5, 1]], ece: ["ECE", "error de calibración · menor es mejor", [0, .25]],
+    exact: ["Exactitud", "umbral 0,5 · mayor es mejor", [.5, 1]] };
+  function comparador(cont) {
+    const conjuntos = (cont.dataset.conjuntos || "sel,t26,et").split(","), metricas = (cont.dataset.metricas || "ll,auc,ece").split(",");
+    let cj = conjuntos[0], mt = metricas[0];
+    cont.innerHTML = `<div class="botonera b-c" style="margin-bottom:12px">${conjuntos.map((c) => `<button data-c="${c}">${CONJ[c].split(" · ")[0]}</button>`).join("")}</div>
+      <div class="botonera b-m" style="margin-bottom:18px">${metricas.map((m) => `<button data-m="${m}">${MET[m][0]}</button>`).join("")}</div>
+      <div class="fuente f-c" style="margin-bottom:14px"></div><div class="cuerpo"></div><div class="fuente f-v" style="margin-top:16px;font-size:19px"></div>`;
+    $(".b-c", cont).addEventListener("click", (e) => { if (e.target.dataset.c) { cj = e.target.dataset.c; pintar(); } });
+    $(".b-m", cont).addEventListener("click", (e) => { if (e.target.dataset.m) { mt = e.target.dataset.m; pintar(); } });
+    function pintar() {
+      $$(".b-c button", cont).forEach((b) => b.classList.toggle("activo", b.dataset.c === cj));
+      $$(".b-m button", cont).forEach((b) => b.classList.toggle("activo", b.dataset.m === mt));
+      const filas = ORDEN_MOD.map((n) => D.comparaciones[cj].find((r) => r.modelo === n)).filter((r) => r && r[mt] !== null);
+      const [nom, sentido, dom] = MET[mt];
+      $(".f-c", cont).textContent = `${CONJ[cj]} · ${nom}: ${sentido}`;
+      $(".cuerpo", cont).classList.toggle("grandes", !!cont.dataset.grandes);
+      barrasHTML($(".cuerpo", cont), filas.map((r) => ({ etq: r.modelo, v: r[mt], m: r.modelo,
+        tip: `<b>${r.modelo}</b>` + filaTip("Log-loss", f(r.ll)) + filaTip("ROC-AUC", f(r.auc)) + filaTip("ECE", f(r.ece)) + filaTip("Exactitud", f(r.exact)) +
+          (r.ntrans ? filaTip("Transiciones acertadas", `${f(r.trans, 0)} de ${f(r.ntrans, 0)}`) : "") })),
+        { dom, clase: (r) => r.m === "MLP U3" ? "u3" : r.m === "Persistencia calibrada" ? "cal" : r.m.startsWith("Embedding") ? "emb" : "" });
+      const mejor = mt === "ll" || mt === "ece" ? Math.min(...filas.map((r) => r[mt])) : Math.max(...filas.map((r) => r[mt]));
+      const ganador = filas.find((r) => r[mt] === mejor);
+      const u3 = filas.find((r) => r.modelo === "MLP U3");
+      $(".f-v", cont).innerHTML = `Mejor en ${nom}: <b style="color:var(--tinta)">${ganador.modelo}</b> (${f(mejor)})` + (u3 && ganador !== u3 ? ` · MLP U3: ${f(u3[mt])}` : "");
+    }
+    pintar();
+  }
+
+  function trio(cont) {
+    const conj = [["sel", "Selección 2023–2025"], ["t26", "Prueba 2026"], ["et", "Departamentos nuevos"]];
+    const mods = [["Persistencia", "Persistencia"], ["Persistencia calibrada", "Pers. calibrada"], ["MLP U3", "MLP U3"]];
+    cont.style.cssText += ";display:grid;grid-template-columns:repeat(3,1fr);gap:34px";
+    conj.forEach(([k, t]) => {
+      const p = document.createElement("div"); p.innerHTML = `<div class="fuente" style="margin-bottom:12px;font-size:19px">${t} · log-loss</div><div></div>`;
+      cont.appendChild(p); const b = p.lastElementChild; b.classList.add("compacta");
+      barrasHTML(b, mods.map(([m, e]) => { const r = D.comparaciones[k].find((x) => x.modelo === m); return { etq: e, v: r.ll, m }; }),
+        { dom: [0, .5], clase: (r) => r.m === "MLP U3" ? "u3" : r.m === "Persistencia calibrada" ? "cal" : "" });
+    });
+  }
+
+  // ------------------------------------------------------------------------------------------ gráfico de bosque de las intervenciones
+  const ETQ_INT = { "I1 memoria m1": "I1 · memoria m₁", "I1 trayectoria m2, m3": "I1 · trayectoria m₂ m₃", "I2 semestre reciente d1": "I2 · semestre reciente d₁",
+    "I2 tendencias d2, d3": "I2 · tendencias d₂ d₃", "I3 actores armados x3": "I3 · actores armados (UCDP)", "I4 vecindad (temporal)": "I4 · vecindad (temporal)",
+    "I4 vecindad (espacial)": "I4 · vecindad (espacial)", "I5 objetivo blando (sin calibrar)": "I5 · objetivo blando", "I5 objetivo blando (ambos calibrados)": "I5 · objetivo blando, calibrado",
+    "I9 multitarea λ=0.5 (efecto en P(C))": "I9 · multitarea A/B/C/D λ 0,5", "I9 multitarea λ=1 (efecto en P(C))": "I9 · multitarea A/B/C/D λ 1",
+    "GRU trimestral": "GRU (4 trimestres)", "CNN 1D trimestral": "CNN 1D (4 trimestres)", "Embedding de departamento": "Embedding de departamento",
+    "MLP profundo (16, 8)": "MLP profundo 16-8", "Logística (mismas variables)": "Logística, mismas variables" };
+  function bosque(cont) {
+    const filas = D.decisiones.filter((r) => r.ic), W = +(cont.dataset.ancho || 1000), H = +(cont.dataset.alto || 700), m = { l: 360, r: 30, t: 40, b: 60 };
+    const x0 = -.08, x1 = .2, x = (v) => m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r), rh = (H - m.t - m.b) / filas.length;
+    const s = svg(W, H, cont);
+    el("rect", { x: x(x0), y: m.t - 10, width: x(0) - x(x0), height: H - m.t - m.b + 10, estilo: "fill:var(--u3);opacity:.08" }, s);
+    el("text", { x: x(x0) + 10, y: m.t - 16, "font-size": 18, class: "mono", estilo: "fill:var(--u3claro)", texto: "← mejora" }, s);
+    el("text", { x: W - m.r, y: m.t - 16, "font-size": 18, class: "mono", "text-anchor": "end", texto: "empeora →" }, s);
+    const ej = el("g", { class: "eje" }, s);
+    [-.05, 0, .05, .1, .15].forEach((v) => { el("line", { x1: x(v), x2: x(v), y1: m.t - 10, y2: H - m.b, estilo: v === 0 ? "stroke:var(--tinta2);stroke-width:2" : "stroke:var(--linea);stroke-dasharray:2 6" }, ej);
+      el("text", { x: x(v), y: H - m.b + 28, "text-anchor": "middle", "font-size": 17, texto: fs(v, 2) }, ej); });
+    el("text", { x: (m.l + W - m.r) / 2, y: H - 6, "text-anchor": "middle", "font-size": 17, class: "mono", texto: "Δ log-loss frente a su referencia · IC 95 % remuestreando departamentos" }, s);
+    filas.forEach((r, i) => {
+      const yc = m.t + i * rh + rh / 2, r8 = /regla 8/.test(r.decision);
+      const c = r.retiene ? "var(--u3claro)" : r8 ? "var(--violeta)" : "var(--gris2)";
+      const g = el("g", { class: "fila-bosque", estilo: "cursor:pointer" }, s);
+      el("rect", { x: 0, y: yc - rh / 2, width: W, height: rh, estilo: "fill:transparent" }, g);
+      el("text", { x: m.l - 16, y: yc + 6, "text-anchor": "end", "font-size": 19, estilo: `fill:${r.retiene || r8 ? "var(--tinta)" : "var(--tinta2)"};font-weight:${r.retiene ? 700 : 400}`, texto: ETQ_INT[r.nombre] || r.nombre }, g);
+      el("line", { x1: x(r.ic[0]), x2: x(Math.min(r.ic[1], x1)), y1: yc, y2: yc, estilo: `stroke:${c};stroke-width:4;stroke-linecap:round` }, g);
+      el("circle", { cx: x(r.dll), cy: yc, r: 8, estilo: `fill:${c};stroke:var(--bg);stroke-width:2` }, g);
+      g.addEventListener("mousemove", (e) => mostrarTip(e, `<b>${ETQ_INT[r.nombre] || r.nombre}</b>` + filaTip("Δ log-loss (5 semillas)", fs(r.dll)) + filaTip("EE entre semillas", f(r.ee, 4)) +
+        filaTip("IC 95 % por depto.", ic(r.ic)) + filaTip("Δ AUC", fs(r.dauc)) + `<div style="margin-top:6px">${r.decision}</div>`));
+      g.addEventListener("mouseleave", ocultarTip);
+    });
+    const animar = () => $$(".fila-bosque", cont).forEach((g, i) => { g.style.transition = "none"; g.style.opacity = 0;
+      setTimeout(() => { g.style.transition = "opacity .5s"; g.style.opacity = 1; }, 100 + i * 70); });
+    enDiapositiva(cont, animar);
+  }
+
+  // ------------------------------------------------------------------------------------------ red neuronal animada
+  function red(cont) {
+    const u3 = (cont.dataset.entradas || "9") === "9";
+    const ent = u3 ? ["d₁ semestre reciente", "m₁ memoria t−1", "x₇ IPM", "x₆ distancia", "x₅ bosque", "x₄ coca", "x₂b letalidad", "x₂ fatalidades", "x₁ eventos"]
+      : ["x₇ IPM", "x₆ distancia", "x₅ bosque", "x₄ coca", "x₂b letalidad", "x₂ fatalidades", "x₁ eventos"];
+    const nuevas = u3 ? 2 : 0, K = +(cont.dataset.ensamble || (u3 ? 10 : 1));
+    const W = +(cont.dataset.ancho || 900), H = +(cont.dataset.alto || 640), xe = 250, xo = 140 + (W - 140) * .52, xs = W - 150;
+    const ye = (i) => 40 + i * (H - 120) / (ent.length - 1), yo = (j) => 30 + j * (H - 100) / 15, ys = H / 2 - 30;
+    const s = svg(W, H, cont);
+    for (let k = Math.min(K, 6) - 1; k > 0; k--) {
+      el("rect", { x: xo - 26 + k * 9, y: 14 - k * 7, width: 52, height: H - 64, rx: 26, estilo: "fill:none;stroke:var(--linea2);opacity:" + (.6 - k * .08) }, s);
+    }
+    const aristas = el("g", {}, s), pulsos = el("g", {}, s), nodos = el("g", {}, s);
+    const lineas = [];
+    ent.forEach((n, i) => { for (let j = 0; j < 16; j++) lineas.push({ a: [xe, ye(i)], b: [xo, yo(j)], c: 0, i, j }); });
+    for (let j = 0; j < 16; j++) lineas.push({ a: [xo, yo(j)], b: [xs, ys], c: 1, j });
+    lineas.forEach((l) => { l.el = el("line", { x1: l.a[0], y1: l.a[1], x2: l.b[0], y2: l.b[1], estilo: "stroke:var(--linea2);stroke-width:1;opacity:.55" }, aristas); });
+    ent.forEach((n, i) => {
+      const nueva = i < nuevas;
+      el("circle", { cx: xe, cy: ye(i), r: 13, estilo: `fill:${nueva ? "var(--u3)" : "var(--panel2)"};stroke:${nueva ? "var(--u3claro)" : "var(--tinta2)"};stroke-width:2` }, nodos);
+      el("text", { x: xe - 26, y: ye(i) + 7, "text-anchor": "end", "font-size": 21, estilo: `fill:${nueva ? "var(--u3claro)" : "var(--tinta2)"};font-weight:${nueva ? 700 : 400}`, texto: n }, nodos);
+    });
+    for (let j = 0; j < 16; j++) el("circle", { cx: xo, cy: yo(j), r: 10, estilo: "fill:var(--B);stroke:var(--bg);stroke-width:2" }, nodos);
+    const salida = el("circle", { cx: xs, cy: ys, r: 26, estilo: "fill:var(--Cclaro);stroke:var(--bg);stroke-width:3" }, nodos);
+    el("text", { x: xs, y: ys + 62, "text-anchor": "middle", "font-size": 22, estilo: "fill:var(--tinta);font-weight:700", texto: "P(C | xₜ₋₁)" }, nodos);
+    el("text", { x: xs, y: ys + 90, "text-anchor": "middle", "font-size": 17, class: "mono", texto: K > 1 ? `promedio de ${K} redes` : "sigmoide" }, nodos);
+    el("text", { x: xe, y: H - 18, "text-anchor": "middle", "font-size": 18, class: "mono", texto: `entrada · ${ent.length}` }, nodos);
+    el("text", { x: xo, y: H - 18, "text-anchor": "middle", "font-size": 18, class: "mono", texto: "oculta · 16 ReLU" }, nodos);
+    if (K > 1) el("text", { x: xo + 50, y: H / 2, "font-size": 30, class: "mono", estilo: "fill:var(--acento);font-weight:700", texto: `× ${K}` }, nodos);
+    const params = ent.length * 16 + 16 + 16 + 1;
+    el("text", { x: xs, y: ys + 118, "text-anchor": "middle", "font-size": 17, class: "mono", texto: `${params} parámetros por red` }, nodos);
+
+    let anim = null;
+    function correr(atras) {
+      cancelAnimationFrame(anim); pulsos.innerHTML = "";
+      const sub = lineas.filter((l, k) => l.c === 1 || k % 4 === 0);
+      const ps = sub.map((l) => ({ l, e: el("circle", { r: 5, estilo: `fill:${atras ? "var(--A)" : "var(--acento2)"}` }, pulsos), d: (atras ? 1 - l.c : l.c) * .5 + Math.random() * .12 }));
+      const t0 = performance.now(), dur = 2300;
+      salida.style.transition = "r .3s";
+      lineas.forEach((l) => (l.el.style.stroke = atras ? "var(--A)" : "var(--acento)"));
+      function cuadro(t) {
+        const u = (t - t0) / dur;
+        ps.forEach((p) => { const v = Math.max(0, Math.min(1, (u - p.d) / .45)); const q = atras ? 1 - v : v;
+          p.e.setAttribute("cx", p.l.a[0] + (p.l.b[0] - p.l.a[0]) * q); p.e.setAttribute("cy", p.l.a[1] + (p.l.b[1] - p.l.a[1]) * q);
+          p.e.style.opacity = v <= 0 || v >= 1 ? 0 : 1; });
+        lineas.forEach((l) => (l.el.style.opacity = .25 + .45 * Math.sin(Math.min(1, u) * Math.PI)));
+        if (!atras && u > .9) salida.setAttribute("r", 34);
+        if (u < 1.15) anim = requestAnimationFrame(cuadro);
+        else { pulsos.innerHTML = ""; lineas.forEach((l) => { l.el.style.stroke = ""; l.el.style.opacity = .55; }); salida.setAttribute("r", 26); }
+      }
+      anim = requestAnimationFrame(cuadro);
+      $$(".lazo span", cont.parentElement).forEach((x, k) => x.classList.toggle("resalta", atras ? k >= 3 : k < 3));
+    }
+    const bot = cont.parentElement.querySelector(".botones-red");
+    if (bot) bot.addEventListener("click", (e) => { if (e.target.dataset.r) correr(e.target.dataset.r === "atras"); });
+    enDiapositiva(cont, () => setTimeout(() => correr(false), 700));
+  }
+
+  // ------------------------------------------------------------------------------------------ pipeline de 8 etapas
+  const ETAPAS = [
+    ["Datos", "Contrato del export, auditoría, panel y etiqueta", "dataset_modelado_u3.csv"],
+    ["Variables", "9 predictoras en t−1; escalador ajustado por pliegue", "configuracion.json"],
+    ["Evaluación", "Origen móvil 2023–2025 contra las persistencias y la U2", "metricas_seleccion.csv"],
+    ["Calibración", "Solo si mejora sin mirar el futuro (no mejoró)", "en el artefacto"],
+    ["Prueba", "2026, una sola vez, con todo congelado", "metricas_prueba_2026.csv"],
+    ["Despliegue", "10 redes 2021–2025 en un artefacto .keras", "perfil_amenaza_u3.keras"],
+    ["Proyección", "P(C) 2027, bandas, alerta A/B y PSI", "proyeccion_2027_u3.csv"],
+    ["Tarjeta", "Uso previsto, límites, métricas y deriva", "TARJETA_MODELO.md"]];
+  function pipeline(cont) {
+    cont.style.cssText += ";display:flex;flex-direction:column;gap:20px";
+    const fila = document.createElement("div"); fila.style.cssText = "display:grid;grid-template-columns:repeat(8,1fr);gap:14px;position:relative";
+    const det = document.createElement("div"); det.className = "tarjeta sin-marca"; det.style.cssText = "padding:20px 28px;min-height:96px";
+    ETAPAS.forEach(([n, d, a], i) => {
+      const b = document.createElement("button"); b.className = "etapa";
+      b.style.cssText = "background:var(--panel);border:1px solid var(--linea2);border-radius:14px;padding:16px 12px;text-align:left;cursor:pointer;color:var(--tinta);font-family:var(--f-texto);transition:all .25s";
+      b.innerHTML = `<div class="mono" style="font-size:17px;color:var(--acento)">${String(i + 1).padStart(2, "0")}</div><div style="font-family:var(--f-titulo);font-size:25px;font-weight:600">${n}</div>`;
+      b.addEventListener("mouseenter", () => elegir(i)); b.addEventListener("click", () => { auto = false; elegir(i); });
+      fila.appendChild(b);
+    });
+    cont.appendChild(fila); cont.appendChild(det);
+    let auto = true, idx = 0, temp = null;
+    function elegir(i) {
+      idx = i;
+      $$(".etapa", fila).forEach((b, k) => { b.style.borderColor = k === i ? "var(--acento)" : k < i ? "var(--u3)" : "var(--linea2)"; b.style.background = k === i ? "var(--panel2)" : "var(--panel)"; b.style.transform = k === i ? "translateY(-6px)" : ""; });
+      det.innerHTML = `<div style="display:flex;gap:26px;align-items:baseline"><span class="mono resalta" style="font-size:20px">Etapa ${i + 1}</span><span style="font-size:28px;color:var(--tinta)">${ETAPAS[i][1]}</span>
+        <span class="mono tenue" style="margin-left:auto;font-size:18px">→ ${ETAPAS[i][2]}</span></div>`;
+    }
+    elegir(0);
+    enDiapositiva(cont, () => { auto = true; clearInterval(temp); let k = 0; elegir(0); temp = setInterval(() => { if (!auto || ++k > 7) return clearInterval(temp); elegir(k); }, 1500); });
+  }
+
+  // ------------------------------------------------------------------------------------------ terminal con la salida real
+  function terminal(cont) {
+    const T = D.terminal;
+    const pasos = [["python -m pytest -q tests", T.pytest], ["python -m perfil_amenaza.pipeline todo", T.todo],
+      ["python -m perfil_amenaza.pipeline predecir --anio 2026", (T.predecir || []).slice(0, +(cont.dataset.lineas || 7)).map((l) => l.replace(/\s+(ISR|Orden|Portafolio|Énfasis).*$/, ""))]];
+    cont.innerHTML = `<div class="terminal" style="height:100%"><div class="barra-t"><i style="background:#e66767"></i><i style="background:#f2a900"></i><i style="background:#1fbf8f"></i>
+      <span>Proyecto_Unidad_3 · PYTHONPATH=src</span><button class="boton" style="margin-left:auto;font-size:15px;padding:4px 12px">↻ reproducir</button></div><pre></pre></div>`;
+    const pre = $("pre", cont); let gen = 0;
+    const esc = (t) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+    async function correr() {
+      const mio = ++gen; pre.innerHTML = "";
+      const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+      for (const [cmd, out] of pasos) {
+        if (mio !== gen) return;
+        const linea = document.createElement("div"); linea.innerHTML = `<span class="prompt">$ </span><span class="cmd"></span><span class="cursor"></span>`; pre.appendChild(linea);
+        const c = $(".cmd", linea);
+        for (const ch of cmd) { if (mio !== gen) return; c.textContent += ch; await espera(28); }
+        $(".cursor", linea).remove(); await espera(350);
+        for (const o of out || []) { if (mio !== gen) return; const d = document.createElement("div");
+          d.innerHTML = esc(o).replace(/(\d+ passed)/, '<span class="ok">$1</span>').replace(/(log-loss [0-9.]+)/, '<span class="ok">$1</span>');
+          pre.appendChild(d); await espera(170); }
+        await espera(500);
+      }
+    }
+    $(".boton", cont).addEventListener("click", correr);
+    enDiapositiva(cont, () => setTimeout(correr, 500));
+  }
+
+  // ------------------------------------------------------------------------------------------ simulador de bandas de decisión
+  function simulador(cont) {
+    cont.innerHTML = `<div style="display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;align-items:flex-end;gap:36px"><div class="stat"><span class="valor s-v">0,50</span><span class="etq">P(C) del departamento</span></div>
+        <div class="stat"><span class="valor s-c" style="font-size:56px">Transición</span><span class="etq">categoría</span></div></div>
+      <input type="range" class="deslizador" min="0" max="1" step="0.01" value="0.5">
+      <div class="sim-escala"><div style="width:30%;background:color-mix(in srgb, var(--D) 55%, transparent)">D consolidado &lt; 0,3</div>
+        <div style="width:40%;background:repeating-linear-gradient(45deg, color-mix(in srgb, var(--C) 55%, transparent) 0 10px, transparent 10px 20px)">Transición</div>
+        <div style="width:30%;background:var(--C);color:#111">C consolidado ≥ 0,7</div></div>
+      <label class="interruptor"><span class="caja"></span>Alerta A/B (A+B ≥ 2 × la nacional y ≥ 5 eventos)</label>
+      <div class="tarjeta s-e" style="padding:22px 28px"></div><div class="fuente s-d"></div></div>`;
+    const r = $("input", cont), sw = $(".interruptor", cont);
+    const ENF = { "C consolidado": "ISR (inteligencia, vigilancia y reconocimiento), detección temprana y movilidad protegida",
+      "Transición": "Portafolio flexible y monitoreo trimestral del perfil", "D consolidado": "Orden público y capacidades mixtas" };
+    function act() {
+      const p = +r.value, cat = p >= .7 ? "C consolidado" : p >= .3 ? "Transición" : "D consolidado", al = sw.classList.contains("on");
+      $(".s-v", cont).textContent = f(p, 2);
+      const c = $(".s-c", cont); c.textContent = cat; c.style.color = cat === "C consolidado" ? "var(--Cclaro)" : cat === "Transición" ? "var(--acento2)" : "var(--tinta2)";
+      $(".s-e", cont).innerHTML = `<div class="fuente">Énfasis tecnológico sugerido</div><p class="grande" style="margin-top:6px">${ENF[cat]}${al ? ' <span style="color:var(--A)">+ C-UAS (antidrones) y detección de AEI</span>' : ""}</p>`;
+      const sim = Object.values(D.deptos).filter((d) => d.cat === cat).sort((a, b) => b.p27 - a.p27).map((d) => d.n + (d.alerta ? " ⚠" : ""));
+      $(".s-d", cont).innerHTML = `En 2027 caen en esta banda (${sim.length}): ${sim.join(" · ")}`;
+    }
+    r.addEventListener("input", act); sw.addEventListener("click", () => { sw.classList.toggle("on"); act(); }); act();
+  }
+
+  // ------------------------------------------------------------------------------------------ contadores, giros, pestañas, hitos
+  function contador(e) {
+    const fin = +e.dataset.contar, dec = +(e.dataset.dec || 0), suf = e.dataset.suf || "";
+    const pon = (v) => (e.textContent = (dec ? f(v, dec) : miles(v)) + suf);
+    pon(fin);
+    enDiapositiva(e, () => { const t0 = performance.now(), dur = 1400;
+      const paso = (t) => { const u = Math.min(1, (t - t0) / dur); pon(fin * (1 - Math.pow(1 - u, 3))); if (u < 1) requestAnimationFrame(paso); };
+      requestAnimationFrame(paso); });
+  }
+  function pestanas(cont) {
+    const bs = $$(".pestanas button", cont), ps = $$(".panel-pestana", cont);
+    bs.forEach((b, i) => b.addEventListener("click", () => { bs.forEach((x, k) => x.classList.toggle("activo", k === i)); ps.forEach((x, k) => x.classList.toggle("activo", k === i)); }));
+    if (bs[0]) bs[0].click();
+  }
+
+  // resultados de la U2 (experimento E1: memoria cruda x8)
+  function e1(cont) {
+    const filas = D.u2.e1.filter((r) => r.val === (cont.dataset.val || "Temporal"));
+    barrasHTML(cont, filas.map((r) => ({ etq: r.modelo.replace(" (x1-x7)", "").replace("ensamble 5 semillas", "ensamble 5"), v: r.ll, m: r.modelo,
+      tip: `<b>${r.modelo}</b>` + filaTip("Log-loss", f(r.ll)) + filaTip("ROC-AUC", f(r.auc)) })),
+      { dom: [0, .6], clase: (r) => r.m === "Persistencia" ? "cal" : /x8/.test(r.m) ? "u3" : "" });
+  }
+  // proporción nacional de cada perfil en 2020-2026
+  function cuotas() {
+    const tot = (p) => D.acled.por_anio[p].reduce((a, b) => a + b, 0), T = ["A", "B", "C", "D"].reduce((a, p) => a + tot(p), 0);
+    $$("[data-cuota]").forEach((e) => (e.textContent = pct(tot(e.dataset.cuota) / T, 1)));
+  }
+
+  // ------------------------------------------------------------------------------------------ arranque
+  const COMP = { "g-mapa": mapa, "g-heatmap": heatmap, "g-composicion": composicion, "g-subtipos": subtipos, "g-escalera": escalera,
+    "g-comparador": comparador, "g-bosque": bosque, "g-red": red, "g-pipeline": pipeline, "g-terminal": terminal, "g-simulador": simulador,
+    "g-importancia": importancia, "g-psi": psi, "g-trio": trio, "g-e1": e1, "g-pestanas": pestanas };
+  $$("[data-contar-v]").forEach((e) => (e.dataset.contar = resolver(e.dataset.contarV)));
+  rellenar(); cuotas();
+  for (const [clase, fn] of Object.entries(COMP)) $$("." + clase).forEach((n) => { try { fn(n); } catch (err) { console.error(clase, err); } });
+  $$("[data-contar]").forEach(contador);
+  $$(".giro").forEach((g) => g.addEventListener("click", () => g.classList.toggle("girada")));
+  $$("[data-ir]").forEach((h) => h.addEventListener("click", () => window.Presentacion && window.Presentacion.ir(+h.dataset.ir - 1)));
+  window.Graficos = { resolver, f, miles };
+})();
+
+</script>
+</body>
+</html>

@@ -20,3 +20,8 @@ docs/entregas/U2/Informe_U2_Modelo_Base.docx
 *.zip
 *.json
 !configuracion.json
+# Presentaciones: los HTML llevan datos y figuras en base64; los .docx duplican presentaciones/guiones.py
+presentaciones/*.html
+presentaciones/*.docx
+presentaciones/fuentes/*.html
+presentaciones/fuentes/*.txt
