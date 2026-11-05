@@ -140,10 +140,10 @@
     {
       "Intervención": "I3 actores armados x3",
       "Referencia": "I2a +d1",
-      "ΔLog-loss": null,
-      "EE": null,
-      "ΔAUC": null,
-      "Decisión": "pendiente: UCDP GED no disponible en esta ejecución"
+      "ΔLog-loss": 0.024954511724367266,
+      "EE": 0.005638432583758359,
+      "ΔAUC": -0.014482029598308688,
+      "Decisión": "no se retiene"
     },
     {
       "Intervención": "I4 vecindad (temporal)",

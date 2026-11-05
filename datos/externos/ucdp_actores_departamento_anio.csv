@@ -1,0 +1,844 @@
+depto,anio,actores,eventos_ucdp,muertes_ucdp
+amazonas,1999,1,1,3
+amazonas,2003,1,3,5
+amazonas,2004,1,1,1
+amazonas,2014,1,1,2
+amazonas,2022,1,1,4
+amazonas,2025,1,2,5
+antioquia,1989,5,12,40
+antioquia,1990,6,22,192
+antioquia,1991,3,14,45
+antioquia,1992,2,18,152
+antioquia,1993,6,10,79
+antioquia,1994,4,14,138
+antioquia,1995,3,18,125
+antioquia,1996,3,51,262
+antioquia,1997,3,53,280
+antioquia,1998,3,27,425
+antioquia,1999,4,247,937
+antioquia,2000,3,371,1142
+antioquia,2001,3,355,1164
+antioquia,2002,4,388,1367
+antioquia,2003,3,321,710
+antioquia,2004,3,192,380
+antioquia,2005,3,167,389
+antioquia,2006,3,70,137
+antioquia,2007,3,41,57
+antioquia,2008,5,32,64
+antioquia,2009,4,30,60
+antioquia,2010,2,7,34
+antioquia,2011,1,4,7
+antioquia,2012,1,5,28
+antioquia,2013,1,1,2
+antioquia,2014,2,9,18
+antioquia,2015,3,8,21
+antioquia,2016,3,18,10
+antioquia,2017,2,37,19
+antioquia,2018,3,46,74
+antioquia,2019,3,18,28
+antioquia,2020,3,14,20
+antioquia,2021,3,25,36
+antioquia,2022,3,24,28
+antioquia,2023,3,63,90
+antioquia,2024,5,52,93
+antioquia,2025,5,62,144
+arauca,1989,1,3,13
+arauca,1991,2,5,30
+arauca,1992,2,2,6
+arauca,1993,1,1,4
+arauca,1994,1,6,25
+arauca,1995,2,3,12
+arauca,1996,2,6,19
+arauca,1997,2,10,79
+arauca,1998,2,4,44
+arauca,1999,2,13,98
+arauca,2000,3,15,42
+arauca,2001,3,24,63
+arauca,2002,3,62,147
+arauca,2003,3,96,232
+arauca,2004,4,77,186
+arauca,2005,3,41,83
+arauca,2006,3,23,36
+arauca,2007,3,19,24
+arauca,2008,3,58,101
+arauca,2009,2,32,44
+arauca,2010,2,9,70
+arauca,2011,2,5,20
+arauca,2012,2,5,57
+arauca,2013,2,3,40
+arauca,2014,2,4,25
+arauca,2015,2,3,11
+arauca,2016,1,10,19
+arauca,2017,1,8,7
+arauca,2018,3,26,52
+arauca,2019,2,5,9
+arauca,2020,1,2,6
+arauca,2021,2,8,13
+arauca,2022,3,25,88
+arauca,2023,2,8,44
+arauca,2024,2,23,42
+arauca,2025,2,44,64
+atlantico,1991,1,2,6
+atlantico,1996,1,1,4
+atlantico,1999,1,29,46
+atlantico,2001,1,5,11
+atlantico,2002,2,17,37
+atlantico,2003,2,59,80
+atlantico,2004,2,36,50
+atlantico,2005,2,39,46
+atlantico,2006,1,2,12
+atlantico,2007,0,2,3
+atlantico,2009,0,2,3
+atlantico,2012,0,1,1
+atlantico,2016,0,1,1
+atlantico,2017,2,3,5
+atlantico,2018,1,1,5
+atlantico,2020,0,2,2
+atlantico,2021,0,1,1
+atlantico,2022,1,1,1
+atlantico,2023,2,25,29
+atlantico,2024,2,57,122
+atlantico,2025,3,86,84
+bogota,1989,1,3,111
+bogota,1990,2,3,4
+bogota,1991,2,4,10
+bogota,1992,1,3,3
+bogota,1993,3,8,50
+bogota,1994,2,5,9
+bogota,1995,2,2,4
+bogota,1996,2,3,8
+bogota,1997,2,4,14
+bogota,1998,1,1,2
+bogota,1999,2,14,49
+bogota,2000,2,11,46
+bogota,2001,2,11,33
+bogota,2002,2,14,54
+bogota,2003,2,10,54
+bogota,2004,2,16,31
+bogota,2005,2,22,30
+bogota,2006,2,12,20
+bogota,2007,2,5,11
+bogota,2008,2,8,10
+bogota,2009,1,4,6
+bogota,2012,1,1,2
+bogota,2015,1,1,1
+bogota,2016,2,4,3
+bogota,2017,1,5,5
+bogota,2018,0,2,2
+bogota,2019,1,3,44
+bogota,2020,0,11,11
+bogota,2021,1,6,6
+bogota,2022,1,2,3
+bogota,2023,0,1,1
+bogota,2024,0,1,2
+bolivar,1989,3,3,10
+bolivar,1990,1,2,10
+bolivar,1991,2,6,45
+bolivar,1992,2,2,4
+bolivar,1993,1,1,2
+bolivar,1994,2,2,13
+bolivar,1995,2,3,19
+bolivar,1996,2,3,6
+bolivar,1997,3,5,19
+bolivar,1998,3,6,62
+bolivar,1999,3,100,412
+bolivar,2000,3,76,357
+bolivar,2001,3,52,160
+bolivar,2002,5,56,173
+bolivar,2003,4,148,326
+bolivar,2004,3,103,130
+bolivar,2005,3,87,162
+bolivar,2006,4,12,23
+bolivar,2007,3,15,43
+bolivar,2008,1,5,6
+bolivar,2009,1,8,12
+bolivar,2010,1,2,5
+bolivar,2015,2,5,15
+bolivar,2016,1,5,6
+bolivar,2017,2,19,15
+bolivar,2018,2,16,18
+bolivar,2019,2,15,23
+bolivar,2020,2,13,24
+bolivar,2021,3,12,22
+bolivar,2022,2,9,13
+bolivar,2023,4,69,76
+bolivar,2024,4,45,64
+bolivar,2025,3,24,43
+boyaca,1991,1,4,15
+boyaca,1992,2,4,20
+boyaca,1993,1,2,14
+boyaca,1994,2,2,8
+boyaca,1995,1,2,22
+boyaca,1996,1,2,24
+boyaca,1997,2,4,26
+boyaca,1998,1,3,10
+boyaca,1999,3,9,31
+boyaca,2000,3,18,70
+boyaca,2001,2,11,25
+boyaca,2002,3,19,88
+boyaca,2003,3,19,91
+boyaca,2004,3,32,74
+boyaca,2005,3,11,18
+boyaca,2006,0,5,5
+boyaca,2007,1,10,11
+boyaca,2008,0,1,2
+boyaca,2009,2,3,5
+boyaca,2015,1,1,12
+boyaca,2017,1,1,1
+boyaca,2018,1,2,3
+boyaca,2020,1,2,2
+boyaca,2021,0,1,1
+boyaca,2022,1,1,1
+boyaca,2024,1,1,1
+boyaca,2025,1,1,3
+caldas,1990,1,1,2
+caldas,1992,1,1,3
+caldas,1995,1,1,3
+caldas,1998,2,2,3
+caldas,1999,3,20,58
+caldas,2000,4,23,66
+caldas,2001,4,41,95
+caldas,2002,4,87,173
+caldas,2003,5,91,150
+caldas,2004,5,91,131
+caldas,2005,5,112,139
+caldas,2006,3,8,10
+caldas,2007,2,10,20
+caldas,2008,2,11,22
+caldas,2009,1,2,2
+caldas,2017,0,1,1
+caldas,2023,0,1,1
+caqueta,1989,1,1,4
+caqueta,1990,1,3,8
+caqueta,1991,1,5,10
+caqueta,1992,1,1,13
+caqueta,1994,1,1,4
+caqueta,1995,1,2,8
+caqueta,1996,1,4,20
+caqueta,1997,2,11,44
+caqueta,1998,2,5,122
+caqueta,1999,2,20,104
+caqueta,2000,2,25,76
+caqueta,2001,2,42,130
+caqueta,2002,2,131,434
+caqueta,2003,3,63,138
+caqueta,2004,1,83,151
+caqueta,2005,2,33,83
+caqueta,2006,1,11,47
+caqueta,2007,1,10,26
+caqueta,2008,1,10,15
+caqueta,2009,1,9,26
+caqueta,2010,1,8,61
+caqueta,2011,1,5,21
+caqueta,2012,1,2,8
+caqueta,2013,1,5,45
+caqueta,2014,1,2,5
+caqueta,2015,1,2,6
+caqueta,2016,1,2,2
+caqueta,2017,1,2,2
+caqueta,2018,1,5,16
+caqueta,2019,1,5,21
+caqueta,2021,2,4,14
+caqueta,2022,3,8,20
+caqueta,2023,1,4,7
+caqueta,2024,3,17,32
+caqueta,2025,4,8,25
+casanare,1990,2,3,5
+casanare,1991,2,3,14
+casanare,1992,2,2,19
+casanare,1994,2,3,16
+casanare,1995,1,2,5
+casanare,1996,2,5,11
+casanare,1997,2,2,2
+casanare,1998,2,4,23
+casanare,1999,3,15,140
+casanare,2000,3,8,43
+casanare,2001,3,11,27
+casanare,2002,2,13,52
+casanare,2003,2,10,28
+casanare,2004,3,16,31
+casanare,2005,3,10,32
+casanare,2006,1,1,1
+casanare,2007,1,19,32
+casanare,2008,0,4,4
+casanare,2009,1,1,1
+casanare,2010,1,1,1
+casanare,2011,1,1,1
+casanare,2016,1,2,4
+casanare,2017,1,1,1
+casanare,2018,1,1,2
+casanare,2021,1,2,1
+casanare,2024,2,3,3
+casanare,2025,2,4,4
+cauca,1989,2,3,15
+cauca,1990,1,3,11
+cauca,1991,2,4,47
+cauca,1993,1,1,6
+cauca,1994,1,3,21
+cauca,1995,1,1,1
+cauca,1996,2,5,7
+cauca,1997,1,7,22
+cauca,1998,1,2,2
+cauca,1999,3,54,180
+cauca,2000,3,74,234
+cauca,2001,3,100,355
+cauca,2002,3,99,249
+cauca,2003,3,81,192
+cauca,2004,3,82,181
+cauca,2005,3,45,104
+cauca,2006,3,25,50
+cauca,2007,3,20,57
+cauca,2008,3,27,43
+cauca,2009,3,27,104
+cauca,2010,1,12,23
+cauca,2011,1,20,66
+cauca,2012,1,10,23
+cauca,2013,1,3,11
+cauca,2014,2,5,15
+cauca,2015,3,10,56
+cauca,2016,2,4,6
+cauca,2017,2,14,19
+cauca,2018,4,30,32
+cauca,2019,4,19,40
+cauca,2020,4,44,60
+cauca,2021,4,42,87
+cauca,2022,3,28,45
+cauca,2023,3,80,75
+cauca,2024,3,100,180
+cauca,2025,3,63,85
+cesar,1989,2,4,35
+cesar,1990,3,5,20
+cesar,1991,1,1,2
+cesar,1992,2,4,6
+cesar,1993,2,2,7
+cesar,1995,1,2,6
+cesar,1996,3,6,32
+cesar,1997,2,8,14
+cesar,1998,1,2,30
+cesar,1999,4,55,169
+cesar,2000,3,59,160
+cesar,2001,4,58,183
+cesar,2002,4,55,126
+cesar,2003,3,58,89
+cesar,2004,3,49,82
+cesar,2005,3,34,110
+cesar,2006,2,7,13
+cesar,2007,3,14,17
+cesar,2008,0,3,3
+cesar,2009,0,1,1
+cesar,2016,0,1,1
+cesar,2017,2,6,6
+cesar,2018,1,3,5
+cesar,2020,1,1,1
+cesar,2021,1,2,4
+cesar,2022,1,3,4
+cesar,2023,3,5,3
+cesar,2024,3,16,21
+cesar,2025,4,33,44
+choco,1990,4,5,21
+choco,1994,2,3,27
+choco,1995,1,1,7
+choco,1996,2,4,29
+choco,1997,3,8,35
+choco,1998,1,1,4
+choco,1999,3,24,127
+choco,2000,3,36,109
+choco,2001,3,31,196
+choco,2002,3,27,220
+choco,2003,3,31,59
+choco,2004,3,20,69
+choco,2005,3,28,210
+choco,2006,4,12,17
+choco,2007,1,2,10
+choco,2008,3,5,11
+choco,2009,1,2,8
+choco,2011,1,3,14
+choco,2014,2,4,6
+choco,2015,2,3,11
+choco,2016,2,5,10
+choco,2017,2,20,28
+choco,2018,2,11,14
+choco,2019,3,3,5
+choco,2020,2,9,7
+choco,2021,2,8,11
+choco,2022,2,12,26
+choco,2023,2,14,21
+choco,2024,2,14,16
+choco,2025,1,4,8
+cordoba,1989,3,3,35
+cordoba,1990,1,1,11
+cordoba,1991,2,2,7
+cordoba,1992,2,3,5
+cordoba,1994,1,2,5
+cordoba,1998,2,1,38
+cordoba,1999,2,26,135
+cordoba,2000,2,11,31
+cordoba,2001,2,25,244
+cordoba,2002,2,22,106
+cordoba,2003,2,41,56
+cordoba,2004,2,49,66
+cordoba,2005,2,20,29
+cordoba,2006,2,5,40
+cordoba,2007,2,18,27
+cordoba,2008,1,5,6
+cordoba,2009,1,2,2
+cordoba,2013,1,1,3
+cordoba,2014,1,1,7
+cordoba,2016,1,3,2
+cordoba,2017,1,10,11
+cordoba,2018,1,6,4
+cordoba,2019,1,2,2
+cordoba,2020,1,2,9
+cordoba,2021,1,1,1
+cordoba,2022,1,5,5
+cordoba,2023,1,9,7
+cordoba,2024,1,4,4
+cordoba,2025,1,2,2
+cundinamarca,1989,2,2,7
+cundinamarca,1990,0,1,0
+cundinamarca,1991,1,6,25
+cundinamarca,1992,1,5,12
+cundinamarca,1993,1,3,16
+cundinamarca,1994,1,5,9
+cundinamarca,1995,2,12,70
+cundinamarca,1996,1,6,14
+cundinamarca,1997,3,9,69
+cundinamarca,1998,1,6,25
+cundinamarca,1999,2,17,143
+cundinamarca,2000,1,21,93
+cundinamarca,2001,3,30,107
+cundinamarca,2002,2,70,167
+cundinamarca,2003,4,79,208
+cundinamarca,2004,2,11,21
+cundinamarca,2005,2,12,26
+cundinamarca,2006,2,4,9
+cundinamarca,2008,0,4,7
+cundinamarca,2009,0,1,2
+cundinamarca,2015,1,1,1
+cundinamarca,2017,1,6,2
+cundinamarca,2018,2,3,2
+cundinamarca,2020,1,4,13
+cundinamarca,2022,0,1,1
+cundinamarca,2023,0,1,1
+cundinamarca,2025,1,2,2
+guainia,1999,1,2,34
+guainia,2000,1,3,9
+guainia,2001,1,2,12
+guainia,2002,1,4,8
+guainia,2003,1,2,6
+guainia,2004,1,1,2
+guainia,2005,1,1,2
+guainia,2006,1,1,2
+guainia,2021,1,1,10
+guaviare,1990,1,1,13
+guaviare,1991,1,1,7
+guaviare,1994,1,2,3
+guaviare,1995,1,7,40
+guaviare,1996,1,4,58
+guaviare,1997,1,3,27
+guaviare,1998,1,2,55
+guaviare,1999,1,2,6
+guaviare,2000,1,2,5
+guaviare,2001,2,8,119
+guaviare,2002,2,20,37
+guaviare,2003,2,23,43
+guaviare,2004,2,27,71
+guaviare,2005,2,7,23
+guaviare,2006,1,3,7
+guaviare,2007,1,3,5
+guaviare,2008,1,13,26
+guaviare,2009,1,8,28
+guaviare,2010,1,3,13
+guaviare,2015,1,1,0
+guaviare,2017,1,7,7
+guaviare,2018,1,12,36
+guaviare,2021,1,1,19
+guaviare,2022,1,1,1
+guaviare,2024,2,8,15
+guaviare,2025,2,11,79
+huila,1989,1,2,11
+huila,1990,1,3,11
+huila,1991,1,6,35
+huila,1992,1,3,15
+huila,1993,1,2,9
+huila,1994,1,4,9
+huila,1995,2,2,16
+huila,1996,1,2,10
+huila,1997,1,3,14
+huila,1998,1,1,5
+huila,1999,2,21,51
+huila,2000,1,42,83
+huila,2001,2,45,94
+huila,2002,2,94,214
+huila,2003,3,110,214
+huila,2004,3,89,147
+huila,2005,2,75,117
+huila,2006,2,11,27
+huila,2007,1,19,35
+huila,2008,1,13,27
+huila,2009,1,9,25
+huila,2010,1,10,20
+huila,2011,1,2,8
+huila,2015,1,1,1
+huila,2016,1,1,0
+huila,2017,1,1,1
+huila,2019,1,3,4
+huila,2021,1,3,3
+huila,2022,1,1,7
+huila,2023,1,5,3
+huila,2024,3,19,34
+huila,2025,3,24,34
+la guajira,1991,1,1,2
+la guajira,1997,1,1,1
+la guajira,1998,2,2,13
+la guajira,1999,3,12,43
+la guajira,2000,3,14,43
+la guajira,2001,4,13,41
+la guajira,2002,3,31,132
+la guajira,2003,3,21,66
+la guajira,2004,3,27,82
+la guajira,2005,2,19,58
+la guajira,2006,1,7,12
+la guajira,2007,3,13,19
+la guajira,2008,1,7,12
+la guajira,2009,1,2,9
+la guajira,2011,1,1,2
+la guajira,2013,1,1,2
+la guajira,2020,1,1,0
+la guajira,2023,3,19,24
+la guajira,2024,3,21,28
+la guajira,2025,3,26,33
+magdalena,1990,1,2,7
+magdalena,1991,1,3,20
+magdalena,1992,1,3,5
+magdalena,1993,1,1,7
+magdalena,1994,1,1,4
+magdalena,1996,3,4,16
+magdalena,1997,2,3,7
+magdalena,1998,3,5,33
+magdalena,1999,3,26,97
+magdalena,2000,3,27,125
+magdalena,2001,3,41,130
+magdalena,2002,3,51,105
+magdalena,2003,4,218,335
+magdalena,2004,4,120,159
+magdalena,2005,3,87,117
+magdalena,2006,0,1,2
+magdalena,2008,1,2,2
+magdalena,2009,0,1,1
+magdalena,2012,2,1,151
+magdalena,2017,0,1,1
+magdalena,2018,0,1,1
+magdalena,2019,1,2,3
+magdalena,2021,1,1,0
+magdalena,2022,1,1,0
+magdalena,2023,2,5,5
+magdalena,2024,2,15,19
+magdalena,2025,2,23,31
+meta,1989,1,2,13
+meta,1990,1,5,62
+meta,1991,2,8,41
+meta,1992,2,9,38
+meta,1993,1,3,9
+meta,1994,1,6,14
+meta,1995,1,3,21
+meta,1996,1,9,44
+meta,1997,2,17,120
+meta,1998,2,14,145
+meta,1999,2,25,100
+meta,2000,2,23,96
+meta,2001,2,47,125
+meta,2002,3,127,495
+meta,2003,2,110,252
+meta,2004,2,63,143
+meta,2005,2,50,228
+meta,2006,2,43,150
+meta,2007,2,25,72
+meta,2008,1,16,57
+meta,2009,1,17,75
+meta,2010,1,11,83
+meta,2011,1,2,10
+meta,2012,1,2,42
+meta,2013,1,1,10
+meta,2014,1,4,21
+meta,2015,1,2,3
+meta,2016,0,1,1
+meta,2017,2,8,10
+meta,2018,1,12,12
+meta,2019,1,2,8
+meta,2020,1,3,9
+meta,2021,1,3,5
+meta,2022,1,5,10
+meta,2023,2,2,2
+meta,2024,1,2,12
+meta,2025,3,6,11
+narino,1990,0,1,3
+narino,1991,1,2,7
+narino,1992,1,3,25
+narino,1996,1,2,33
+narino,1997,1,2,5
+narino,1998,1,3,17
+narino,1999,3,13,48
+narino,2000,3,45,88
+narino,2001,3,41,140
+narino,2002,4,54,212
+narino,2003,3,30,79
+narino,2004,4,41,98
+narino,2005,3,31,67
+narino,2006,4,16,56
+narino,2007,2,14,35
+narino,2008,1,17,41
+narino,2009,3,20,68
+narino,2010,2,6,23
+narino,2011,1,3,25
+narino,2012,1,3,32
+narino,2013,1,3,9
+narino,2014,1,5,17
+narino,2015,2,10,9
+narino,2016,2,4,6
+narino,2017,3,16,30
+narino,2018,3,28,43
+narino,2019,2,6,7
+narino,2020,3,10,13
+narino,2021,2,2,7
+narino,2022,2,2,6
+narino,2023,3,12,19
+narino,2024,2,9,21
+narino,2025,3,9,16
+norte de santander,1989,1,2,5
+norte de santander,1990,3,5,42
+norte de santander,1991,3,5,35
+norte de santander,1992,2,5,18
+norte de santander,1993,1,3,29
+norte de santander,1994,2,3,7
+norte de santander,1995,1,1,0
+norte de santander,1996,3,10,36
+norte de santander,1997,3,8,15
+norte de santander,1998,3,8,50
+norte de santander,1999,4,84,249
+norte de santander,2000,4,87,268
+norte de santander,2001,4,128,321
+norte de santander,2002,4,139,339
+norte de santander,2003,4,209,344
+norte de santander,2004,4,63,154
+norte de santander,2005,4,44,106
+norte de santander,2006,4,14,74
+norte de santander,2007,1,12,16
+norte de santander,2008,2,17,32
+norte de santander,2009,4,39,58
+norte de santander,2010,2,2,6
+norte de santander,2011,1,3,18
+norte de santander,2012,1,2,8
+norte de santander,2013,1,2,17
+norte de santander,2014,2,4,7
+norte de santander,2015,2,5,19
+norte de santander,2016,3,18,9
+norte de santander,2017,3,22,30
+norte de santander,2018,5,46,70
+norte de santander,2019,3,16,25
+norte de santander,2020,5,19,28
+norte de santander,2021,3,21,30
+norte de santander,2022,2,13,37
+norte de santander,2023,3,35,53
+norte de santander,2024,4,32,34
+norte de santander,2025,4,99,166
+putumayo,1990,1,2,19
+putumayo,1991,2,3,28
+putumayo,1992,1,4,69
+putumayo,1994,1,1,36
+putumayo,1996,1,1,34
+putumayo,1997,1,2,5
+putumayo,1998,2,10,103
+putumayo,1999,2,18,138
+putumayo,2000,2,33,96
+putumayo,2001,2,18,95
+putumayo,2002,3,28,90
+putumayo,2003,2,26,88
+putumayo,2004,2,39,88
+putumayo,2005,2,23,139
+putumayo,2006,3,9,17
+putumayo,2007,2,10,22
+putumayo,2008,2,9,13
+putumayo,2009,1,1,1
+putumayo,2010,1,3,19
+putumayo,2012,1,1,5
+putumayo,2013,1,1,1
+putumayo,2018,2,3,10
+putumayo,2019,4,4,6
+putumayo,2020,3,8,11
+putumayo,2021,2,7,6
+putumayo,2022,3,15,38
+putumayo,2023,3,40,40
+putumayo,2024,3,13,15
+putumayo,2025,2,2,2
+quindio,1995,1,1,6
+quindio,1999,2,5,14
+quindio,2000,1,6,20
+quindio,2001,1,2,8
+quindio,2002,1,3,3
+quindio,2003,2,8,9
+quindio,2004,1,5,12
+quindio,2005,1,3,5
+quindio,2006,0,2,3
+quindio,2007,1,6,17
+quindio,2008,2,9,11
+quindio,2009,1,5,8
+quindio,2016,0,1,1
+quindio,2025,0,1,1
+risaralda,1992,1,1,3
+risaralda,1997,2,2,9
+risaralda,1998,1,1,10
+risaralda,1999,3,8,19
+risaralda,2000,4,12,71
+risaralda,2001,3,10,18
+risaralda,2002,5,33,66
+risaralda,2003,5,51,73
+risaralda,2004,5,84,108
+risaralda,2005,5,114,151
+risaralda,2006,3,4,5
+risaralda,2007,2,4,9
+risaralda,2008,1,3,8
+risaralda,2019,1,1,1
+risaralda,2021,0,1,1
+risaralda,2022,2,2,3
+san andres,2003,0,1,1
+san andres,2006,0,1,1
+santander,1989,3,6,24
+santander,1990,2,12,43
+santander,1991,3,14,39
+santander,1992,2,8,37
+santander,1993,2,3,4
+santander,1994,1,4,20
+santander,1995,1,1,3
+santander,1996,2,8,27
+santander,1997,2,6,21
+santander,1998,4,16,114
+santander,1999,4,52,140
+santander,2000,4,83,244
+santander,2001,4,103,234
+santander,2002,5,92,162
+santander,2003,5,124,175
+santander,2004,5,48,75
+santander,2005,3,25,41
+santander,2006,3,33,39
+santander,2007,4,28,42
+santander,2008,2,8,13
+santander,2009,2,8,8
+santander,2015,2,10,9
+santander,2016,1,17,1
+santander,2017,1,16,0
+santander,2018,2,16,1
+santander,2019,1,2,3
+santander,2021,0,1,1
+santander,2022,2,6,6
+santander,2023,1,1,2
+santander,2024,2,5,7
+santander,2025,2,5,8
+sucre,1989,1,4,55
+sucre,1992,1,1,3
+sucre,1996,2,5,45
+sucre,1997,3,3,9
+sucre,1998,2,3,14
+sucre,1999,2,14,56
+sucre,2000,2,31,152
+sucre,2001,3,19,85
+sucre,2002,3,24,61
+sucre,2003,3,51,111
+sucre,2004,2,58,89
+sucre,2005,3,52,82
+sucre,2007,0,5,9
+sucre,2008,1,2,4
+sucre,2019,1,1,2
+sucre,2020,1,1,0
+sucre,2021,1,1,0
+sucre,2022,1,2,4
+sucre,2023,1,10,14
+sucre,2024,1,4,0
+sucre,2025,1,4,32
+tolima,1990,1,2,4
+tolima,1991,1,4,13
+tolima,1992,1,2,10
+tolima,1993,1,1,3
+tolima,1995,1,3,5
+tolima,1996,1,2,6
+tolima,1997,1,1,5
+tolima,1998,1,5,30
+tolima,1999,3,62,141
+tolima,2000,3,60,234
+tolima,2001,3,48,182
+tolima,2002,3,63,180
+tolima,2003,3,112,194
+tolima,2004,3,111,189
+tolima,2005,3,65,132
+tolima,2006,3,16,66
+tolima,2007,1,9,27
+tolima,2008,1,16,51
+tolima,2009,2,18,67
+tolima,2010,1,6,26
+tolima,2011,1,2,4
+tolima,2014,1,2,11
+tolima,2015,1,4,4
+tolima,2017,0,1,1
+tolima,2021,0,2,2
+tolima,2023,1,2,2
+tolima,2024,1,5,7
+tolima,2025,3,3,4
+valle del cauca,1989,1,1,6
+valle del cauca,1990,4,8,108
+valle del cauca,1991,2,4,32
+valle del cauca,1992,2,3,16
+valle del cauca,1993,1,2,15
+valle del cauca,1995,1,1,5
+valle del cauca,1996,1,2,3
+valle del cauca,1997,2,3,7
+valle del cauca,1998,2,3,13
+valle del cauca,1999,3,70,188
+valle del cauca,2000,3,111,338
+valle del cauca,2001,3,62,207
+valle del cauca,2002,3,78,363
+valle del cauca,2003,3,57,127
+valle del cauca,2004,3,107,179
+valle del cauca,2005,3,38,107
+valle del cauca,2006,3,16,42
+valle del cauca,2007,1,21,77
+valle del cauca,2008,2,16,32
+valle del cauca,2009,2,7,13
+valle del cauca,2010,1,2,18
+valle del cauca,2011,1,6,26
+valle del cauca,2012,1,3,12
+valle del cauca,2014,1,3,3
+valle del cauca,2015,1,1,1
+valle del cauca,2016,1,4,3
+valle del cauca,2017,3,13,19
+valle del cauca,2018,2,3,7
+valle del cauca,2019,2,3,5
+valle del cauca,2020,0,1,1
+valle del cauca,2021,3,12,17
+valle del cauca,2022,3,4,8
+valle del cauca,2023,4,11,24
+valle del cauca,2024,2,12,12
+valle del cauca,2025,2,26,55
+vaupes,1998,1,2,129
+vaupes,1999,1,2,13
+vaupes,2000,1,4,6
+vaupes,2002,1,1,1
+vaupes,2004,1,1,1
+vaupes,2005,1,3,23
+vaupes,2019,1,1,1
+vaupes,2024,1,1,2
+vichada,1990,1,1,22
+vichada,1994,1,1,3
+vichada,1995,1,1,6
+vichada,1996,1,1,25
+vichada,1998,2,2,31
+vichada,1999,2,3,11
+vichada,2000,1,4,17
+vichada,2001,1,1,4
+vichada,2002,1,6,61
+vichada,2003,1,1,30
+vichada,2004,1,1,5
+vichada,2005,1,1,1
+vichada,2008,1,2,2
+vichada,2011,1,1,1
+vichada,2021,2,1,0
+vichada,2025,1,1,1
