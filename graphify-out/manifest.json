@@ -1,9 +1,9 @@
 {
   "configuracion.json": {
-    "mtime": 1793849820.687313,
-    "seen": 1793852890.3945513,
-    "ast_hash": "a12d723fa0c46093510d1c71fa83158d",
-    "semantic_hash": "a12d723fa0c46093510d1c71fa83158d"
+    "mtime": 1793856553.5188496,
+    "seen": 1793858742.0024977,
+    "ast_hash": "9758db1b50e3eb209f17b4b19a08f7d0",
+    "semantic_hash": "9758db1b50e3eb209f17b4b19a08f7d0"
   },
   "docs/entregas/U1/notebooks_texto/U1_exploracion_codigo.py": {
     "mtime": 1793851585.5892625,
@@ -18,10 +18,10 @@
     "semantic_hash": "791c6c39679e581c375fab6081d136d9"
   },
   "docs/u3_texto/U3_integrador_codigo.py": {
-    "mtime": 1793851602.6815104,
-    "seen": 1793852890.3945627,
-    "ast_hash": "42f051c6a9b3386f7caa86a8d8b6c1e5",
-    "semantic_hash": "42f051c6a9b3386f7caa86a8d8b6c1e5"
+    "mtime": 1793857580.107996,
+    "seen": 1793858742.0025134,
+    "ast_hash": "076ccaa782763468206d4f922404a3b9",
+    "semantic_hash": "076ccaa782763468206d4f922404a3b9"
   },
   "herramientas/preparar_ucdp.py": {
     "mtime": 1793846377.4400842,
@@ -30,16 +30,16 @@
     "semantic_hash": "a7e7f95647a56885dd146d1b444f1106"
   },
   "informe/construir_informe.py": {
-    "mtime": 1793851524.2134275,
-    "seen": 1793852890.3945653,
-    "ast_hash": "9edd20d5a8712a6dfdecaae381286e01",
-    "semantic_hash": "9edd20d5a8712a6dfdecaae381286e01"
+    "mtime": 1793857604.933108,
+    "seen": 1793858742.0025172,
+    "ast_hash": "3379fab599572c3a19e12843ea3ce6d6",
+    "semantic_hash": "3379fab599572c3a19e12843ea3ce6d6"
   },
   "informe/generar_figuras.py": {
-    "mtime": 1793851524.2139113,
-    "seen": 1793852890.3945668,
-    "ast_hash": "b194e45378ed7a4b085e5de1cae2761a",
-    "semantic_hash": "b194e45378ed7a4b085e5de1cae2761a"
+    "mtime": 1793857448.9236727,
+    "seen": 1793858742.0025184,
+    "ast_hash": "c0e4c21012cb3894d58aabc25179329f",
+    "semantic_hash": "c0e4c21012cb3894d58aabc25179329f"
   },
   "src/perfil_amenaza/__init__.py": {
     "mtime": 1793838966.6844423,
@@ -60,28 +60,28 @@
     "semantic_hash": "567d87b1645d2cc6af0485080148910a"
   },
   "src/perfil_amenaza/evaluacion.py": {
-    "mtime": 1793839225.2404578,
-    "seen": 1793852890.394571,
-    "ast_hash": "4f41c5eb8abe3da178cd093b08ead3cf",
-    "semantic_hash": "4f41c5eb8abe3da178cd093b08ead3cf"
+    "mtime": 1793855597.378234,
+    "seen": 1793858742.002525,
+    "ast_hash": "b2b7368e358c7c0a7738732d003b974c",
+    "semantic_hash": "b2b7368e358c7c0a7738732d003b974c"
   },
   "src/perfil_amenaza/graficos.py": {
-    "mtime": 1793842061.1345305,
-    "seen": 1793852890.3945723,
-    "ast_hash": "4b1cb15b02903bb9cffe21c0278218be",
-    "semantic_hash": "4b1cb15b02903bb9cffe21c0278218be"
+    "mtime": 1793855834.678467,
+    "seen": 1793858742.002527,
+    "ast_hash": "df532ddf265afa5ce40649a3eb51ee87",
+    "semantic_hash": "df532ddf265afa5ce40649a3eb51ee87"
   },
   "src/perfil_amenaza/modelo.py": {
-    "mtime": 1793840290.6089838,
-    "seen": 1793852890.3945732,
-    "ast_hash": "f2b7140f492dfaa7eb9a1ca17a037cb6",
-    "semantic_hash": "f2b7140f492dfaa7eb9a1ca17a037cb6"
+    "mtime": 1793855602.9329581,
+    "seen": 1793858742.0025287,
+    "ast_hash": "0c690a5b89832877ea333c0eea59beac",
+    "semantic_hash": "0c690a5b89832877ea333c0eea59beac"
   },
   "src/perfil_amenaza/pipeline.py": {
-    "mtime": 1793841987.4331234,
-    "seen": 1793852890.3945744,
-    "ast_hash": "4d3e62b7811139f3d6b7dca329ee85d1",
-    "semantic_hash": "4d3e62b7811139f3d6b7dca329ee85d1"
+    "mtime": 1793855637.8569536,
+    "seen": 1793858742.00253,
+    "ast_hash": "9b5a2b3de694ae50f134fe18385d5da2",
+    "semantic_hash": "9b5a2b3de694ae50f134fe18385d5da2"
   },
   "src/perfil_amenaza/variables.py": {
     "mtime": 1793840407.3271997,
@@ -90,10 +90,10 @@
     "semantic_hash": "3aa6ec6fb0458113d936a97ee69a9f7e"
   },
   "tests/test_pipeline.py": {
-    "mtime": 1793840333.7285237,
-    "seen": 1793852890.394576,
-    "ast_hash": "0a0421b5053d03935b325f479e19569d",
-    "semantic_hash": "0a0421b5053d03935b325f479e19569d"
+    "mtime": 1793855658.190492,
+    "seen": 1793858742.002533,
+    "ast_hash": "fd0ec12f0562293c70a1f034c8095ea4",
+    "semantic_hash": "fd0ec12f0562293c70a1f034c8095ea4"
   },
   "CLAUDE.md": {
     "mtime": 1793851748.5309896,
@@ -102,16 +102,16 @@
     "semantic_hash": "e9d9cd9c792990243c0ad9b870300247"
   },
   "CONTEXTO_PROYECTO.md": {
-    "mtime": 1793851731.3269887,
-    "seen": 1793852890.3945782,
-    "ast_hash": "542a7f7579eb86b9947381c50768df3b",
-    "semantic_hash": "542a7f7579eb86b9947381c50768df3b"
+    "mtime": 1793857563.493959,
+    "seen": 1793858742.0025342,
+    "ast_hash": "f2ae9d621ca4cee93ddfe7f757ee1822",
+    "semantic_hash": "f2ae9d621ca4cee93ddfe7f757ee1822"
   },
   "README.md": {
-    "mtime": 1793851748.5502665,
-    "seen": 1793852890.394579,
-    "ast_hash": "6cb669752ec9dd0c20c9817070ea94a8",
-    "semantic_hash": "6cb669752ec9dd0c20c9817070ea94a8"
+    "mtime": 1793856335.1143796,
+    "seen": 1793858742.0025356,
+    "ast_hash": "ab69abb5605f802fc42ca1b12d6bd6b5",
+    "semantic_hash": "ab69abb5605f802fc42ca1b12d6bd6b5"
   },
   "docs/entregas/U1/notebooks_texto/U1_exploracion_parte01_parte_1.md": {
     "mtime": 1793851585.589405,
@@ -156,16 +156,16 @@
     "semantic_hash": "7584baf62d1b39891d4ae1387be259e1"
   },
   "docs/u3_texto/U3_integrador_texto.md": {
-    "mtime": 1793851602.6789808,
-    "seen": 1793852890.394587,
-    "ast_hash": "2b7a1371f01f57c356932a69777c4700",
-    "semantic_hash": "2b7a1371f01f57c356932a69777c4700"
+    "mtime": 1793857580.1073549,
+    "seen": 1793858742.002537,
+    "ast_hash": "9b25f5a8636591453e709cb5c6bf45ff",
+    "semantic_hash": "9b25f5a8636591453e709cb5c6bf45ff"
   },
   "requirements.txt": {
-    "mtime": 1793840407.3334262,
-    "seen": 1793852890.3945882,
-    "ast_hash": "98f9c1c5068ee4e8468cef4d9015d042",
-    "semantic_hash": "98f9c1c5068ee4e8468cef4d9015d042"
+    "mtime": 1793856274.4279807,
+    "seen": 1793858742.0025382,
+    "ast_hash": "40675d695975ba8bed95a65a891ee56c",
+    "semantic_hash": "40675d695975ba8bed95a65a891ee56c"
   },
   "docs/entregas/U1/Proyecto_Aplicacion_U1_LADS_JDSM.pdf": {
     "mtime": 1793851585.57898,
@@ -204,9 +204,21 @@
     "semantic_hash": "06b8a87470b62099af7e30c47a24a3ce"
   },
   "informe/Informe_U3_Proyecto_Integrador.pdf": {
-    "mtime": 1793851556.262978,
-    "seen": 1793852890.3945954,
-    "ast_hash": "e6955103fc1f98e7b606bc9631edf728",
-    "semantic_hash": "e6955103fc1f98e7b606bc9631edf728"
+    "mtime": 1793857609.0530775,
+    "seen": 1793858742.0025427,
+    "ast_hash": "0677ff4994dcc52e02dbd3612a7f8c28",
+    "semantic_hash": "0677ff4994dcc52e02dbd3612a7f8c28"
+  },
+  "revision/REVISION_U3.md": {
+    "mtime": 1793857726.7380178,
+    "seen": 1793858742.0025399,
+    "ast_hash": "64d16f465b632786268a48a905085c67",
+    "semantic_hash": "64d16f465b632786268a48a905085c67"
+  },
+  "salidas_u3/TARJETA_MODELO.md": {
+    "mtime": 1793857288.866591,
+    "seen": 1793858742.0025413,
+    "ast_hash": "7dbbe42935a22d3282c221fb35c4726e",
+    "semantic_hash": "7dbbe42935a22d3282c221fb35c4726e"
   }
 }
