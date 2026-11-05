@@ -63,7 +63,7 @@ ax.axvline(.5, color=EJE, lw=1); ax.axhline(UMBRAL, color=EJE, lw=1)
 ax.axvspan(.4, .6, color=GRID, alpha=.5, lw=0, zorder=0)
 ax.text(.02, .97, "falso positivo", fontsize=8.5, color=TENUE, va="top"); ax.text(.98, .03, "falso negativo", fontsize=8.5, color=TENUE, ha="right")
 ax.set_xlabel("Proporción observada de eventos C en t ($s^C$); banda gris: ±10 pp del umbral"); ax.set_ylabel("P(C) del modelo final (información de t-1)")
-ax.set_title("Errores del modelo final, 2023-2026 (etiquetados)"); ax.legend(fontsize=8.5, title="año", loc="center right")
+ax.set_title("Errores del modelo final, 2023–2026 (etiquetados)"); ax.legend(fontsize=8.5, title="año", loc="center right")
 fig.tight_layout(); guardar(fig, "fig12_errores"); plt.show()
 """)
 
@@ -372,7 +372,7 @@ with mpl.rc_context({"font.size": 7.5, "axes.titlesize": 8, "axes.labelsize": 7.
     for xi, v in zip(x, ESC["LL media"]):
         ax.text(xi, v + .005, f"{v:.3f}", ha="center", fontsize=6.5)
     ax.axhline(M_PERS["Log-loss"], color=COL["pers"], ls="--", lw=1); ax.text(len(ESC) - .5, M_PERS["Log-loss"], "persistencia", ha="right", va="bottom", fontsize=6.5)
-    ax.set_xticks(x, ESC.index, rotation=12); ax.set_ylabel("Log-loss 2023-2025"); ax.set_ylim(.25, ESC["LL media"].max() * 1.1)
+    ax.set_xticks(x, ESC.index, rotation=12); ax.set_ylabel("Log-loss 2023–2025"); ax.set_ylim(.25, ESC["LL media"].max() * 1.1)
     ax.set_title("Escalera de mejora (media ± DE entre semillas)"); fig.tight_layout(); guardar(fig, "R1_escalera", DIR_INF, 300); plt.close(fig)
     # R2 antes vs después por año
     fig, ax = plt.subplots(figsize=(6.6, 2.5))

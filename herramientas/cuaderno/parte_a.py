@@ -219,7 +219,7 @@ fig, ax = plt.subplots(figsize=(7.2, 5.4))
 ax.scatter(ctrl["s_C_parcial"], ctrl["s_C"], s=26, c=np.where(ctrl.coincide, COL["mlp"], COL["A"]), edgecolor=FONDO, lw=.8, zorder=3)
 ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.axvline(.5, color=TENUE, lw=.8, ls="--"); ax.axhline(.5, color=TENUE, lw=.8, ls="--")
 ax.set_xlabel(f"$s^C$ con las primeras {N_SEM_2026} semanas"); ax.set_ylabel("$s^C$ con el año completo")
-ax.set_title(f"Etiqueta parcial vs. completa 2021-2025: {COINCIDENCIA_PARCIAL:.1%} de coincidencia")
+ax.set_title(f"Etiqueta parcial vs. completa 2021–2025: {COINCIDENCIA_PARCIAL:.1%} de coincidencia")
 ax.legend(handles=[Line2D([], [], marker="o", ls="", color=COL["mlp"], label="misma etiqueta"),
                    Line2D([], [], marker="o", ls="", color=COL["A"], label="etiqueta distinta")], loc="upper left")
 fig.tight_layout(); guardar(fig, "fig01_etiqueta_parcial"); plt.show()
@@ -297,7 +297,7 @@ ax = axes[1]
 for clase, color in [(0, COL["D"]), (1, COL["C"])]:
     s = datos[datos.y == clase]
     ax.scatter(s["m1_sC_t1"], s["d1_sC_H2"], s=22, color=color, alpha=.8, edgecolor=FONDO, lw=.6, label=f"real {'C' if clase else 'D'} en t")
-ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t-1 → t (2021-2025)")
+ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t−1 → t (2021–2025)")
 ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.axhline(.5, color=TENUE, lw=.8, ls="--"); ax.axvline(.5, color=TENUE, lw=.8, ls="--")
 ax.set_xlabel("$m_1$: s_C de todo t-1"); ax.set_ylabel("$d_1$: s_C del 2.º semestre de t-1")
 ax.set_title("(b) Memoria anual vs. semestre reciente"); ax.legend(fontsize=7.5, loc="upper left")
@@ -345,6 +345,8 @@ se agregó después de la revisión del informe y no cambió el modelo adoptado.
    cumple, se prefiere la variante más simple (espíritu de la regla de 1 EE de la U2, D7). El EE mide el ruido del
    entrenamiento entre semillas, no el del muestreo de departamentos. En I4, cuya hipótesis es espacial, la regla se
    aplica a la validación espacial y se exige no empeorar la temporal. La regla está en `evaluacion.regla_retencion`.
+   Las tablas de decisión agregan, como información y no como criterio, el IC 95 % de la misma diferencia
+   remuestreando departamentos completos (`evaluacion.ic_pareado_semillas`), que sí refleja el muestreo de territorios.
 6. **Presupuesto de entrenamiento fijo** de 560 pasos de gradiente (D10 de la U2), salvo cuando el presupuesto es
    la variable estudiada (§6.8). Así ninguna partición usa sus propios datos de prueba para detener el
    entrenamiento.
@@ -365,25 +367,12 @@ code(r"""
 SEM5 = (1, 2, 3, 4, 5)
 RES = {}          # nombre -> {"oos": predicciones, "por_semilla": métricas, "P": matriz semillas x filas}
 
-def particiones_de(tipo, base):
-    return {"movil": E.particiones_origen_movil, "espacial": E.particiones_espaciales,
-            "espacio-temporal": E.particiones_espacio_temporales}[tipo](base)
-
 def evaluar(spec, semillas=SEM5, particiones="movil", base=None, seq=None, clave=None):
-    # Entrena la especificación con cada semilla por separado en cada pliegue y guarda las predicciones OOS.
+    # La lógica está en pipeline.evaluar_semillas (cada semilla por separado en cada pliegue); aquí solo se guarda
+    # el resultado en la caché RES para compararlo después.
     base = datos if base is None else base; seq = SEQ if seq is None else seq
-    clave = clave or spec.nombre
-    semillas = semillas if spec.red is not None else (0,)
-    Ps, filas = [], []
-    for s in semillas:
-        sp = replace(spec, semillas=(s,))
-        part = particiones_de(particiones, base)
-        oos = E.validar(base, P.ajustar_predecir(base, seq, sp), part)
-        Ps.append(oos[spec.nombre].values)
-        filas.append({"semilla": s, **E.metricas(oos["y"], oos[spec.nombre], transicion=oos["transicion"])})
-    oos = oos.drop(columns=[spec.nombre]); oos["p"] = np.mean(Ps, axis=0)
-    RES[clave] = {"oos": oos, "por_semilla": pd.DataFrame(filas).set_index("semilla"), "P": np.array(Ps), "spec": spec}
-    return RES[clave]
+    RES[clave or spec.nombre] = P.evaluar_semillas(spec, base, seq, semillas, particiones)
+    return RES[clave or spec.nombre]
 
 def resumen(claves, ensamble=False):
     # Tabla media ± desv. entre semillas (o métricas del ensamble de semillas si ensamble=True).
@@ -402,13 +391,19 @@ def decidir(candidata, referencia, nombre=None):
     # Regla de retención (§3.1, regla 5) con diferencias pareadas por semilla; la regla vive en el paquete.
     a, b = RES[candidata]["por_semilla"], RES[referencia]["por_semilla"]
     r = E.regla_retencion(a["Log-loss"].values, b["Log-loss"].values, a["ROC-AUC"].values, b["ROC-AUC"].values)
+    # IC 95 % de la misma diferencia remuestreando departamentos (muestreo de territorios, no solo de semillas)
+    oa, ob = RES[candidata]["oos"], RES[referencia]["oos"]
+    ic = "–"
+    if len(oa) == len(ob) and (oa["fila"].values == ob["fila"].values).all():
+        c = E.ic_pareado_semillas(oa["y"], RES[candidata]["P"], RES[referencia]["P"], oa["depto"])
+        ic = f"[{c['IC95 inf']:+.3f}; {c['IC95 sup']:+.3f}]".replace(".", ",")
     return {"Intervención": nombre or candidata, "Referencia": referencia, "ΔLog-loss": r["ΔLog-loss"], "EE": r["EE"],
-            "ΔAUC": r["ΔAUC"], "Decisión": "se retiene" if r["retiene"] else "no se retiene"}
+            "IC95 Δ (depto)": ic, "ΔAUC": r["ΔAUC"], "Decisión": "se retiene" if r["retiene"] else "no se retiene"}
 
 def persistencia_oos(particiones="movil", base=None, calibrada=False):
     base = datos if base is None else base
     fn_p = P.persistencia_calibrada if calibrada else P.persistencia
-    return E.validar(base, lambda tr, te: {"p": fn_p(base, tr, te)}, particiones_de(particiones, base))
+    return E.validar(base, lambda tr, te: {"p": fn_p(base, tr, te)}, E.particiones(particiones, base))
 
 PERS = persistencia_oos()
 M_PERS = E.metricas(PERS["y"], PERS["p"], transicion=PERS["transicion"])
@@ -428,7 +423,7 @@ for fila, v in enumerate((2023, 2024, 2025, 2026)):
             ax.text(anio, 3 - fila, rol[0], ha="center", va="center", fontsize=7.5, color="white" if rol[1] != GRID else TINTA)
 ax.set_yticks(range(4), ["Prueba 2026\n(una vez)", "Pliegue 2025", "Pliegue 2024", "Pliegue 2023"])
 ax.set_xticks(range(2021, 2027)); ax.set_xlim(2020.5, 2026.5); ax.set_ylim(-.6, 3.6); ax.grid(False)
-ax.set_title("Protocolo U3: selección con origen móvil 2023-2025; 2026 se evalúa una sola vez al final")
+ax.set_title("Protocolo U3: selección con origen móvil 2023–2025; 2026 se evalúa una sola vez al final")
 guardar(fig, "fig03_protocolo"); plt.show()
 """)
 

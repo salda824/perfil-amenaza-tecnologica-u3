@@ -214,7 +214,7 @@ for nombre, spec_c in [("Base U2", BASE_U2), ("Final U3", FINAL)]:
 fig, axes = plt.subplots(1, 2, figsize=(14, 4.5))
 for ax, (nombre, Hs), color in zip(axes, CURVAS.items(), [COL["mlp"], COL["u3"]]):
     tr_ = np.array([h["bce_tr"] for h in Hs]); va_ = np.array([h["bce_va"] for h in Hs]); ep_ = Hs[0]["epoca"]
-    ax.fill_between(ep_, tr_.min(0), tr_.max(0), color=color, alpha=.12, lw=0); ax.plot(ep_, tr_.mean(0), color=color, lw=1.6, ls=":", label="entrenamiento 2021-2024")
+    ax.fill_between(ep_, tr_.min(0), tr_.max(0), color=color, alpha=.12, lw=0); ax.plot(ep_, tr_.mean(0), color=color, lw=1.6, ls=":", label="entrenamiento 2021–2024")
     ax.fill_between(ep_, va_.min(0), va_.max(0), color=COL["val"], alpha=.12, lw=0); ax.plot(ep_, va_.mean(0), color=COL["val"], lw=1.8, label="validación 2025")
     k_min = int(np.argmin(va_.mean(0))); ax.scatter(ep_[k_min], va_.mean(0)[k_min], color=TINTA, zorder=4, s=25)
     ax.axvline(EP_560, color=TINTA, lw=1, ls="--"); ax.text(EP_560, .62, " 560 pasos", fontsize=8)
@@ -390,14 +390,14 @@ for k, (tit, y_, p_) in enumerate(casos):
 ax = fig.add_subplot(gs[1, :2])
 for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Persistencia calibrada", "pers_cal", COL["A"], "-."), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Logística", "logistica", COL["logit"], "-"), ("Después (U3)", "final", COL["u3"], "-")]:
     fpr, tpr, _ = roc_curve(oosF.y, oosF[c]); ax.plot(fpr, tpr, color=color, ls=ls, label=f"{nombre}: 2023-25 AUC {roc_auc_score(oosF.y, oosF[c]):.3f} · 2026 AUC {roc_auc_score(T26.y, T26[c]):.3f}")
-ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.set_xlabel("1 − especificidad"); ax.set_ylabel("Sensibilidad C"); ax.set_title("(e) Curvas ROC · origen móvil 2023-2025"); ax.legend(fontsize=7.8, loc="lower right")
+ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.set_xlabel("1 − especificidad"); ax.set_ylabel("Sensibilidad C"); ax.set_title("(e) Curvas ROC · origen móvil 2023–2025"); ax.legend(fontsize=7.8, loc="lower right")
 ax = fig.add_subplot(gs[1, 2:])
 anual = pd.concat([oosF.assign(particion=oosF.particion.astype(str)), T26.assign(particion="2026")])
 for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Persistencia calibrada", "pers_cal", COL["A"], "-."), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Después (U3)", "final", COL["u3"], "-")]:
     s_ = anual.groupby("particion").apply(lambda g: E.bce(g.y, g[c]))
     ax.plot(s_.index, s_.values, color=color, ls=ls, marker="o", mec=FONDO, mew=1.5, ms=7, label=nombre)
 ax.axvspan(2.6, 3.4, color=COL["test"], alpha=.08, lw=0); ax.text(3, ax.get_ylim()[0] + .005, "prueba única", ha="center", va="bottom", fontsize=8.5)
-ax.set_ylabel("Log-loss"); ax.set_title("(f) Log-loss por año (2023-2025 origen móvil, 2026 prueba)"); ax.legend(fontsize=8.5)
+ax.set_ylabel("Log-loss"); ax.set_title("(f) Log-loss por año (2023–2025 origen móvil, 2026 prueba)"); ax.legend(fontsize=8.5)
 guardar(fig, "fig11_antes_despues"); plt.show()
 """)
 

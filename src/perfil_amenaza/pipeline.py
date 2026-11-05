@@ -20,7 +20,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field, asdict, replace
 
 import numpy as np
 import pandas as pd
@@ -102,6 +102,25 @@ def ajustar_predecir(datos, SEQ, spec):
         mods, esc = entrenar_especificacion(datos, SEQ, spec, tr)
         return {spec.nombre: predecir_especificacion(mods, esc, datos, SEQ, spec, te)}
     return f
+
+
+def evaluar_semillas(spec, datos, SEQ, semillas=(1, 2, 3, 4, 5), particiones="movil") -> dict:
+    """
+    Entrena `spec` con cada semilla por separado en cada pliegue del esquema `particiones` y devuelve:
+    "oos" (predicciones fuera de muestra, con "p" = media entre semillas), "por_semilla" (métricas de cada red),
+    "P" (matriz semillas × filas) y "spec". Es la unidad de comparación de la regla de retención. Un modelo
+    determinista (spec.red is None) se entrena una sola vez.
+    """
+    semillas = tuple(semillas) if spec.red is not None else (0,)
+    part = list(E.particiones(particiones, datos))
+    Ps, filas = [], []
+    for s in semillas:
+        oos = E.validar(datos, ajustar_predecir(datos, SEQ, replace(spec, semillas=(s,))), part)
+        Ps.append(oos[spec.nombre].values)
+        filas.append({"semilla": s, **E.metricas(oos["y"], oos[spec.nombre], transicion=oos["transicion"])})
+    oos = oos.drop(columns=[spec.nombre]); oos["p"] = np.mean(Ps, axis=0)
+    return {"oos": oos, "por_semilla": pd.DataFrame(filas).set_index("semilla"), "P": np.array(Ps), "spec": spec}
+
 
 
 def persistencia(datos, tr, te):

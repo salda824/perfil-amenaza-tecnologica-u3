@@ -119,7 +119,7 @@ fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.25), sharey=True)
 for ax, (nombre, spec, color) in zip(axes, [("Modelo base U2", BASE, COL["mlp"]), ("Modelo final U3", FINAL, COL["u3"])]):
     H = [curva(spec, s, 3 * ep560) for s in (1, 2, 3, 4, 5)]
     trn, val = np.array([h["bce_tr"] for h in H]), np.array([h["bce_va"] for h in H]); ep = H[0]["epoca"]
-    ax.fill_between(ep, trn.min(0), trn.max(0), color=color, alpha=.15, lw=0); ax.plot(ep, trn.mean(0), color=color, ls=":", label="entrenamiento 2021-2024")
+    ax.fill_between(ep, trn.min(0), trn.max(0), color=color, alpha=.15, lw=0); ax.plot(ep, trn.mean(0), color=color, ls=":", label="entrenamiento 2021–2024")
     ax.fill_between(ep, val.min(0), val.max(0), color=COL["val"], alpha=.15, lw=0); ax.plot(ep, val.mean(0), color=COL["val"], label="validación 2025")
     ax.axvline(ep560, color=TINTA, lw=.8, ls="--")
     ax.text(ep560 + 2, .64, "560 pasos", fontsize=6)
@@ -144,7 +144,7 @@ for xi, v in zip(x, esc["LL media"]):
     ax.text(xi, v + .007, f"{v:.3f}".replace(".", ","), ha="center", fontsize=6.2)
 pers = E.bce(oos.y, oos.Persistencia)
 ax.axhline(pers, color=COL["pers"], ls="--", lw=.9); ax.text(len(esc) - .45, pers + .002, "persistencia", ha="right", va="bottom", fontsize=6)
-ax.set_xticks(x, [s.replace("+ ", "+\n") for s in esc.index]); ax.set_ylim(.25, .41); ax.set_ylabel("Log-loss 2023-2025")
+ax.set_xticks(x, [s.replace("+ ", "+\n") for s in esc.index]); ax.set_ylim(.25, .41); ax.set_ylabel("Log-loss 2023–2025")
 ax.set_title("(a) Escalera de mejora (media ± DE, 5 semillas)")
 ax = axes[1]; x = np.arange(3)
 vals_in = [m_in.media, u_in.media, r24.loc[DEF]]; vals_25 = [r25.loc[tuple(m_in[K])], r25.loc[tuple(u_in[K])], r25.loc[DEF]]
@@ -193,7 +193,7 @@ for nombre, c, color, ls in [("Persistencia", "Persistencia", COL["pers"], "--")
                              ("Antes (U2)", "MLP base U2", COL["mlp"], ":"), ("Después (U3)", "MLP U3", COL["u3"], "-")]:
     f, t, _ = roc_curve(oos.y, oos[c]); ax.plot(f, t, color=color, ls=ls, label=f"{nombre} {roc_auc_score(oos.y, oos[c]):.3f}".replace(".", ","))
 ax.plot([0, 1], [0, 1], color=EJE, lw=.7); ax.set_xlabel("1 − especificidad"); ax.set_ylabel("Sensibilidad C")
-ax.set_title("(a) ROC 2023-2025 (AUC)"); ax.legend(loc="lower right")
+ax.set_title("(a) ROC 2023–2025 (AUC)"); ax.legend(loc="lower right")
 ax = axes[1]
 an = pd.concat([oos.assign(p_=oos.particion.astype(str)), t26.assign(p_="2026")])
 for nombre, c, color, ls in [("Persistencia", "Persistencia", COL["pers"], "--"), ("Persist. calibrada", "Persistencia calibrada", COL["A"], "-."),
@@ -211,6 +211,34 @@ ax.set_xticks([0, 1], ["D", "C"]); ax.set_yticks([0, 1], ["D", "C"]); ax.set_xla
 ax.set_title("(c) Después · prueba 2026")
 fig.tight_layout(); guardar(fig, "R06_antes_despues")
 
+
+def _rotular(ax, fig, xs, ys, textos, fs=4.6, sep=1.5, iters=200):
+    """Rótulos sin solaparse: parten a la derecha del punto y se separan en vertical (repulsión simple, determinista);
+    si un rótulo se aleja de su punto se dibuja una línea guía."""
+    fig.canvas.draw(); tr = ax.transData
+    pts = tr.transform(np.column_stack([xs, ys]))
+    T = [ax.text(*tr.inverted().transform(pt + [3, 2]), t, fontsize=fs, color=TINTA2, va="bottom", zorder=4)
+         for pt, t in zip(pts, textos)]
+    ren = fig.canvas.get_renderer()
+    pos = np.array([pt + [3, 2] for pt in pts], float)
+    wh = np.array([[b.width, b.height] for b in (t.get_window_extent(ren) for t in T)])
+    for _ in range(iters):
+        movido = False
+        for i in range(len(T)):
+            for j in range(i + 1, len(T)):
+                dx = min(pos[i, 0] + wh[i, 0], pos[j, 0] + wh[j, 0]) - max(pos[i, 0], pos[j, 0])
+                dy = min(pos[i, 1] + wh[i, 1], pos[j, 1] + wh[j, 1]) - max(pos[i, 1], pos[j, 1])
+                if dx > 0 and dy > -sep:
+                    d = (dy + sep) / 2 + .1; arriba = i if pos[i, 1] >= pos[j, 1] else j; abajo = j if arriba == i else i
+                    pos[arriba, 1] += d; pos[abajo, 1] -= d; movido = True
+        if not movido:
+            break
+    for t, pt, q, (w, h) in zip(T, pts, pos, wh):
+        t.set_position(tr.inverted().transform(q))
+        if np.hypot(*(q + [0, h / 2] - pt)) > 9:
+            a, b = tr.inverted().transform(pt), tr.inverted().transform(q + [0, h / 2])
+            ax.plot([a[0], b[0]], [a[1], b[1]], color=TENUE, lw=.3, zorder=2)
+
 # ---------------------------------------------------------------- R07 errores + dependencia parcial
 tr26 = (datos.anio <= 2025).values
 mods, esc_ = P.entrenar_especificacion(datos, SEQ, FINAL, tr26)
@@ -223,17 +251,13 @@ Z = M.predecir_ensamble(mods, esc_.transformar(rep_[FINAL.variables].values)).re
 fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.55), gridspec_kw={"width_ratios": [1.15, 1]})
 ax = axes[0]
 fu = pd.concat([oos, t26.assign(particion="2026")])
-for anio, color in zip(["2023", "2024", "2025", "2026"], [COL["mlp"], COL["logit"], COL["val"], COL["test"]]):
+for anio, color in zip(["2023", "2024", "2025", "2026"], [COL["mlp"], COL["logit"], "#7b52c4", COL["test"]]):
     s = fu[fu.particion.astype(str) == anio]; ax.scatter(s.s_C, s["MLP U3"], s=10, color=color, edgecolor=FONDO, lw=.3, label=anio, zorder=3)
 err = fu[(fu["MLP U3"] >= .5) != (fu.y == 1)]
 CORTO = {"Valle del Cauca": "Valle", "Norte de Santander": "N. Santander"}
-for _, r in err.iterrows():
-    if r.transicion or r.departamento in ("Casanare", "Huila"):
-        ax.annotate(f"{CORTO.get(r.departamento, r.departamento)} {r.anio}", (r.s_C, r["MLP U3"]), xytext=(2, 1.5),
-                    textcoords="offset points", fontsize=4.6, color=TINTA2)
 ax.axvspan(.4, .6, color=GRID, alpha=.6, lw=0, zorder=0); ax.axvline(.5, color=EJE, lw=.7); ax.axhline(.5, color=EJE, lw=.7)
 ax.set_xlabel("Proporción observada de eventos C en t ($s^C$)"); ax.set_ylabel("P(C) del modelo final")
-ax.set_title("(a) Errores 2023-2026 (banda: ±10 pp del umbral)"); ax.legend(loc="upper left", ncol=2, columnspacing=.6)
+ax.set_title("(a) Errores 2023–2026 (banda: ±10 pp del umbral)"); ax.legend(loc="upper left", ncol=2, columnspacing=.6)
 ax = axes[1]
 cs = ax.contourf(gx, gy, Z, levels=np.linspace(0, 1, 11), cmap=G.CMAP_P, vmin=0, vmax=1); ax.contour(gx, gy, Z, levels=[.5], colors=TINTA, linewidths=1)
 for clase, color in [(0, COL["D"]), (1, COL["C"])]:
@@ -241,7 +265,11 @@ for clase, color in [(0, COL["D"]), (1, COL["C"])]:
 ax.grid(False); ax.set_xlabel("$m_1$: proporción C en t−1"); ax.set_ylabel("$x_{2b}$: letalidad (fatalidades/evento)")
 ax.set_title("(b) Dependencia parcial de P(C): memoria × letalidad")
 cb = fig.colorbar(cs, ax=ax, fraction=.05, pad=.02); cb.outline.set_visible(False); cb.ax.tick_params(labelsize=5.5)
-fig.tight_layout(); guardar(fig, "R07_errores_pdp")
+fig.tight_layout()
+sel = err[err.transicion | err.departamento.isin(["Casanare", "Huila"])]
+_rotular(axes[0], fig, sel.s_C.values, sel["MLP U3"].values,
+         [f"{CORTO.get(d, d)} {a}" for d, a in zip(sel.departamento, sel.anio)])
+guardar(fig, "R07_errores_pdp")
 
 # ---------------------------------------------------------------- R08 pipeline + lazo de entrenamiento
 etapas = [("1 · Datos", "contrato, auditoría,\npanel y etiqueta"), ("2 · Variables", "9 predictoras en t−1,\nescalador por pliegue"),

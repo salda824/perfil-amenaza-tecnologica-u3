@@ -360,7 +360,7 @@ for ax, act in zip(axes[:2], ["relu", "tanh"]):
     ax.grid(False); ax.set_title(f"({'ab'[act == 'tanh']}) Log-loss media · {act.upper()} (promedio de L2)")
 ax = axes[2]
 x = np.arange(len(ANIDADA) - 1)
-ax.bar(x - .18, ANIDADA.iloc[:3, 1], width=.34, color=COL["D"], label="2023-2024 (donde se elige)")
+ax.bar(x - .18, ANIDADA.iloc[:3, 1], width=.34, color=COL["D"], label="2023–2024 (donde se elige)")
 ax.bar(x + .18, ANIDADA.iloc[:3, 2], width=.34, color=COL["val"], label="2025 (fuera de la elección)")
 ax.axhline(ANIDADA.iloc[3, 2], color=TINTA, lw=1, ls=":"); ax.text(2.45, ANIDADA.iloc[3, 2], " oráculo 2025", fontsize=8, va="bottom", ha="right")
 ax.set_xticks(x, ["Mínimo\n2023-24", "Regla 1 EE\n2023-24", "Vigente\n(U2)"]); ax.set_ylabel("Log-loss")
@@ -402,7 +402,7 @@ ax = axes[0]
 ax.fill_between(CURVA_K.index, CURVA_K["LL p5"], CURVA_K["LL p95"], color=COL["u3"], alpha=.18, lw=0, label="banda 5-95 % entre sorteos")
 ax.plot(CURVA_K.index, CURVA_K["LL media"], color=COL["u3"], marker="o", label="log-loss media")
 ax.axhline(M_PERS["Log-loss"], color=COL["pers"], ls="--", lw=1.2); ax.text(20, M_PERS["Log-loss"], "persistencia ", ha="right", va="bottom", fontsize=8)
-ax.axvline(K_ENS, color=TINTA, lw=1, ls=":"); ax.set_xlabel("Redes en el ensamble (K)"); ax.set_ylabel("Log-loss origen móvil 2023-2025")
+ax.axvline(K_ENS, color=TINTA, lw=1, ls=":"); ax.set_xlabel("Redes en el ensamble (K)"); ax.set_ylabel("Log-loss origen móvil 2023–2025")
 ax.set_title("(a) El ensamble reduce sobre todo la dispersión"); ax.legend(fontsize=8)
 ax = axes[1]
 orden = np.argsort(r20["oos"]["p"].values)
@@ -475,7 +475,7 @@ for nombre, q, color in [("Sin calibrar", p_ens, COL["u3"]), ("Platt · adelante
     yy_ = yv if nombre != "Persistencia" else PERS["y"].values
     fr, mp = calibration_curve(yy_, q, n_bins=5, strategy="quantile")
     ax.plot(mp, fr, marker="o", color=color, mec=FONDO, mew=1.5, label=f"{nombre} (ECE {E.ece(yy_, q):.3f})")
-ax.set_xlabel("P(C) media predicha"); ax.set_ylabel("Fracción observada de C"); ax.set_title("(a) Confiabilidad · origen móvil 2023-2025"); ax.legend(fontsize=8)
+ax.set_xlabel("P(C) media predicha"); ax.set_ylabel("Fracción observada de C"); ax.set_title("(a) Confiabilidad · origen móvil 2023–2025"); ax.legend(fontsize=8)
 ax = axes[1]
 for v, color in zip(sorted(oos7.particion.unique()), [COL["mlp"], COL["logit"], COL["test"]]):
     ax.plot(U.index, U[v], color=color, lw=1.4, label=f"{v} (óptimo {U_OPT[v]:.2f})")

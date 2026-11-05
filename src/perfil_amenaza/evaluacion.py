@@ -88,6 +88,29 @@ def regla_retencion(ll_a, ll_b, auc_a, auc_b, tol_auc=0.01) -> dict:
     return {"ΔLog-loss": float(d_ll.mean()), "EE": ee, "ΔAUC": float(d_auc.mean()), "retiene": retiene}
 
 
+def ic_pareado_semillas(y, Pa, Pb, grupos, n=1000, semilla=C.SEED):
+    """
+    Δlog-loss media entre semillas (A − B) con IC 95 % por bootstrap de departamentos completos. `Pa` y `Pb` son
+    matrices semillas × filas con las mismas semillas en el mismo orden (o una sola fila determinista, que se compara
+    contra cada semilla de la otra). En cada réplica se remuestrean departamentos y se promedia la diferencia de
+    log-loss de cada semilla: el intervalo refleja el muestreo de territorios, no solo el ruido del entrenamiento.
+    """
+    y = np.asarray(y).astype(int)
+    Pa, Pb = np.atleast_2d(np.asarray(Pa, float)), np.atleast_2d(np.asarray(Pb, float))
+    if len(Pa) == 1 and len(Pb) > 1:
+        Pa = np.repeat(Pa, len(Pb), axis=0)
+    elif len(Pb) == 1 and len(Pa) > 1:
+        Pb = np.repeat(Pb, len(Pa), axis=0)
+    if Pa.shape != Pb.shape or Pa.shape[1] != len(y):
+        raise ValueError("Pa y Pb deben tener las mismas semillas y las mismas filas que y")
+    delta = lambda idx: float(np.mean([bce(y[idx], a[idx]) - bce(y[idx], b[idx]) for a, b in zip(Pa, Pb)]))
+    g = np.asarray(grupos); unicos = np.unique(g); pos = {u: np.where(g == u)[0] for u in unicos}
+    rng = np.random.default_rng(semilla)
+    reps = [delta(np.concatenate([pos[u] for u in rng.choice(unicos, len(unicos))])) for _ in range(n)]
+    lo, hi = np.percentile(reps, [2.5, 97.5])
+    return {"ΔLog-loss": delta(np.arange(len(y))), "IC95 inf": float(lo), "IC95 sup": float(hi)}
+
+
 def comparar_pareado(y, pa, pb, n_boot=2000, semilla=C.SEED, grupos=None):
     """
     Diferencias pareadas A − B (ΔAUC, Δlog-loss, ΔBrier) con IC 95 % por bootstrap y McNemar exacta sobre aciertos.
@@ -211,3 +234,9 @@ def tabla_psi(datos_ref: pd.DataFrame, datos_act: pd.DataFrame, columnas, n_rep=
         filas.append({"variable": c, "PSI": v, "estado": "estable" if v < .1 else ("vigilar" if v < .25 else "deriva"),
                       "p95 sin deriva": p95, "supera el ruido": bool(v > p95)})
     return pd.DataFrame(filas).set_index("variable")
+
+
+def particiones(tipo: str, datos: pd.DataFrame):
+    """Esquemas de validación por nombre: "movil", "espacial" o "espacio-temporal"."""
+    return {"movil": particiones_origen_movil, "espacial": particiones_espaciales,
+            "espacio-temporal": particiones_espacio_temporales}[tipo](datos)
