@@ -1,0 +1,22 @@
+# Datos crudos y salidas tabulares (el grafo usa los documentos que los describen)
+datos/
+salidas_u3/*.csv
+salidas_u3/figuras/
+salidas_u3/figuras_informe/
+salidas_u3/modelos/
+referencias_u2/
+informe/figuras/
+# Cuadernos: se leen desde su conversión a texto (docs/u3_texto, docs/entregas/*/notebooks_texto)
+*.ipynb
+# Generador del cuaderno: duplica el texto de docs/u3_texto
+herramientas/cuaderno/
+# Duplicados y binarios
+AGENTS.md
+informe/*.docx
+docs/entregas/U2/Informe_U2_Modelo_Base.docx
+*.png
+*.jpg
+*.keras
+*.zip
+*.json
+!configuracion.json

@@ -2,6 +2,9 @@
 
 Redes Neuronales · Universidad de La Sabana · Laura Alejandra Díaz Sastoque y Juan Diego Saldarriaga Muñoz
 
+> **¿Llegas sin contexto (persona o IA)?** Lee [`CONTEXTO_PROYECTO.md`](CONTEXTO_PROYECTO.md) y abre el grafo
+> `graphify-out/graph.html`. El informe final está en `informe/Informe_U3_Proyecto_Integrador.pdf`.
+
 El modelo estima, con la información disponible al cierre de un año, la probabilidad de que cada departamento de
 Colombia tenga el año siguiente perfil de amenaza **C (armas convencionales y emboscadas)** o **D (mixto)**. Esa
 probabilidad orienta el énfasis tecnológico (ISR, C-UAS, detección de AEI). Este repositorio consolida las Unidades 1
@@ -10,14 +13,19 @@ probabilidad orienta el énfasis tecnológico (ISR, C-UAS, detección de AEI). E
 ## Estructura
 
 ```
+CONTEXTO_PROYECTO.md      documento maestro del proyecto (U1, U2, U3, resultados, pendientes)
+CLAUDE.md / AGENTS.md     instrucciones para asistentes de IA
 configuracion.json        modelo final y protocolo (lo escribe la §8.1 del cuaderno)
-datos/                    export semanal de ACLED + datos/externos/ (coca SIMCI-ODC, bosque GFW; UCDP opcional)
-src/perfil_amenaza/       paquete: config, datos, variables, modelo, evaluacion, pipeline, graficos
-herramientas/             preparar_ucdp.py (reduce UCDP GED a Colombia)
-tests/                    pruebas automáticas (contrato de datos, fuga temporal, escalador, determinismo, réplica U2)
-referencias_u2/           resultados guardados de la Unidad 2 (para comparar "antes vs. después")
 Proyecto_U3_Integrador.ipynb   cuaderno de la entrega: diagnóstico, intervenciones, evaluación e interpretación
+informe/                  informe técnico final (PDF/DOCX) y scripts que lo generan
+src/perfil_amenaza/       paquete: config, datos, variables, modelo, evaluacion, pipeline, graficos
+tests/                    pruebas automáticas (contrato de datos, fuga temporal, escalador, determinismo, réplica U2)
+herramientas/             preparar_ucdp.py (reduce UCDP a Colombia) y cuaderno/ (generador del cuaderno)
+datos/                    export semanal de ACLED + datos/externos/ (coca, bosque, UCDP)
 salidas_u3/               métricas, predicciones, figuras, modelos/perfil_amenaza_u3.keras, TARJETA_MODELO.md
+referencias_u2/           resultados guardados de la Unidad 2 (para comparar "antes vs. después")
+docs/                     guías y rúbricas, entregas U1 y U2, planeación U3 y el cuaderno U3 en texto
+graphify-out/             grafo de conocimiento del proyecto (graph.html, GRAPH_REPORT.md, graph.json)
 ```
 
 ## Uso rápido en Windows (cmd)
