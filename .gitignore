@@ -5,3 +5,6 @@ __pycache__/
 graphify-out/.graphify_python
 graphify-out/.graphify_root
 Proyecto_U3_Integrador_ejecutado.ipynb
+# temporales de graphify --update (se borran al terminar)
+graphify-out/.graphify_*
+!graphify-out/.graphify_labels.json
