@@ -737,24 +737,30 @@ corregida en `decidir`: Δ −0,0035 con EE 0,0043.
 | Extra | `exportar_texto.py` regenera `docs/u3_texto/`; copia el texto de las tablas tal como se muestra, porque un parseo con `thousands='.'` convertía −0,059 en −59 en las tablas con punto decimal | `herramientas/cuaderno/exportar_texto.py`, `docs/u3_texto/*` |
 | Extra | `graficos.tabla` muestra los booleanos como "sí" o "no" | `src/perfil_amenaza/graficos.py` |
 
+**Fase 3 (pendientes menores resueltos después).**
+
+* m12: `evaluacion.ic_pareado_semillas` calcula el IC 95 % de la Δlog-loss media entre semillas remuestreando
+  departamentos, y `decidir` lo agrega como columna informativa a todas las tablas de decisión
+  (`decisiones_intervenciones.csv`). I1 (m₁): −0,036 [−0,056; −0,019]; I2 (d₁): −0,037 [−0,066; −0,011]. Están en el
+  informe (§5), en las lecturas de §6.1 y §6.2 del cuaderno y en la regla 5 de §3.1.
+* k2: el bucle por semillas pasó a `pipeline.evaluar_semillas` y la elección del esquema a `evaluacion.particiones`; en
+  el cuaderno, `evaluar` solo guarda el resultado en la caché.
+* m15: la Figura 7a ubica los rótulos con una repulsión simple y líneas guía, sin solapamientos. Además, 2024 y 2025 tenían
+  el mismo color (`COL["logit"]` y `COL["val"]` son iguales); 2025 tiene ahora color propio.
+* m23: los rangos de años de los títulos y leyendas de las figuras del cuaderno y del informe usan raya.
+
+El cuaderno se ejecutó completo otra vez sin errores. Ninguna métrica ni el modelo adoptado cambiaron; solo se agregó la
+columna de IC. Las 10 pruebas pasan.
+
 **Lo que no se pudo corregir, o se corrigió solo en parte:**
 
 * C6: el acceso del profesor al repositorio depende del usuario (Settings → Collaborators). El informe ya lo anuncia y el
   enlace es clicable.
-* m12: no agregamos al cuaderno ni al informe los IC por departamento de I1 e I2 (anexo A, script c). Habría requerido
-  una celda de código nueva y otra ejecución completa. Los valores están en el anexo A de este reporte y se pueden
-  incorporar en la próxima ejecución.
-* k2: el bucle de la cascada (`evaluar`) sigue en `herramientas/cuaderno/parte_a.py`. En `src` pasaron la regla de
-  retención, la persistencia calibrada y las particiones.
 * M4: mantuvimos GroupKFold de 5 grupos en lugar de volver a dejar un departamento fuera, como en la U2. El informe explica
   la razón (desempate estable desde scikit-learn 1.6 y costo) y la comparación espacio-temporal cubre el problema de
   fondo.
 * M13: el historial de commits sigue mostrando un solo autor. Que Laura haga los commits de documentación depende del
   equipo.
-* m15: algunos rótulos de la Figura 7a todavía se tocan en la zona densa (escaladas de 2025). Se leen, pero no quedan
-  separados del todo.
-* m23: algunos títulos internos de las figuras del cuaderno conservan guion en los rangos (p. ej. "2023-2025"). En el
-  texto y en las leyendas del informe se usa raya.
 * `graphify-out/` se regeneró después del commit de estas correcciones con `graphify --update` (16 archivos
   cambiados; 1.150 nodos, 2.463 aristas y 65 comunidades, sin aristas colgantes).
 * El video (Producto 2) y la sustentación siguen pendientes, fuera del alcance de esta revisión.

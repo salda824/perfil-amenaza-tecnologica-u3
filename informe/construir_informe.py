@@ -466,7 +466,7 @@ p("Frente al modelo de la U2 (una red, semilla 42, reentrenada con los 560 pasos
   "U2 había documentado que esa semilla quedó en la cola desfavorable, así que la comparamos también con la misma "
   "arquitectura base promediada sobre las mismas 10 semillas del modelo final (Tabla 6). Con ensamble en los dos lados, la "
   "log-loss baja de 0,376 a 0,304 en selección (Δ −0,072; IC95 [−0,114; −0,033]) y de 0,470 a 0,380 en 2026 (Δ −0,090; "
-  "IC95 [−0,162; −0,024]); la mejora atribuible a m₁ y d₁ se mantiene con los dos criterios. Las cifras de selección salen "
+  "IC95 [−0,162; −0,024]); la mejora atribuible a m₁ y d₁ se mantiene con los dos criterios. Por separado, cada una también resiste el remuestreo de departamentos: Δ −0,036 para m₁ (IC95 [−0,056; −0,019]) y Δ −0,037 para d₁ (IC95 [−0,066; −0,011]), promediando las 5 semillas de cada variante. Las cifras de selección salen "
   "de una cascada de unas 20 comparaciones sobre las mismas 87 predicciones y por eso son algo optimistas (Cawley y Talbot, "
   "2010); 2026 es la estimación que no pasó por la selección.")
 

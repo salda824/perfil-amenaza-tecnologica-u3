@@ -89,7 +89,7 @@ fig, ax = plt.subplots(figsize=(7.2, 5.4))
 ax.scatter(ctrl["s_C_parcial"], ctrl["s_C"], s=26, c=np.where(ctrl.coincide, COL["mlp"], COL["A"]), edgecolor=FONDO, lw=.8, zorder=3)
 ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.axvline(.5, color=TENUE, lw=.8, ls="--"); ax.axhline(.5, color=TENUE, lw=.8, ls="--")
 ax.set_xlabel(f"$s^C$ con las primeras {N_SEM_2026} semanas"); ax.set_ylabel("$s^C$ con el año completo")
-ax.set_title(f"Etiqueta parcial vs. completa 2021-2025: {COINCIDENCIA_PARCIAL:.1%} de coincidencia")
+ax.set_title(f"Etiqueta parcial vs. completa 2021–2025: {COINCIDENCIA_PARCIAL:.1%} de coincidencia")
 ax.legend(handles=[Line2D([], [], marker="o", ls="", color=COL["mlp"], label="misma etiqueta"),
                    Line2D([], [], marker="o", ls="", color=COL["A"], label="etiqueta distinta")], loc="upper left")
 fig.tight_layout(); guardar(fig, "fig01_etiqueta_parcial"); plt.show()
@@ -141,7 +141,7 @@ ax = axes[1]
 for clase, color in [(0, COL["D"]), (1, COL["C"])]:
     s = datos[datos.y == clase]
     ax.scatter(s["m1_sC_t1"], s["d1_sC_H2"], s=22, color=color, alpha=.8, edgecolor=FONDO, lw=.6, label=f"real {'C' if clase else 'D'} en t")
-ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t-1 → t (2021-2025)")
+ax.scatter(tr_["m1_sC_t1"], tr_["d1_sC_H2"], s=90, facecolor="none", edgecolor=TINTA, lw=1.1, label="transición t−1 → t (2021–2025)")
 ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.axhline(.5, color=TENUE, lw=.8, ls="--"); ax.axvline(.5, color=TENUE, lw=.8, ls="--")
 ax.set_xlabel("$m_1$: s_C de todo t-1"); ax.set_ylabel("$d_1$: s_C del 2.º semestre de t-1")
 ax.set_title("(b) Memoria anual vs. semestre reciente"); ax.legend(fontsize=7.5, loc="upper left")
@@ -167,25 +167,12 @@ tabla(pd.DataFrame({"ρ Spearman con y": rho, "Información mutua": mi}).loc[nue
 SEM5 = (1, 2, 3, 4, 5)
 RES = {}          # nombre -> {"oos": predicciones, "por_semilla": métricas, "P": matriz semillas x filas}
 
-def particiones_de(tipo, base):
-    return {"movil": E.particiones_origen_movil, "espacial": E.particiones_espaciales,
-            "espacio-temporal": E.particiones_espacio_temporales}[tipo](base)
-
 def evaluar(spec, semillas=SEM5, particiones="movil", base=None, seq=None, clave=None):
-    # Entrena la especificación con cada semilla por separado en cada pliegue y guarda las predicciones OOS.
+    # La lógica está en pipeline.evaluar_semillas (cada semilla por separado en cada pliegue); aquí solo se guarda
+    # el resultado en la caché RES para compararlo después.
     base = datos if base is None else base; seq = SEQ if seq is None else seq
-    clave = clave or spec.nombre
-    semillas = semillas if spec.red is not None else (0,)
-    Ps, filas = [], []
-    for s in semillas:
-        sp = replace(spec, semillas=(s,))
-        part = particiones_de(particiones, base)
-        oos = E.validar(base, P.ajustar_predecir(base, seq, sp), part)
-        Ps.append(oos[spec.nombre].values)
-        filas.append({"semilla": s, **E.metricas(oos["y"], oos[spec.nombre], transicion=oos["transicion"])})
-    oos = oos.drop(columns=[spec.nombre]); oos["p"] = np.mean(Ps, axis=0)
-    RES[clave] = {"oos": oos, "por_semilla": pd.DataFrame(filas).set_index("semilla"), "P": np.array(Ps), "spec": spec}
-    return RES[clave]
+    RES[clave or spec.nombre] = P.evaluar_semillas(spec, base, seq, semillas, particiones)
+    return RES[clave or spec.nombre]
 
 def resumen(claves, ensamble=False):
     # Tabla media ± desv. entre semillas (o métricas del ensamble de semillas si ensamble=True).
@@ -204,13 +191,20 @@ def decidir(candidata, referencia, nombre=None):
     # Regla de retención (§3.1, regla 5) con diferencias pareadas por semilla; la regla vive en el paquete.
     a, b = RES[candidata]["por_semilla"], RES[referencia]["por_semilla"]
     r = E.regla_retencion(a["Log-loss"].values, b["Log-loss"].values, a["ROC-AUC"].values, b["ROC-AUC"].values)
+    # IC 95 % de la misma diferencia remuestreando departamentos (muestreo de territorios, no solo de semillas)
+    oa, ob = RES[candidata].get("oos"), RES[referencia].get("oos")
+    ic = "–"
+    if oa is not None and ob is not None and "P" in RES[candidata] and "P" in RES[referencia] \
+            and len(oa) == len(ob) and (oa["fila"].values == ob["fila"].values).all():
+        c = E.ic_pareado_semillas(oa["y"], RES[candidata]["P"], RES[referencia]["P"], oa["depto"])
+        ic = f"[{c['IC95 inf']:+.3f}; {c['IC95 sup']:+.3f}]".replace(".", ",")
     return {"Intervención": nombre or candidata, "Referencia": referencia, "ΔLog-loss": r["ΔLog-loss"], "EE": r["EE"],
-            "ΔAUC": r["ΔAUC"], "Decisión": "se retiene" if r["retiene"] else "no se retiene"}
+            "IC95 Δ (depto)": ic, "ΔAUC": r["ΔAUC"], "Decisión": "se retiene" if r["retiene"] else "no se retiene"}
 
 def persistencia_oos(particiones="movil", base=None, calibrada=False):
     base = datos if base is None else base
     fn_p = P.persistencia_calibrada if calibrada else P.persistencia
-    return E.validar(base, lambda tr, te: {"p": fn_p(base, tr, te)}, particiones_de(particiones, base))
+    return E.validar(base, lambda tr, te: {"p": fn_p(base, tr, te)}, E.particiones(particiones, base))
 
 PERS = persistencia_oos()
 M_PERS = E.metricas(PERS["y"], PERS["p"], transicion=PERS["transicion"])
@@ -230,7 +224,7 @@ for fila, v in enumerate((2023, 2024, 2025, 2026)):
             ax.text(anio, 3 - fila, rol[0], ha="center", va="center", fontsize=7.5, color="white" if rol[1] != GRID else TINTA)
 ax.set_yticks(range(4), ["Prueba 2026\n(una vez)", "Pliegue 2025", "Pliegue 2024", "Pliegue 2023"])
 ax.set_xticks(range(2021, 2027)); ax.set_xlim(2020.5, 2026.5); ax.set_ylim(-.6, 3.6); ax.grid(False)
-ax.set_title("Protocolo U3: selección con origen móvil 2023-2025; 2026 se evalúa una sola vez al final")
+ax.set_title("Protocolo U3: selección con origen móvil 2023–2025; 2026 se evalúa una sola vez al final")
 guardar(fig, "fig03_protocolo"); plt.show()
 
 
@@ -518,7 +512,7 @@ for ax, act in zip(axes[:2], ["relu", "tanh"]):
     ax.grid(False); ax.set_title(f"({'ab'[act == 'tanh']}) Log-loss media · {act.upper()} (promedio de L2)")
 ax = axes[2]
 x = np.arange(len(ANIDADA) - 1)
-ax.bar(x - .18, ANIDADA.iloc[:3, 1], width=.34, color=COL["D"], label="2023-2024 (donde se elige)")
+ax.bar(x - .18, ANIDADA.iloc[:3, 1], width=.34, color=COL["D"], label="2023–2024 (donde se elige)")
 ax.bar(x + .18, ANIDADA.iloc[:3, 2], width=.34, color=COL["val"], label="2025 (fuera de la elección)")
 ax.axhline(ANIDADA.iloc[3, 2], color=TINTA, lw=1, ls=":"); ax.text(2.45, ANIDADA.iloc[3, 2], " oráculo 2025", fontsize=8, va="bottom", ha="right")
 ax.set_xticks(x, ["Mínimo\n2023-24", "Regla 1 EE\n2023-24", "Vigente\n(U2)"]); ax.set_ylabel("Log-loss")
@@ -554,7 +548,7 @@ ax = axes[0]
 ax.fill_between(CURVA_K.index, CURVA_K["LL p5"], CURVA_K["LL p95"], color=COL["u3"], alpha=.18, lw=0, label="banda 5-95 % entre sorteos")
 ax.plot(CURVA_K.index, CURVA_K["LL media"], color=COL["u3"], marker="o", label="log-loss media")
 ax.axhline(M_PERS["Log-loss"], color=COL["pers"], ls="--", lw=1.2); ax.text(20, M_PERS["Log-loss"], "persistencia ", ha="right", va="bottom", fontsize=8)
-ax.axvline(K_ENS, color=TINTA, lw=1, ls=":"); ax.set_xlabel("Redes en el ensamble (K)"); ax.set_ylabel("Log-loss origen móvil 2023-2025")
+ax.axvline(K_ENS, color=TINTA, lw=1, ls=":"); ax.set_xlabel("Redes en el ensamble (K)"); ax.set_ylabel("Log-loss origen móvil 2023–2025")
 ax.set_title("(a) El ensamble reduce sobre todo la dispersión"); ax.legend(fontsize=8)
 ax = axes[1]
 orden = np.argsort(r20["oos"]["p"].values)
@@ -611,7 +605,7 @@ for nombre, q, color in [("Sin calibrar", p_ens, COL["u3"]), ("Platt · adelante
     yy_ = yv if nombre != "Persistencia" else PERS["y"].values
     fr, mp = calibration_curve(yy_, q, n_bins=5, strategy="quantile")
     ax.plot(mp, fr, marker="o", color=color, mec=FONDO, mew=1.5, label=f"{nombre} (ECE {E.ece(yy_, q):.3f})")
-ax.set_xlabel("P(C) media predicha"); ax.set_ylabel("Fracción observada de C"); ax.set_title("(a) Confiabilidad · origen móvil 2023-2025"); ax.legend(fontsize=8)
+ax.set_xlabel("P(C) media predicha"); ax.set_ylabel("Fracción observada de C"); ax.set_title("(a) Confiabilidad · origen móvil 2023–2025"); ax.legend(fontsize=8)
 ax = axes[1]
 for v, color in zip(sorted(oos7.particion.unique()), [COL["mlp"], COL["logit"], COL["test"]]):
     ax.plot(U.index, U[v], color=color, lw=1.4, label=f"{v} (óptimo {U_OPT[v]:.2f})")
@@ -830,7 +824,7 @@ for nombre, spec_c in [("Base U2", BASE_U2), ("Final U3", FINAL)]:
 fig, axes = plt.subplots(1, 2, figsize=(14, 4.5))
 for ax, (nombre, Hs), color in zip(axes, CURVAS.items(), [COL["mlp"], COL["u3"]]):
     tr_ = np.array([h["bce_tr"] for h in Hs]); va_ = np.array([h["bce_va"] for h in Hs]); ep_ = Hs[0]["epoca"]
-    ax.fill_between(ep_, tr_.min(0), tr_.max(0), color=color, alpha=.12, lw=0); ax.plot(ep_, tr_.mean(0), color=color, lw=1.6, ls=":", label="entrenamiento 2021-2024")
+    ax.fill_between(ep_, tr_.min(0), tr_.max(0), color=color, alpha=.12, lw=0); ax.plot(ep_, tr_.mean(0), color=color, lw=1.6, ls=":", label="entrenamiento 2021–2024")
     ax.fill_between(ep_, va_.min(0), va_.max(0), color=COL["val"], alpha=.12, lw=0); ax.plot(ep_, va_.mean(0), color=COL["val"], lw=1.8, label="validación 2025")
     k_min = int(np.argmin(va_.mean(0))); ax.scatter(ep_[k_min], va_.mean(0)[k_min], color=TINTA, zorder=4, s=25)
     ax.axvline(EP_560, color=TINTA, lw=1, ls="--"); ax.text(EP_560, .62, " 560 pasos", fontsize=8)
@@ -966,14 +960,14 @@ for k, (tit, y_, p_) in enumerate(casos):
 ax = fig.add_subplot(gs[1, :2])
 for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Persistencia calibrada", "pers_cal", COL["A"], "-."), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Logística", "logistica", COL["logit"], "-"), ("Después (U3)", "final", COL["u3"], "-")]:
     fpr, tpr, _ = roc_curve(oosF.y, oosF[c]); ax.plot(fpr, tpr, color=color, ls=ls, label=f"{nombre}: 2023-25 AUC {roc_auc_score(oosF.y, oosF[c]):.3f} · 2026 AUC {roc_auc_score(T26.y, T26[c]):.3f}")
-ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.set_xlabel("1 − especificidad"); ax.set_ylabel("Sensibilidad C"); ax.set_title("(e) Curvas ROC · origen móvil 2023-2025"); ax.legend(fontsize=7.8, loc="lower right")
+ax.plot([0, 1], [0, 1], color=EJE, lw=1); ax.set_xlabel("1 − especificidad"); ax.set_ylabel("Sensibilidad C"); ax.set_title("(e) Curvas ROC · origen móvil 2023–2025"); ax.legend(fontsize=7.8, loc="lower right")
 ax = fig.add_subplot(gs[1, 2:])
 anual = pd.concat([oosF.assign(particion=oosF.particion.astype(str)), T26.assign(particion="2026")])
 for nombre, c, color, ls in [("Persistencia", "pers", COL["pers"], "--"), ("Persistencia calibrada", "pers_cal", COL["A"], "-."), ("Antes (U2)", "antes", COL["mlp"], ":"), ("Después (U3)", "final", COL["u3"], "-")]:
     s_ = anual.groupby("particion").apply(lambda g: E.bce(g.y, g[c]))
     ax.plot(s_.index, s_.values, color=color, ls=ls, marker="o", mec=FONDO, mew=1.5, ms=7, label=nombre)
 ax.axvspan(2.6, 3.4, color=COL["test"], alpha=.08, lw=0); ax.text(3, ax.get_ylim()[0] + .005, "prueba única", ha="center", va="bottom", fontsize=8.5)
-ax.set_ylabel("Log-loss"); ax.set_title("(f) Log-loss por año (2023-2025 origen móvil, 2026 prueba)"); ax.legend(fontsize=8.5)
+ax.set_ylabel("Log-loss"); ax.set_title("(f) Log-loss por año (2023–2025 origen móvil, 2026 prueba)"); ax.legend(fontsize=8.5)
 guardar(fig, "fig11_antes_despues"); plt.show()
 
 
@@ -1033,7 +1027,7 @@ ax.axvline(.5, color=EJE, lw=1); ax.axhline(UMBRAL, color=EJE, lw=1)
 ax.axvspan(.4, .6, color=GRID, alpha=.5, lw=0, zorder=0)
 ax.text(.02, .97, "falso positivo", fontsize=8.5, color=TENUE, va="top"); ax.text(.98, .03, "falso negativo", fontsize=8.5, color=TENUE, ha="right")
 ax.set_xlabel("Proporción observada de eventos C en t ($s^C$); banda gris: ±10 pp del umbral"); ax.set_ylabel("P(C) del modelo final (información de t-1)")
-ax.set_title("Errores del modelo final, 2023-2026 (etiquetados)"); ax.legend(fontsize=8.5, title="año", loc="center right")
+ax.set_title("Errores del modelo final, 2023–2026 (etiquetados)"); ax.legend(fontsize=8.5, title="año", loc="center right")
 fig.tight_layout(); guardar(fig, "fig12_errores"); plt.show()
 
 
@@ -1256,7 +1250,7 @@ with mpl.rc_context({"font.size": 7.5, "axes.titlesize": 8, "axes.labelsize": 7.
     for xi, v in zip(x, ESC["LL media"]):
         ax.text(xi, v + .005, f"{v:.3f}", ha="center", fontsize=6.5)
     ax.axhline(M_PERS["Log-loss"], color=COL["pers"], ls="--", lw=1); ax.text(len(ESC) - .5, M_PERS["Log-loss"], "persistencia", ha="right", va="bottom", fontsize=6.5)
-    ax.set_xticks(x, ESC.index, rotation=12); ax.set_ylabel("Log-loss 2023-2025"); ax.set_ylim(.25, ESC["LL media"].max() * 1.1)
+    ax.set_xticks(x, ESC.index, rotation=12); ax.set_ylabel("Log-loss 2023–2025"); ax.set_ylim(.25, ESC["LL media"].max() * 1.1)
     ax.set_title("Escalera de mejora (media ± DE entre semillas)"); fig.tight_layout(); guardar(fig, "R1_escalera", DIR_INF, 300); plt.close(fig)
     # R2 antes vs después por año
     fig, ax = plt.subplots(figsize=(6.6, 2.5))

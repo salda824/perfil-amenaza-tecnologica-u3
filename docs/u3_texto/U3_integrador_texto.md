@@ -303,6 +303,8 @@ se agregó después de la revisión del informe y no cambió el modelo adoptado.
    cumple, se prefiere la variante más simple (espíritu de la regla de 1 EE de la U2, D7). El EE mide el ruido del
    entrenamiento entre semillas, no el del muestreo de departamentos. En I4, cuya hipótesis es espacial, la regla se
    aplica a la validación espacial y se exige no empeorar la temporal. La regla está en `evaluacion.regla_retencion`.
+   Las tablas de decisión agregan, como información y no como criterio, el IC 95 % de la misma diferencia
+   remuestreando departamentos completos (`evaluacion.ic_pareado_semillas`), que sí refleja el muestreo de territorios.
 6. **Presupuesto de entrenamiento fijo** de 560 pasos de gradiente (D10 de la U2), salvo cuando el presupuesto es
    la variable estudiada (§6.8). Así ninguna partición usa sus propios datos de prueba para detener el
    entrenamiento.
@@ -397,16 +399,16 @@ Salida de la celda:
 U2 E1 (memoria cruda x8)    0,938     0,347  0,110  0,664              0,826  0,088          0,009                   2,400             9
                  I1a +m1    0,939     0,347  0,110  0,664              0,826  0,084          0,010                   2,400             9
            I1b +m1 m2 m3    0,938     0,349  0,108  0,681              0,838  0,086          0,025                   1,600             9
-         Intervención   Referencia  ΔLog-loss      EE     ΔAUC       Decisión
-        I1 memoria m1  MLP base U2    -0.0358  0.0094  +0.0174     se retiene
-I1 trayectoria m2, m3      I1a +m1    +0.0016  0.0110  -0.0001  no se retiene
+         Intervención   Referencia  ΔLog-loss      EE    IC95 Δ (depto)     ΔAUC       Decisión
+        I1 memoria m1  MLP base U2    -0.0358  0.0094  [-0,056; -0,019]  +0.0174     se retiene
+I1 trayectoria m2, m3      I1a +m1    +0.0016  0.0110  [-0,036; +0,055]  -0.0001  no se retiene
 Variables retenidas tras I1: ['m1_sC_t1']
 ```
 
 **Lectura.**
 
 * **I1 se retiene.** Agregar $m_1$ baja la log-loss media de 0,383 a 0,347 (Δ = −0,036, más de tres errores
-  estándar, EE = 0,009) y sube el AUC de 0,921 a 0,939. Con esto la red individual ya supera a la persistencia en
+  estándar, EE = 0,009; IC 95 % remuestreando departamentos [−0,056; −0,019]) y sube el AUC de 0,921 a 0,939. Con esto la red individual ya supera a la persistencia en
   log-loss (0,347 vs. 0,363).
 * **La trayectoria ($m_2$, $m_3$) no aporta** (Δ = +0,002, dentro del ruido): lo que importa es el estado reciente,
   no la pendiente. Se descarta por la regla de la variante más simple.
@@ -425,9 +427,9 @@ Salida de la celda:
       I1a +m1    0,939     0,347  0,110  0,664              0,826  0,084          0,010                   2,400             9
       I2a +d1    0,951     0,310  0,097  0,740              0,865  0,077          0,010                       2             9
 I2b +d1 d2 d3    0,945     0,323  0,102  0,691              0,842  0,071          0,012                   2,200             9
-           Intervención  Referencia  ΔLog-loss      EE     ΔAUC       Decisión
-I2 semestre reciente d1     I1a +m1    -0.0374  0.0068  +0.0127     se retiene
-   I2 tendencias d2, d3     I2a +d1    +0.0130  0.0087  -0.0059  no se retiene
+           Intervención  Referencia  ΔLog-loss      EE    IC95 Δ (depto)     ΔAUC       Decisión
+I2 semestre reciente d1     I1a +m1    -0.0374  0.0068  [-0,066; -0,011]  +0.0127     se retiene
+   I2 tendencias d2, d3     I2a +d1    +0.0130  0.0087  [-0,030; +0,071]  -0.0059  no se retiene
    particion   2023   2024   2025
  MLP base U2  0,367  0,316  0,434
      I1a +m1  0,351  0,272  0,386
@@ -438,8 +440,9 @@ Variables retenidas tras I2: ['m1_sC_t1', 'd1_sC_H2']
 
 **Lectura.**
 
-* **I2 se retiene.** El semestre reciente $d_1$ baja la log-loss de 0,347 a **0,310** (Δ = −0,037; EE = 0,007) y
-  sube el AUC a 0,951. Es la mayor ganancia individual de la unidad, y el EDA anticipaba por qué: $d_1$ registra los
+* **I2 se retiene.** El semestre reciente $d_1$ baja la log-loss de 0,347 a **0,310** (Δ = −0,037; EE = 0,007; IC 95 %
+  por departamento [−0,066; −0,011]) y sube el AUC a 0,951. El intervalo no incluye el cero aunque se remuestreen
+  territorios, no solo semillas. Es la mayor ganancia individual de la unidad, y el EDA anticipaba por qué: $d_1$ registra los
   giros de la segunda mitad del año que el promedio anual diluye.
 * **Las tendencias $d_2$, $d_3$ empeoran** (Δ = +0,013): con 113–142 filas, dos variables de ruido cuestan más de lo
   que aportan. Se descartan.
@@ -470,8 +473,8 @@ Salida de la celda:
          ROC-AUC  Log-loss  Brier    MCC  Exact. balanceada    ECE  Log-loss (DE)  Transiciones acertadas  Transiciones
 I2a +d1    0,951     0,310  0,097  0,740              0,865  0,077          0,010                       2             9
  I3 +x3    0,937     0,335  0,105  0,684              0,840  0,064          0,020                   1,400             9
-         Intervención  Referencia  ΔLog-loss        EE       ΔAUC       Decisión
-I3 actores armados x3     I2a +d1   0.024955  0.005638  -0.014482  no se retiene
+         Intervención  Referencia  ΔLog-loss        EE    IC95 Δ (depto)       ΔAUC       Decisión
+I3 actores armados x3     I2a +d1   0.024955  0.005638  [-0,002; +0,063]  -0.014482  no se retiene
     departamento  anio  perfil     p_ref      p_x3
  2        Arauca  2023       C  0.823462  0.907339
 31        Arauca  2024       C  0.742372  0.815017
@@ -515,9 +518,9 @@ Espacial (deptos. nunca vistos)  esp: MLP base U2    0,854     0,475  0,154  0,5
       esp: logística referencia             0,916    0,373     0,114  0,704  0,851              0,034
                  esp: I4 +v1 v2             0,908    0,389     0,123  0,648  0,822              0,055
               esp: persistencia             0,914    0,418     0,127  0,704  0,852              0,117
-          Intervención       Referencia  ΔLog-loss      EE     ΔAUC       Decisión
-I4 vecindad (temporal)          I2a +d1    -0.0040  0.0019  +0.0020  no se retiene
-I4 vecindad (espacial)  esp: referencia    +0.0094  0.0037  -0.0054  no se retiene
+          Intervención       Referencia  ΔLog-loss      EE    IC95 Δ (depto)     ΔAUC       Decisión
+I4 vecindad (temporal)          I2a +d1    -0.0040  0.0019  [-0,035; +0,027]  +0.0020  no se retiene
+I4 vecindad (espacial)  esp: referencia    +0.0094  0.0037  [-0,023; +0,046]  -0.0054  no se retiene
 Especificación de variables fijada (9): ['x1_eventos', 'x2_fatalidades', 'x2b_letalidad', 'x4_coca', 'x5_bosque', 'x6_distancia', 'x7_ipm', 'm1_sC_t1', 'd1_sC_H2']
 ```
 
@@ -552,9 +555,9 @@ Salida de la celda:
                  I2a +d1 · cal    0,944     0,317  0,099  0,740              0,865  0,069          0,020                       2             9
                I5 blando · cal    0,929     0,385  0,117  0,731              0,861  0,110          0,035                   2,800             9
 I5 blando + peso eventos · cal    0,929     0,401  0,123  0,709              0,847  0,113          0,033                   2,400             9
-                         Intervención     Referencia  ΔLog-loss      EE     ΔAUC       Decisión
-    I5 objetivo blando (sin calibrar)        I2a +d1    +0.1193  0.0044  -0.0044  no se retiene
-I5 objetivo blando (ambos calibrados)  I2a +d1 · cal    +0.0678  0.0078  -0.0152  no se retiene
+                         Intervención     Referencia  ΔLog-loss      EE    IC95 Δ (depto)     ΔAUC       Decisión
+    I5 objetivo blando (sin calibrar)        I2a +d1    +0.1193  0.0044  [+0,054; +0,184]  -0.0044  no se retiene
+I5 objetivo blando (ambos calibrados)  I2a +d1 · cal    +0.0678  0.0078  [+0,028; +0,107]  -0.0152  no se retiene
 Objetivo de entrenamiento elegido: duro
 ```
 
@@ -589,9 +592,9 @@ I9 multitarea λ=0.5    0,951     0,311  0,097  0,740              0,865  0,085 
                                  MAE de s_A + s_B                      0,035                           0,030
                  ρ de Spearman con s_A + s_B real                      0,465                           0,601
 AUC para detectar alerta A/B (≥ 2× media del año)                      0,682                           0,700
-                        Intervención  Referencia  ΔLog-loss      EE     ΔAUC       Decisión
-I9 multitarea λ=0.5 (efecto en P(C))     I2a +d1    +0.0013  0.0027  -0.0001  no se retiene
-  I9 multitarea λ=1 (efecto en P(C))     I2a +d1    +0.0095  0.0052  -0.0042  no se retiene
+                        Intervención  Referencia  ΔLog-loss      EE    IC95 Δ (depto)     ΔAUC       Decisión
+I9 multitarea λ=0.5 (efecto en P(C))     I2a +d1    +0.0013  0.0027  [-0,006; +0,010]  -0.0001  no se retiene
+  I9 multitarea λ=1 (efecto en P(C))     I2a +d1    +0.0095  0.0052  [-0,002; +0,023]  -0.0042  no se retiene
 Filas con alerta A/B real en 2023-2025: 14 de 87 | tipo de red elegido: mlp
 ```
 
@@ -627,12 +630,12 @@ Salida de la celda:
    Embedding de departamento    0,968     0,284  0,090  0,732              0,863  0,081          0,018                   0,800             9         275
         MLP profundo (16, 8)    0,954     0,309  0,098  0,731              0,863  0,083          0,025                   1,600             9         305
 Logística (mismas variables)    0,949     0,306  0,097  0,737              0,863  0,068          0,000                       1             9          10
-                Intervención  Referencia  ΔLog-loss      EE     ΔAUC                                                                                                                                                 Decisión
-              GRU trimestral     I2a +d1    +0.0098  0.0045  -0.0033                                                                                                                                            no se retiene
-           CNN 1D trimestral     I2a +d1    +0.0143  0.0142  -0.0064                                                                                                                                            no se retiene
-   Embedding de departamento     I2a +d1    -0.0259  0.0103  +0.0163  cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding
-        MLP profundo (16, 8)     I2a +d1    -0.0004  0.0135  +0.0026                                                                                                                                            no se retiene
-Logística (mismas variables)     I2a +d1    -0.0035  0.0043  -0.0025                                                                                                                                            no se retiene
+                Intervención  Referencia  ΔLog-loss      EE    IC95 Δ (depto)     ΔAUC                                                                                                                                                 Decisión
+              GRU trimestral     I2a +d1    +0.0098  0.0045  [-0,024; +0,053]  -0.0033                                                                                                                                            no se retiene
+           CNN 1D trimestral     I2a +d1    +0.0143  0.0142  [-0,026; +0,062]  -0.0064                                                                                                                                            no se retiene
+   Embedding de departamento     I2a +d1    -0.0259  0.0103  [-0,046; -0,005]  +0.0163  cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding
+        MLP profundo (16, 8)     I2a +d1    -0.0004  0.0135  [-0,022; +0,024]  +0.0026                                                                                                                                            no se retiene
+Logística (mismas variables)     I2a +d1    -0.0035  0.0043  [-0,053; +0,059]  -0.0025                                                                                                                                            no se retiene
 Embedding en validación espacial: log-loss 0.369 vs. MLP sin embedding 0.379
 ```
 
@@ -669,7 +672,7 @@ los pliegues 2023–2024 y medimos si lo elegido es mejor en 2025, el año que n
 #### Celda de código 16: 6.8 I6 rejilla de capacidad x L2 x activación x presupuesto (3 semillas, 3 pliegues)
 Salida de la celda:
 ```text
-48 configuraciones × 3 semillas × 3 pliegues = 432 entrenamientos en 273 s
+48 configuraciones × 3 semillas × 3 pliegues = 432 entrenamientos en 274 s
 Mejor media: ('(32,)', np.float64(0.01), 'relu', np.int64(1120)) LL 0.289 ± 0.028 | configuraciones dentro de 1 EE: 31 de 48
 Configuración vigente ('(16,)', 0.001, 'relu', 560): LL 0.303 (puesto 18 de 48; dentro de 1 EE del mejor)
                                                                               Configuración  LL 2023-2024 (selección)  LL 2025 (fuera de la selección)
@@ -783,26 +786,26 @@ Calibración adoptada: ninguna | umbral operativo: 0.5
 #### Celda de código 19: 6.11 Tabla de decisiones y escalera de mejora
 Salida de la celda:
 ```text
-                                Intervención                     Referencia  ΔLog-loss      EE     ΔAUC                                                                                                                                                 Decisión
-                               I1 memoria m1                    MLP base U2    -0.0358  0.0094  +0.0174                                                                                                                                               se retiene
-                       I1 trayectoria m2, m3                        I1a +m1    +0.0016  0.0110  -0.0001                                                                                                                                            no se retiene
-                     I2 semestre reciente d1                        I1a +m1    -0.0374  0.0068  +0.0127                                                                                                                                               se retiene
-                        I2 tendencias d2, d3                        I2a +d1    +0.0130  0.0087  -0.0059                                                                                                                                            no se retiene
-                       I3 actores armados x3                        I2a +d1    +0.0250  0.0056  -0.0145                                                                                                                                            no se retiene
-                      I4 vecindad (temporal)                        I2a +d1    -0.0040  0.0019  +0.0020                                                                                                                                            no se retiene
-                      I4 vecindad (espacial)                esp: referencia    +0.0094  0.0037  -0.0054                                                                                                                                            no se retiene
-           I5 objetivo blando (sin calibrar)                        I2a +d1    +0.1193  0.0044  -0.0044                                                                                                                                            no se retiene
-       I5 objetivo blando (ambos calibrados)                  I2a +d1 · cal    +0.0678  0.0078  -0.0152                                                                                                                                            no se retiene
-        I9 multitarea λ=0.5 (efecto en P(C))                        I2a +d1    +0.0013  0.0027  -0.0001                                                                                                                                            no se retiene
-          I9 multitarea λ=1 (efecto en P(C))                        I2a +d1    +0.0095  0.0052  -0.0042                                                                                                                                            no se retiene
-                              GRU trimestral                        I2a +d1    +0.0098  0.0045  -0.0033                                                                                                                                            no se retiene
-                           CNN 1D trimestral                        I2a +d1    +0.0143  0.0142  -0.0064                                                                                                                                            no se retiene
-                   Embedding de departamento                        I2a +d1    -0.0259  0.0103  +0.0163  cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding
-                        MLP profundo (16, 8)                        I2a +d1    -0.0004  0.0135  +0.0026                                                                                                                                            no se retiene
-                Logística (mismas variables)                        I2a +d1    -0.0035  0.0043  -0.0025                                                                                                                                            no se retiene
-I6 capacidad / activación / L2 / presupuesto  ('(16,)', 0.001, 'relu', 560)    +0.0518       –        –                                                                                                        no se retiene (la selección no transfiere a 2025)
-                  I7 ensamble de 10 semillas                          1 red    -0.0108       –  +0.0043                                                                                                                                 se retiene (estabilidad)
-                              I8 calibración                   sin calibrar    +0.0042       –  +0.0000                                                                                                            no se retiene (no mejora sin mirar el futuro)
+                                Intervención                     Referencia  ΔLog-loss      EE    IC95 Δ (depto)     ΔAUC                                                                                                                                                 Decisión
+                               I1 memoria m1                    MLP base U2    -0.0358  0.0094  [-0,056; -0,019]  +0.0174                                                                                                                                               se retiene
+                       I1 trayectoria m2, m3                        I1a +m1    +0.0016  0.0110  [-0,036; +0,055]  -0.0001                                                                                                                                            no se retiene
+                     I2 semestre reciente d1                        I1a +m1    -0.0374  0.0068  [-0,066; -0,011]  +0.0127                                                                                                                                               se retiene
+                        I2 tendencias d2, d3                        I2a +d1    +0.0130  0.0087  [-0,030; +0,071]  -0.0059                                                                                                                                            no se retiene
+                       I3 actores armados x3                        I2a +d1    +0.0250  0.0056  [-0,002; +0,063]  -0.0145                                                                                                                                            no se retiene
+                      I4 vecindad (temporal)                        I2a +d1    -0.0040  0.0019  [-0,035; +0,027]  +0.0020                                                                                                                                            no se retiene
+                      I4 vecindad (espacial)                esp: referencia    +0.0094  0.0037  [-0,023; +0,046]  -0.0054                                                                                                                                            no se retiene
+           I5 objetivo blando (sin calibrar)                        I2a +d1    +0.1193  0.0044  [+0,054; +0,184]  -0.0044                                                                                                                                            no se retiene
+       I5 objetivo blando (ambos calibrados)                  I2a +d1 · cal    +0.0678  0.0078  [+0,028; +0,107]  -0.0152                                                                                                                                            no se retiene
+        I9 multitarea λ=0.5 (efecto en P(C))                        I2a +d1    +0.0013  0.0027  [-0,006; +0,010]  -0.0001                                                                                                                                            no se retiene
+          I9 multitarea λ=1 (efecto en P(C))                        I2a +d1    +0.0095  0.0052  [-0,002; +0,023]  -0.0042                                                                                                                                            no se retiene
+                              GRU trimestral                        I2a +d1    +0.0098  0.0045  [-0,024; +0,053]  -0.0033                                                                                                                                            no se retiene
+                           CNN 1D trimestral                        I2a +d1    +0.0143  0.0142  [-0,026; +0,062]  -0.0064                                                                                                                                            no se retiene
+                   Embedding de departamento                        I2a +d1    -0.0259  0.0103  [-0,046; -0,005]  +0.0163  cumple la regla 5, no se adopta por la regla 8: acierta 0.8 de 9 transiciones (referencia 2.0) y en departamentos nuevos se reduce al MLP sin embedding
+                        MLP profundo (16, 8)                        I2a +d1    -0.0004  0.0135  [-0,022; +0,024]  +0.0026                                                                                                                                            no se retiene
+                Logística (mismas variables)                        I2a +d1    -0.0035  0.0043  [-0,053; +0,059]  -0.0025                                                                                                                                            no se retiene
+I6 capacidad / activación / L2 / presupuesto  ('(16,)', 0.001, 'relu', 560)    +0.0518       –                 –        –                                                                                                        no se retiene (la selección no transfiere a 2025)
+                  I7 ensamble de 10 semillas                          1 red    -0.0108       –                 –  +0.0043                                                                                                                                 se retiene (estabilidad)
+                              I8 calibración                   sin calibrar    +0.0042       –                 –  +0.0000                                                                                                            no se retiene (no mejora sin mirar el futuro)
                     LL media  LL DE    AUC  Brier  Transiciones acertadas
               Paso
     Modelo base U2     0,383  0,021  0,921  0,123                   2,400
@@ -842,7 +845,7 @@ control "pasa" cuando el resultado se mueve en la dirección que predice la teor
 #### Celda de código 20: 7.1 Ablaciones de preprocesamiento (5 semillas, origen móvil 2023-2025)
 Salida de la celda:
 ```text
-Controles en 97 s
+Controles en 102 s
 Referencia: LL 0.310 | AUC 0.951
                            ΔLog-loss      EE     ΔAUC  LL media  AUC media
              Intervención
@@ -1300,7 +1303,7 @@ findfont: Failed to find font weight semibold for DejaVu Sans, now using 700.
 Salida de la celda:
 ```text
 $ python -m pytest -q tests
-10 passed in 8.10s
+10 passed in 7.51s
 (9 s)
 $ python -m perfil_amenaza.pipeline todo
 [1-2] datos: 171 filas, 30 departamentos, 9 predictoras
@@ -1308,7 +1311,7 @@ $ python -m perfil_amenaza.pipeline todo
 [5] prueba 2026 (n=29): AUC 0.900, log-loss 0.380 (persistencia 0.429; persistencia calibrada 0.351; base U2 ensamble 0.470)
 [6] artefacto: perfil_amenaza_u3.keras (152 KB, 10 redes)
 [7] proyección 2027: {'C consolidado': 11, 'Transición': 11, 'D consolidado': 11} | PSI > 0,25: 1; PSI por encima del ruido de muestreo (p95): 1
-[8] tarjeta del modelo escrita. Tiempo total: 59 s
+[8] tarjeta del modelo escrita. Tiempo total: 57 s
 ```
 
 #### Celda de código 33: 11.3 El artefacto único: carga, estructura y consistencia con lo evaluado
@@ -1605,7 +1608,7 @@ comparación (§5, §6, §9), análisis crítico (§9, §10), integración en el
 Salida de la celda:
 ```text
    tiempo total del cuaderno (min)
-0                             20.6
+0                             20.4
                                    Archivo          KB
                          TARJETA_MODELO.md    2.400000
             antes_despues_origen_movil.csv    1.700000
@@ -1614,21 +1617,21 @@ Salida de la celda:
                 comparaciones_pareadas.csv    2.800000
                        controles_datos.csv    0.900000
                    dataset_modelado_u3.csv   69.600000
-             decisiones_intervenciones.csv    2.300000
+             decisiones_intervenciones.csv    2.600000
                        deriva_psi_2026.csv    0.600000
                        escalera_mejora.csv    0.400000
-        figuras/fig01_etiqueta_parcial.png  133.100000
+        figuras/fig01_etiqueta_parcial.png  133.500000
     figuras/fig02_eda_variables_nuevas.png  371.700000
                figuras/fig03_protocolo.png  118.800000
          figuras/fig04_rejilla_anidada.png  217.400000
-                figuras/fig05_ensamble.png  185.600000
-      figuras/fig06_calibracion_umbral.png  261.700000
+                figuras/fig05_ensamble.png  185.500000
+      figuras/fig06_calibracion_umbral.png  261.500000
          figuras/fig07_escalera_mejora.png  134.600000
          figuras/fig08_controles_datos.png  187.700000
       figuras/fig09_arquitectura_final.png  487.300000
-      figuras/fig10_curvas_aprendizaje.png  202.900000
+      figuras/fig10_curvas_aprendizaje.png  202.700000
            figuras/fig11_antes_despues.png  341.000000
-                 figuras/fig12_errores.png  209.800000
+                 figuras/fig12_errores.png  209.300000
          figuras/fig13_importancia_pdp.png  256.700000
                 figuras/fig14_pipeline.png  237.700000
          figuras/fig15_proyeccion_2027.png  446.500000

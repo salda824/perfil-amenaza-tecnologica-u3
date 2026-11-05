@@ -70,7 +70,7 @@ L["i1"] = r"""
 **Lectura.**
 
 * **I1 se retiene.** Agregar $m_1$ baja la log-loss media de 0,383 a 0,347 (Δ = −0,036, más de tres errores
-  estándar, EE = 0,009) y sube el AUC de 0,921 a 0,939. Con esto la red individual ya supera a la persistencia en
+  estándar, EE = 0,009; IC 95 % remuestreando departamentos [−0,056; −0,019]) y sube el AUC de 0,921 a 0,939. Con esto la red individual ya supera a la persistencia en
   log-loss (0,347 vs. 0,363).
 * **La trayectoria ($m_2$, $m_3$) no aporta** (Δ = +0,002, dentro del ruido): lo que importa es el estado reciente,
   no la pendiente. Se descarta por la regla de la variante más simple.
@@ -84,8 +84,9 @@ L["i1"] = r"""
 L["i2"] = r"""
 **Lectura.**
 
-* **I2 se retiene.** El semestre reciente $d_1$ baja la log-loss de 0,347 a **0,310** (Δ = −0,037; EE = 0,007) y
-  sube el AUC a 0,951. Es la mayor ganancia individual de la unidad, y el EDA anticipaba por qué: $d_1$ registra los
+* **I2 se retiene.** El semestre reciente $d_1$ baja la log-loss de 0,347 a **0,310** (Δ = −0,037; EE = 0,007; IC 95 %
+  por departamento [−0,066; −0,011]) y sube el AUC a 0,951. El intervalo no incluye el cero aunque se remuestreen
+  territorios, no solo semillas. Es la mayor ganancia individual de la unidad, y el EDA anticipaba por qué: $d_1$ registra los
   giros de la segunda mitad del año que el promedio anual diluye.
 * **Las tendencias $d_2$, $d_3$ empeoran** (Δ = +0,013): con 113–142 filas, dos variables de ruido cuestan más de lo
   que aportan. Se descartan.
