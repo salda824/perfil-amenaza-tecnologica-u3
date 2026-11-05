@@ -392,9 +392,10 @@ def decidir(candidata, referencia, nombre=None):
     a, b = RES[candidata]["por_semilla"], RES[referencia]["por_semilla"]
     r = E.regla_retencion(a["Log-loss"].values, b["Log-loss"].values, a["ROC-AUC"].values, b["ROC-AUC"].values)
     # IC 95 % de la misma diferencia remuestreando departamentos (muestreo de territorios, no solo de semillas)
-    oa, ob = RES[candidata]["oos"], RES[referencia]["oos"]
+    oa, ob = RES[candidata].get("oos"), RES[referencia].get("oos")
     ic = "–"
-    if len(oa) == len(ob) and (oa["fila"].values == ob["fila"].values).all():
+    if oa is not None and ob is not None and "P" in RES[candidata] and "P" in RES[referencia] \
+            and len(oa) == len(ob) and (oa["fila"].values == ob["fila"].values).all():
         c = E.ic_pareado_semillas(oa["y"], RES[candidata]["P"], RES[referencia]["P"], oa["depto"])
         ic = f"[{c['IC95 inf']:+.3f}; {c['IC95 sup']:+.3f}]".replace(".", ",")
     return {"Intervención": nombre or candidata, "Referencia": referencia, "ΔLog-loss": r["ΔLog-loss"], "EE": r["EE"],
