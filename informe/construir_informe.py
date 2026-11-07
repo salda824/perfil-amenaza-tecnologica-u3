@@ -671,6 +671,21 @@ for ref in REFS:
     par.paragraph_format.left_indent = Cm(0.9); par.paragraph_format.first_line_indent = Cm(-0.9); par.paragraph_format.space_after = Pt(1)
     runs(par, ref, tam=9)
 
+# =====================================================================================================================
+# Anexo: cuaderno ejecutado en Google Colab (enlace para que el profesor pueda revisarlo)
+# =====================================================================================================================
+URL_COLAB = "https://colab.research.google.com/drive/1JcKgGR2MvLwjkEqIIjXNyiwNJ1tHU3Gj?usp=sharing"
+h1("Anexo A.   Cuaderno ejecutado (Google Colab)")
+par = doc.add_paragraph(); par.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+par.paragraph_format.space_after = Pt(2.5); par.paragraph_format.keep_with_next = True
+runs(par, "El cuaderno completo de la Unidad 3, con todas sus celdas de código y sus salidas, está disponible en Google Colab. "
+          "De él salen las cifras, las tablas y las figuras de este informe: el diagnóstico, las intervenciones I1 a I9, los controles, "
+          "la comparación antes y después, el análisis de errores y la proyección 2027. Se puede abrir y revisar sin instalar nada.", tam=9.5)
+par = doc.add_paragraph(); par.alignment = WD_ALIGN_PARAGRAPH.LEFT; par.paragraph_format.space_after = Pt(2.5)
+runs(par, "Enlace: ", tam=9.5)
+hipervinculo(par, URL_COLAB, URL_COLAB, tam=9.5)
+p("El mismo cuaderno (Proyecto_U3_Integrador.ipynb) y el código que usa están en el repositorio indicado al inicio.", tam=9.5)
+
 doc.save(SALIDA)
 print("Word:", SALIDA)
 r = subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir", str(SALIDA.parent), str(SALIDA)], capture_output=True, text=True)

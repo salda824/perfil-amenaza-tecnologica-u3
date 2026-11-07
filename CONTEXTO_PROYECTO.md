@@ -15,7 +15,7 @@
 | Entender el proyecto completo | Este archivo (secciones 1–6) |
 | Ver el mapa de conceptos y relaciones | `graphify-out/graph.html` (interactivo) y `graphify-out/GRAPH_REPORT.md` |
 | El entregable principal de la U3 (código + análisis) | `Proyecto_U3_Integrador.ipynb` (ejecutado) o su versión texto `docs/u3_texto/U3_integrador_texto.md` |
-| El informe PDF de la U3 (Producto 1) | `informe/Informe_U3_Proyecto_Integrador.pdf` (y `.docx` editable) |
+| El informe PDF de la U3 (Producto 1) | `informe/Informe_U3_Proyecto_Integrador.pdf` (y `.docx` editable); 11 páginas de informe más el Anexo A con el enlace al cuaderno en Google Colab |
 | El código reutilizable | `src/perfil_amenaza/` (paquete Python) |
 | Ejecutar todo | `ejecutar_todo.bat` (Windows) o las órdenes de la sección 7 |
 | Las guías y rúbricas oficiales | `docs/guias/` |
